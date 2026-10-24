@@ -85,11 +85,13 @@
   <script>
     const languageToggle = document.getElementById('language-toggle');
     let currentLanguage = 'en';
+    try { currentLanguage = localStorage.getItem('secure-axis-language') || 'en'; } catch {}
+    function preferredLanguage() { try { return localStorage.getItem('secure-axis-language') || (document.documentElement.lang === 'ar' ? 'ar' : currentLanguage); } catch { return document.documentElement.lang === 'ar' ? 'ar' : currentLanguage; } }
     const originalTextNodes = new WeakMap();
     const originalLabels = new WeakMap();
     const arabicText = {
       'Solutions':'الحلول','Why Secure Axis':'لماذا Secure Axis','Our Process':'مراحل العمل','Contact':'تواصل معنا','Get a consultation':'اطلب استشارة',
-      'Integrated security. Complete control.':'أمان متكامل. تحكم كامل.','Security built':'أمان مصمم','around ':'يناسب ','your world.':'احتياجاتك.','One trusted partner for CCTV, access control, vehicle barriers and intrusion detection. We design connected security systems that help protect the places and people that matter.':'شريك واحد لأنظمة كاميرات المراقبة والتحكم في الدخول وحواجز السيارات وكشف التسلل. نصمم أنظمة أمنية مترابطة لحماية المواقع والأشخاص المهمين بالنسبة لك.',
+      'Integrated security. Complete control.':'أمان متكامل. تحكم كامل.','Security built':'أمان مصمم','around':'يناسب','your world.':'احتياجاتك.','One trusted partner for CCTV, access control, vehicle barriers and intrusion detection. We design connected security systems that help protect the places and people that matter.':'شريك واحد لأنظمة كاميرات المراقبة والتحكم في الدخول وحواجز السيارات وكشف التسلل. نصمم أنظمة أمنية مترابطة لحماية المواقع والأشخاص المهمين بالنسبة لك.',
       'Talk to our team':'تواصل مع فريقنا','Explore solutions':'اكتشف الحلول','Site assessment':'معاينة الموقع','Professional installation':'تركيب احترافي','Ongoing support':'دعم مستمر','INTEGRATED SECURITY':'أنظمة أمنية متكاملة','Always in control':'تحكم دائم','Security that works together':'أمان يعمل كنظام واحد',
       'Security designed around your site':'أمان مصمم حسب موقعك','Scalable systems':'أنظمة قابلة للتوسع','Business & property solutions':'حلول للشركات والعقارات','Trusted technology':'تقنيات موثوقة',
       'What we do':'خدماتنا','Connected security solutions':'حلول أمنية متكاملة','We bring your core security systems together in one clear, reliable solution—from planning through handover.':'نجمع أنظمة الأمن الأساسية في حل واحد واضح وموثوق، من التخطيط وحتى التسليم.',
@@ -128,6 +130,7 @@
     }
     function applyLanguage(language) {
       currentLanguage = language;
+      try { localStorage.setItem('secure-axis-language', language); } catch {}
       document.documentElement.lang = language;
       document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
       translateText(document.body, language);
@@ -141,13 +144,15 @@
       languageToggle.setAttribute('aria-pressed', String(language === 'ar'));
       languageToggle.setAttribute('aria-label', language === 'ar' ? 'Switch language to English' : 'Switch language to Arabic');
     }
-    languageToggle.addEventListener('click', () => applyLanguage(currentLanguage === 'en' ? 'ar' : 'en'));
+    languageToggle.addEventListener('click', () => applyLanguage(preferredLanguage() === 'en' ? 'ar' : 'en'));
+    applyLanguage(currentLanguage);
     const cctvCard = document.querySelector('.service-cctv');
     const cameraDialog = document.getElementById('camera-modal');
-    cctvCard.addEventListener('click', () => cameraDialog.showModal());
+    cctvCard.addEventListener('click', () => { applyLanguage(preferredLanguage()); cameraDialog.showModal(); });
     cctvCard.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
+        applyLanguage(preferredLanguage());
         cameraDialog.showModal();
       }
     });
@@ -248,7 +253,7 @@
       document.getElementById('models-grid').innerHTML = category.models.map((model, index) => { const family = model.name.includes('PIR Cube') ? 'cube' : (cameraArtFamily[button.dataset.cameraCategory] || 'bullet'); return `<button class="model-option" type="button" data-model-index="${index}">${modelPhoto(model, family)}<span><h3>${escapeText(model.name)}</h3><p>${escapeText(model.resolution)} · ${escapeText(model.range)}</p><span class="model-badge">${escapeText(model.availability || 'Listed in Egypt catalogues · confirm stock')} →</span></span></button>`; }).join('');
       modelsView.hidden = false; modelDetailView.hidden = true;
       modelDialog.dataset.activeCategory = button.dataset.cameraCategory;
-      applyLanguage(currentLanguage);
+      applyLanguage(preferredLanguage());
       modelDialog.showModal();
     }));
     document.getElementById('models-grid').addEventListener('click', event => {
