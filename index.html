@@ -250,7 +250,7 @@
       const category = cameraCatalog[button.dataset.cameraCategory];
       document.getElementById('model-title').textContent = category.title;
       document.getElementById('model-intro').textContent = category.intro;
-      document.getElementById('models-grid').innerHTML = category.models.map((model, index) => { const family = model.name.includes('PIR Cube') ? 'cube' : (cameraArtFamily[button.dataset.cameraCategory] || 'bullet'); return `<button class="model-option" type="button" data-model-index="${index}">${modelPhoto(model, family)}<span><h3>${escapeText(model.name)}</h3><p>${escapeText(model.resolution)} · ${escapeText(model.range)}</p><span class="model-badge">${escapeText(model.availability || 'Listed in Egypt catalogues · confirm stock')} →</span></span></button>`; }).join('');
+      document.getElementById('models-grid').innerHTML = category.models.map((model, index) => { const family = model.name.includes('PIR Cube') ? 'cube' : (cameraArtFamily[button.dataset.cameraCategory] || 'bullet'); return `<button class="model-option" type="button" data-model-index="${index}">${modelPhoto(model, family)}<span><h3>${escapeText(model.name)}</h3><p><span>${escapeText(model.resolution)}</span> · <span>${escapeText(model.range)}</span></p><span class="model-badge"><span>${escapeText(model.availability || 'Listed in Egypt catalogues · confirm stock')}</span> <span aria-hidden="true">→</span></span></span></button>`; }).join('');
       modelsView.hidden = false; modelDetailView.hidden = true;
       modelDialog.dataset.activeCategory = button.dataset.cameraCategory;
       applyLanguage(preferredLanguage());
