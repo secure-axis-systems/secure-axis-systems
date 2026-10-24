@@ -34,6 +34,27 @@
     @media(max-width:390px){.services-grid,.process-grid{grid-template-columns:1fr}.service{min-height:0}.benefits{grid-template-columns:1fr}.hero h1{font-size:2.35rem}}
     html[dir="rtl"] body{text-align:right}html[dir="rtl"] .camera-type,html[dir="rtl"] .model-option{text-align:right}html[dir="rtl"] .model-option p{direction:ltr;unicode-bidi:embed;text-align:right}html[dir="rtl"] .scene-label{left:auto;right:16px}html[dir="rtl"] .why-art-label{left:auto;right:20px}html[dir="rtl"] .floating{right:auto;left:-10px}html[dir="rtl"] .wa-float{left:auto;right:22px}html[dir="rtl"] .step:not(:last-child):after{left:auto;right:-17px}html[dir="rtl"] .menu-btn{direction:rtl}html[dir="rtl"] .camera-modal-head{flex-direction:row-reverse}html[dir="rtl"] .camera-modal-foot{flex-direction:row-reverse}html[dir="rtl"] .contact-box{flex-direction:row-reverse}html[dir="rtl"] .footer-row{flex-direction:row-reverse}html[dir="rtl"] .detail-photo{left:auto;right:18px}html[dir="rtl"] .detail-photo-label{right:auto;left:9px}html[dir="rtl"] .nav{direction:rtl}html[dir="rtl"] .hero-grid{direction:rtl}html[dir="rtl"] .hero-points{direction:rtl}html[dir="rtl"] .links{direction:rtl}html[dir="rtl"] .brand{direction:ltr}html[dir="rtl"] .phone,html[dir="rtl"] .email,.model-code,.model-option h3{direction:ltr;unicode-bidi:plaintext}html[dir="rtl"] .detail-features,html[dir="rtl"] .spec-list{direction:rtl}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    /* Interactive landscape hero: horizontal drag, vertical page scroll, and individual device bounce targets. */
+    .hero.hero-image-only{height:auto;min-height:0;aspect-ratio:16/9;padding:0;overflow:hidden;background:#061426;isolation:isolate}
+    .hero.hero-image-only:after{display:none}
+    .hero-pan{position:absolute;inset:0;overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab;outline:none}
+    .hero-pan.is-dragging{cursor:grabbing}
+    .hero-art{position:absolute;inset:0;width:100%;height:100%;transform:translate3d(var(--pan-x,0px),0,0) scale(1.22);transform-origin:center;will-change:transform}
+    .hero-landscape{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:fill;pointer-events:none;-webkit-user-drag:none}
+    .device-jumps{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+    .device-jump{transform-box:fill-box;transform-origin:center bottom;pointer-events:none}
+    .device-jump.is-jumping{animation:device-jump .62s cubic-bezier(.2,.82,.35,1.24) both}
+    @keyframes device-jump{0%,100%{transform:translateY(0)}35%{transform:translateY(-24px)}58%{transform:translateY(0)}78%{transform:translateY(-9px)}}
+    .device-hotspot{position:absolute;z-index:2;display:block;padding:0;border:0;border-radius:20px;background:transparent;touch-action:pan-y;cursor:grab}
+    .device-hotspot:focus-visible{outline:2px solid var(--cyan);outline-offset:3px;background:#58d6ff14}
+    .device-hotspot.is-pressed{cursor:grabbing}
+    .device-hotspot:after{content:"";position:absolute;inset:8%;border-radius:inherit;opacity:0;box-shadow:0 0 0 2px #72e4ffb8,0 0 24px 7px #19c7ff5e;pointer-events:none}
+    .device-hotspot.is-jumping:after{animation:hotspot-glow .62s ease-out both}
+    @keyframes hotspot-glow{0%,100%{opacity:0}20%,65%{opacity:.8}}
+    .pan-hint{position:absolute;z-index:3;left:50%;bottom:clamp(10px,2.2vw,26px);transform:translateX(-50%);display:flex;align-items:center;gap:9px;padding:8px 14px;border:1px solid #8bcaff50;border-radius:999px;background:#061426c9;color:#e5f5ff;font-size:clamp(.68rem,1.1vw,.85rem);white-space:nowrap;backdrop-filter:blur(9px);pointer-events:none}
+    .pan-hint:before{content:"↔";color:var(--cyan);font-size:1.2em;font-weight:800}
+    @media(max-width:650px){.hero.hero-image-only{min-height:0}.pan-hint{bottom:8px;padding:6px 11px;font-size:.66rem}.device-hotspot{border-radius:12px}}
+    @media(prefers-reduced-motion:reduce){.device-jump.is-jumping,.device-hotspot.is-jumping:after{animation:none!important}}
     .service-feature{position:relative;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;padding:0;min-height:280px;aspect-ratio:1/1;border-color:#64baff55;background:#071322;cursor:pointer;text-align:left}
     .service-feature:focus-visible{outline:2px solid var(--cyan);outline-offset:4px}
     .service-feature-photo{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity .35s,transform .45s}
@@ -59,7 +80,36 @@
     <a class="nav-cta wa-link" target="_blank" rel="noopener" href="https://wa.me/201111130127">Get a consultation <span>→</span></a>
   </div></header>
   <main>
-    <section class="hero hero-image-only" id="home" aria-label="Secure Axis integrated security systems"><img class="hero-landscape" src="security-systems-3d.png" alt="3D security systems showcase: CCTV cameras, access control reader, vehicle barrier and intrusion sensor"></section>
+    <section class="hero hero-image-only" id="home" aria-label="Secure Axis integrated security systems">
+      <div class="hero-pan" id="hero-pan" tabindex="0" aria-label="Drag image left or right">
+        <div class="hero-art" id="hero-art">
+          <img class="hero-landscape" src="security-systems-3d.png" alt="3D security systems showcase: CCTV cameras, access control reader, vehicle barrier and intrusion sensor" draggable="false">
+          <svg class="device-jumps" viewBox="0 0 1774 999" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <clipPath id="clip-camera-ptz"><polygon points="18,175 125,164 249,187 321,280 364,426 356,593 326,651 258,680 157,654 93,602 46,516 24,377"/></clipPath>
+              <clipPath id="clip-camera-bullet"><polygon points="365,424 435,387 571,401 719,432 755,470 741,559 699,612 614,650 474,651 416,620 374,552"/></clipPath>
+              <clipPath id="clip-camera-dome"><polygon points="781,435 816,417 966,421 1015,449 1031,505 1027,635 994,670 909,690 831,667 792,627"/></clipPath>
+              <clipPath id="clip-access"><polygon points="1060,430 1188,425 1196,679 1064,679"/></clipPath>
+              <clipPath id="clip-barrier"><polygon points="1168,217 1261,193 1349,194 1366,247 1745,183 1752,224 1317,306 1302,650 1175,650"/></clipPath>
+              <clipPath id="clip-intrusion"><polygon points="1500,452 1637,457 1648,485 1647,648 1626,679 1525,680 1502,650"/></clipPath>
+            </defs>
+            <image class="device-jump" data-device="camera-ptz" clip-path="url(#clip-camera-ptz)" href="security-systems-3d.png" width="1774" height="999"/>
+            <image class="device-jump" data-device="camera-bullet" clip-path="url(#clip-camera-bullet)" href="security-systems-3d.png" width="1774" height="999"/>
+            <image class="device-jump" data-device="camera-dome" clip-path="url(#clip-camera-dome)" href="security-systems-3d.png" width="1774" height="999"/>
+            <image class="device-jump" data-device="access" clip-path="url(#clip-access)" href="security-systems-3d.png" width="1774" height="999"/>
+            <image class="device-jump" data-device="barrier" clip-path="url(#clip-barrier)" href="security-systems-3d.png" width="1774" height="999"/>
+            <image class="device-jump" data-device="intrusion" clip-path="url(#clip-intrusion)" href="security-systems-3d.png" width="1774" height="999"/>
+          </svg>
+        </div>
+        <button class="device-hotspot" data-device="camera-ptz" style="left:0;top:7%;width:17%;height:68%" type="button" aria-label="PTZ CCTV camera"></button>
+        <button class="device-hotspot" data-device="camera-bullet" style="left:13%;top:31%;width:29%;height:42%" type="button" aria-label="Bullet CCTV camera"></button>
+        <button class="device-hotspot" data-device="camera-dome" style="left:42%;top:37%;width:20%;height:38%" type="button" aria-label="Dome CCTV camera"></button>
+        <button class="device-hotspot" data-device="access" style="left:61%;top:42%;width:13%;height:31%" type="button" aria-label="Access control reader"></button>
+        <button class="device-hotspot" data-device="barrier" style="left:68%;top:7%;width:32%;height:69%" type="button" aria-label="Vehicle access barrier"></button>
+        <button class="device-hotspot" data-device="intrusion" style="left:91%;top:42%;width:9%;height:32%" type="button" aria-label="Intrusion detection sensor"></button>
+        <span class="pan-hint">Drag the image left or right · Touch a device to see it jump</span>
+      </div>
+    </section>
     <section id="services"><div class="wrap"><div class="section-head center"><span class="eyebrow">What we do</span><h2>Connected security solutions</h2><p>We bring your core security systems together in one clear, reliable solution—from planning through handover.</p></div><div class="services-grid">
       <article class="service service-feature service-cctv" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="camera-modal"><img class="service-feature-photo" src="cctv-card-camera.png" alt="" loading="lazy"><div class="service-feature-copy"><h3>CCTV & Video Surveillance</h3><p>Clear coverage, dependable recording and remote viewing options tailored to your property.</p><span class="tag">Monitoring · Recording · Visibility</span><span class="service-more">Explore camera catalogue <span aria-hidden="true">↗</span></span></div></article>
       <article class="service service-feature service-access" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="access-modal"><img class="service-feature-photo" src="access-control-3d.png" alt="" loading="lazy"><div class="service-feature-copy"><h3>Access Control</h3><p>Manage who can enter, where they can go and when, with flexible permissions for your team.</p><span class="tag">Credentials · Permissions · Entry</span><span class="service-more">Explore access solutions <span aria-hidden="true">↗</span></span></div></article>
@@ -146,7 +196,8 @@
       'IR illumination up to 40 m':'رؤية ليلية بالأشعة تحت الحمراء حتى 40 مترًا','IR illumination up to 50 m':'رؤية ليلية بالأشعة تحت الحمراء حتى 50 مترًا','IR illumination up to 30 m':'رؤية ليلية بالأشعة تحت الحمراء حتى 30 مترًا','15× optical zoom':'تقريب بصري 15×','25× optical zoom family':'تقريب بصري 25× حسب الإصدار','180° × 180° field of view':'زاوية رؤية 180° × 180°','32× optical zoom · 180° panorama':'تقريب بصري 32× · رؤية بانورامية 180°','Thermal output up to 320 × 240':'دقة حرارية حتى 320 × 240','Model-specific night range':'مدى الرؤية الليلية حسب الموديل','Motorized varifocal lens options':'خيارات عدسة متغيرة بمحرك','EXIR Smart IR up to 60 m':'إضاءة EXIR ذكية حتى 60 مترًا','White light up to 40 m':'إضاءة بيضاء حتى 40 مترًا','Confirm environment and certification':'تأكيد طبيعة الموقع والشهادة المطلوبة',
       'Human / vehicle filtering':'تمييز الأشخاص والسيارات','H.265+':'ضغط فيديو H.265+','IP67 weather resistant':'مقاوم للعوامل الجوية IP67','120 dB WDR':'نطاق ديناميكي واسع 120 dB','microSD up to 128 GB':'بطاقة microSD حتى 128 GB','microSD slot':'منفذ بطاقة microSD','IP67 · IK10':'مقاومة للعوامل الجوية والصدمات IP67 · IK10','IP67':'مقاوم للعوامل الجوية IP67','DarkFighter imaging':'تصوير DarkFighter للإضاءة المنخفضة','Motorized 2.8–12 mm lens':'عدسة بمحرك 2.8–12 مم','3D positioning':'تحديد موضع ثلاثي الأبعاد','TVI / AHD / CVI / CVBS':'TVI / AHD / CVI / CVBS','14 display modes':'14 وضع عرض','180° panoramic view':'رؤية بانورامية 180°','PoE':'تغذية عبر الشبكة PoE','Temperature alarms':'إنذارات تغير الحرارة','Fire detection':'كشف الحريق','Line crossing / intrusion':'تجاوز الخط / التسلل','Thermal imaging':'تصوير حراري','Wi‑Fi on supported version':'Wi‑Fi في الإصدارات المدعومة','PIR motion sensing':'استشعار حركة PIR','Two-way audio':'صوت ثنائي الاتجاه','Exact SKU varies':'رقم الموديل يختلف حسب الإصدار','License-plate recognition':'قراءة لوحات السيارات','Barrier relay output':'خرج تحكم للحاجز','Vehicle color / type analytics':'تحليل لون ونوع المركبة','Designed for gate lanes':'مصممة لمسارات البوابات','4K resolution':'دقة 4K','4-in-1 video output':'خرج فيديو 4 في 1','EXIR Smart IR':'إضاءة EXIR ذكية','Full-time color':'ألوان طوال الوقت','130 dB true WDR':'نطاق ديناميكي حقيقي 130 dB','4-in-1 output':'خرج 4 في 1','IP67':'مقاوم للعوامل الجوية IP67',
       'A fixed outdoor view with useful detail for entrances, driveways and building edges. Its human and vehicle classification helps reduce alerts caused by irrelevant motion.':'كاميرا خارجية ثابتة لتفاصيل واضحة عند المداخل والممرات وحدود المبنى. يساعد تصنيف الأشخاص والسيارات على تقليل التنبيهات غير المهمة.','A stronger choice when the installer needs to adjust the viewing angle after mounting, such as a long driveway or gate approach.':'اختيار مناسب عندما يحتاج الفني إلى ضبط زاوية الرؤية بعد التركيب، مثل الممرات الطويلة أو مداخل البوابات.','A discreet camera for entrances and shared indoor areas. The dome housing helps protect the viewing direction and suits ceiling installation.':'كاميرا غير لافتة للمداخل والمساحات الداخلية المشتركة. يساعد هيكل الدوم على حماية اتجاه الرؤية وتناسب تركيب السقف.','A fixed-lens dome for offices, retail spaces and building corridors, with wide dynamic range for mixed lighting.':'كاميرا دوم بعدسة ثابتة للمكاتب والمتاجر والممرات، مع نطاق ديناميكي واسع للإضاءة المختلفة.','A flexible turret for yards, shops and building entrances. It can filter selected human and vehicle events and its view is easy to aim during installation.':'كاميرا توريت مرنة للساحات والمتاجر ومداخل المباني. يمكنها تمييز أحداث الأشخاص والسيارات، كما يسهل توجيهها أثناء التركيب.','A straightforward fixed camera for general monitoring where a clear day-and-night view and flexible lens options are useful.':'كاميرا ثابتة للمراقبة العامة، برؤية واضحة ليلًا ونهارًا وخيارات متعددة للعدسات.','An operator can pan, tilt and zoom to inspect different parts of a yard or facility from one camera position. Suitable for compatible coax-based systems.':'يمكن للمشغّل تحريك الكاميرا أفقيًا ورأسيًا والتقريب لفحص أجزاء مختلفة من الموقع من نقطة واحدة. تعمل مع أنظمة Coax المتوافقة.','A network PTZ option for monitoring a broad area and bringing distant activity closer for operator review. Ask us to confirm the exact version and project fit.':'كاميرا PTZ شبكية لمراقبة مساحة واسعة وتقريب الأنشطة البعيدة لمراجعتها. تواصل معنا لتأكيد الإصدار المناسب للمشروع.','A ceiling-mounted fisheye can cover a broad room such as a shop floor or lobby. Compatible viewing software can dewarp the circular image into more familiar views.':'يمكن لكاميرا عين السمكة المثبتة بالسقف تغطية مساحة واسعة مثل المتجر أو الردهة. وتستطيع البرامج المتوافقة تصحيح الصورة الدائرية وتحويلها لمناظير مألوفة.','The panoramic channel watches a wide scene while the PTZ channel zooms in on an area of interest. Designed for larger sites where a single fixed view may not be enough.':'تراقب العدسة البانورامية مشهدًا واسعًا بينما تقرّب عدسة PTZ منطقة الاهتمام. مناسبة للمواقع الكبيرة التي تحتاج أكثر من زاوية ثابتة.','Thermal imaging can reveal heat differences in darkness or visually difficult conditions. This family supports perimeter behavior analysis, temperature exception alerts and fire detection.':'يكشف التصوير الحراري فروق الحرارة في الظلام أو الظروف البصرية الصعبة. تدعم هذه الفئة تحليل الحركة حول المحيط وتنبيهات درجات الحرارة وكشف الحريق.','A compact Wi‑Fi camera for a room or small area. PIR sensing detects body heat and supported versions include two-way audio. This product is listed in the Egypt EasyIP catalogue; confirm the exact SKU before ordering.':'كاميرا Wi‑Fi صغيرة لغرفة أو مساحة محدودة. يستشعر PIR حرارة الجسم، وتدعم بعض الإصدارات الصوت ثنائي الاتجاه. يُرجى تأكيد رقم الموديل قبل الطلب.','Reads license plates at an entry or exit and can connect to access-control or barrier workflows. Local Egypt product listings describe allowlists/blocklists and barrier relay control.':'تقرأ لوحات السيارات عند الدخول أو الخروج ويمكن ربطها بالتحكم في الدخول أو الحاجز. يُرجى تأكيد وظائف الربط حسب الإصدار المتاح.','A high-resolution coax camera for compatible Turbo HD DVR systems. A useful option when upgrading image detail while keeping a coax installation.':'كاميرا Coax عالية الدقة لأجهزة Turbo HD DVR المتوافقة. مناسبة لتحسين تفاصيل الصورة مع الإبقاء على تمديدات Coax.','A full-color analog camera option for compatible DVR systems. White-light illumination helps produce color images in low-light scenes.':'كاميرا تناظرية ملونة لأجهزة DVR المتوافقة. تساعد الإضاءة البيضاء على تصوير الألوان في ظروف الإضاءة المنخفضة.','For chemical, marine or hazardous locations, camera selection depends on the required zone certification, materials, temperature range and mounting method. Contact us for a model-specific proposal and supply check.':'في المواقع الكيميائية أو البحرية أو الخطرة، يعتمد اختيار الكاميرا على شهادة المنطقة والمواد ومدى الحرارة وطريقة التركيب. تواصل معنا لعرض مناسب وتأكيد التوريد.',
-      '3D CAMERA OVERVIEW':'نظرة ثلاثية الأبعاد على الكاميرا','RESOLUTION':'الدقة','RANGE / LENS':'المدى / العدسة','Ask Secure Axis for price & stock ↗':'اسأل Secure Axis عن السعر والمخزون ↗','Back to models':'العودة إلى الموديلات','3D product illustration. Exact lens, firmware and features vary by SKU; confirm before purchase.':'رسم توضيحي ثلاثي الأبعاد. قد تختلف العدسة والبرنامج والمواصفات حسب رقم الإصدار؛ يُرجى التأكيد قبل الشراء.','SECURE AXIS · 3D PRODUCT VIEW':'SECURE AXIS · عرض ثلاثي الأبعاد','PRODUCT PHOTO':'صورة المنتج','Close access control solutions':'إغلاق حلول التحكم في الدخول','Secure Axis access control':'التحكم في الدخول من Secure Axis','Access control solutions':'حلول التحكم في الدخول','Choose the right entry method for your doors, staff and security policy. Product compatibility depends on the selected controller and lock.':'اختر طريقة الدخول المناسبة للأبواب والموظفين وسياسة الأمن. يعتمد توافق المنتجات على وحدة التحكم والقفل المختارين.','Card & RFID readers':'قارئات البطاقات وRFID','Tap cards or key fobs to grant entry to approved users.':'استخدم البطاقات أو الميداليات للسماح بدخول المستخدمين المعتمدين.','Keypad access':'الدخول بلوحة الأرقام','Use PIN codes for doors, shared areas and restricted zones.':'استخدم أرقام PIN للأبواب والمساحات المشتركة والمناطق المقيدة.','Biometric terminals':'أجهزة القياسات الحيوية','Fingerprint or face options, where supported and appropriate.':'خيارات بصمة الإصبع أو الوجه، حسب دعم النظام وملاءمته.','Door controllers':'وحدات التحكم بالأبواب','Manage permissions, schedules and entry records centrally.':'أدر الصلاحيات والجداول وسجلات الدخول من مكان واحد.','Electric locks':'الأقفال الكهربائية','Magnetic locks and electric strikes matched to the door and egress needs.':'أقفال مغناطيسية وأقفال كهربائية مناسبة للباب ومتطلبات الخروج.','Exit & door sensors':'حساسات الأبواب والخروج','Request-to-exit buttons and door contacts complete the entry setup.':'أزرار طلب الخروج وحساسات الأبواب تكمل نظام الدخول.','We’ll match the reader, controller and lock to your doors and site requirements.':'نختار القارئ ووحدة التحكم والقفل بما يناسب أبوابك واحتياجات الموقع.','Ask Secure Axis about access control ↗':'اسأل Secure Axis عن التحكم في الدخول ↗','Explore access solutions':'اكتشف حلول التحكم في الدخول','Visit Secure Axis Systems on Facebook':'افتح صفحة Secure Axis Systems على Facebook','Email Secure Axis Systems':'راسل Secure Axis Systems بالبريد الإلكتروني'
+      '3D CAMERA OVERVIEW':'نظرة ثلاثية الأبعاد على الكاميرا','RESOLUTION':'الدقة','RANGE / LENS':'المدى / العدسة','Ask Secure Axis for price & stock ↗':'اسأل Secure Axis عن السعر والمخزون ↗','Back to models':'العودة إلى الموديلات','3D product illustration. Exact lens, firmware and features vary by SKU; confirm before purchase.':'رسم توضيحي ثلاثي الأبعاد. قد تختلف العدسة والبرنامج والمواصفات حسب رقم الإصدار؛ يُرجى التأكيد قبل الشراء.','SECURE AXIS · 3D PRODUCT VIEW':'SECURE AXIS · عرض ثلاثي الأبعاد','PRODUCT PHOTO':'صورة المنتج','Close access control solutions':'إغلاق حلول التحكم في الدخول','Secure Axis access control':'التحكم في الدخول من Secure Axis','Access control solutions':'حلول التحكم في الدخول','Choose the right entry method for your doors, staff and security policy. Product compatibility depends on the selected controller and lock.':'اختر طريقة الدخول المناسبة للأبواب والموظفين وسياسة الأمن. يعتمد توافق المنتجات على وحدة التحكم والقفل المختارين.','Card & RFID readers':'قارئات البطاقات وRFID','Tap cards or key fobs to grant entry to approved users.':'استخدم البطاقات أو الميداليات للسماح بدخول المستخدمين المعتمدين.','Keypad access':'الدخول بلوحة الأرقام','Use PIN codes for doors, shared areas and restricted zones.':'استخدم أرقام PIN للأبواب والمساحات المشتركة والمناطق المقيدة.','Biometric terminals':'أجهزة القياسات الحيوية','Fingerprint or face options, where supported and appropriate.':'خيارات بصمة الإصبع أو الوجه، حسب دعم النظام وملاءمته.','Door controllers':'وحدات التحكم بالأبواب','Manage permissions, schedules and entry records centrally.':'أدر الصلاحيات والجداول وسجلات الدخول من مكان واحد.','Electric locks':'الأقفال الكهربائية','Magnetic locks and electric strikes matched to the door and egress needs.':'أقفال مغناطيسية وأقفال كهربائية مناسبة للباب ومتطلبات الخروج.','Exit & door sensors':'حساسات الأبواب والخروج','Request-to-exit buttons and door contacts complete the entry setup.':'أزرار طلب الخروج وحساسات الأبواب تكمل نظام الدخول.','We’ll match the reader, controller and lock to your doors and site requirements.':'نختار القارئ ووحدة التحكم والقفل بما يناسب أبوابك واحتياجات الموقع.','Ask Secure Axis about access control ↗':'اسأل Secure Axis عن التحكم في الدخول ↗','Explore access solutions':'اكتشف حلول التحكم في الدخول','Visit Secure Axis Systems on Facebook':'افتح صفحة Secure Axis Systems على Facebook','Email Secure Axis Systems':'راسل Secure Axis Systems بالبريد الإلكتروني',
+      'Drag image left or right':'اسحب الصورة يمينًا أو يسارًا','Drag the image left or right · Touch a device to see it jump':'اسحب الصورة يمينًا أو يسارًا · المس أي جهاز لمشاهدة حركته','PTZ CCTV camera':'كاميرا مراقبة PTZ','Bullet CCTV camera':'كاميرا مراقبة Bullet','Dome CCTV camera':'كاميرا مراقبة Dome','Access control reader':'قارئ التحكم في الدخول','Vehicle access barrier':'حاجز دخول السيارات','Intrusion detection sensor':'حساس كشف التسلل'
     });
     const originalAttributes = new WeakMap();
     function translateText(root, language) {
@@ -181,6 +232,50 @@
     }
     languageToggle.addEventListener('click', () => applyLanguage(preferredLanguage() === 'en' ? 'ar' : 'en'));
     applyLanguage(currentLanguage);
+    const heroPan = document.getElementById('hero-pan');
+    const heroArt = document.getElementById('hero-art');
+    if (heroPan && heroArt) {
+      let panX = 0, dragStartX = 0, panStartX = 0, pointerId = null, moved = false;
+      const maxPan = () => heroPan.clientWidth * .11;
+      const setPan = value => {
+        panX = Math.max(-maxPan(), Math.min(maxPan(), value));
+        heroArt.style.setProperty('--pan-x', `${panX}px`);
+      };
+      const jump = target => {
+        if (!target) return;
+        target.classList.remove('is-jumping');
+        void target.getBoundingClientRect();
+        target.classList.add('is-jumping');
+        window.setTimeout(() => target.classList.remove('is-jumping'), 680);
+      };
+      heroPan.querySelectorAll('.device-hotspot').forEach(hotspot => {
+        hotspot.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') jump(heroPan.querySelector(`.device-jump[data-device="${hotspot.dataset.device}"]`)); });
+        hotspot.addEventListener('pointerdown', () => jump(heroPan.querySelector(`.device-jump[data-device="${hotspot.dataset.device}"]`)));
+      });
+      heroPan.addEventListener('pointerdown', event => {
+        if (event.button !== undefined && event.button !== 0) return;
+        pointerId = event.pointerId; dragStartX = event.clientX; panStartX = panX; moved = false;
+        heroPan.setPointerCapture(pointerId);
+      });
+      heroPan.addEventListener('pointermove', event => {
+        if (event.pointerId !== pointerId) return;
+        const dx = event.clientX - dragStartX;
+        if (Math.abs(dx) > 4) { moved = true; heroPan.classList.add('is-dragging'); }
+        if (moved) setPan(panStartX + dx);
+      });
+      const endPan = event => {
+        if (event.pointerId !== pointerId) return;
+        pointerId = null; heroPan.classList.remove('is-dragging');
+        if (heroPan.hasPointerCapture(event.pointerId)) heroPan.releasePointerCapture(event.pointerId);
+      };
+      heroPan.addEventListener('pointerup', endPan);
+      heroPan.addEventListener('pointercancel', endPan);
+      heroPan.addEventListener('keydown', event => {
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+          event.preventDefault(); setPan(panX + (event.key === 'ArrowLeft' ? 36 : -36));
+        }
+      });
+    }
     const cctvCard = document.querySelector('.service-cctv');
     const cameraDialog = document.getElementById('camera-modal');
     cctvCard.addEventListener('click', () => { applyLanguage(preferredLanguage()); cameraDialog.showModal(); });
