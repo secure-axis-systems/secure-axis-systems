@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#071322">
+  <meta name="google-site-verification" content="ktcPS7zpCL4jbhlb1AqmG9bm6LQ2krB4YX1taloXsXU">
   <meta name="description" content="Secure Axis Systems designs and installs CCTV, access control, car park barriers, networking and intrusion detection solutions in Egypt.">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="https://secure-axis-systems.github.io/secure-axis-systems/">
@@ -42,7 +43,15 @@
     .hero-image-only:after{display:none}
     .hero-landscape{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
     .trust{display:none}
-    @media(max-width:650px){.hero-image-only{height:auto;aspect-ratio:16/9;min-height:0;padding:0}.hero-landscape{object-fit:contain;object-position:center}}  </style>
+    @media(max-width:650px){.hero-image-only{height:auto;aspect-ratio:16/9;min-height:0;padding:0}.hero-landscape{object-fit:contain;object-position:center}}    .service-cctv{position:relative;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;padding:0;min-height:280px;aspect-ratio:1/1;border-color:#64baff55;background:#071322}
+    .service-cctv-photo{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .45s}
+    .service-cctv:after{content:"";position:absolute;z-index:1;inset:35% 0 0;background:linear-gradient(transparent,#061322f2 83%);opacity:0;transition:opacity .25s}
+    .service-cctv-copy{position:relative;z-index:2;width:100%;padding:22px;opacity:0;transform:translateY(12px);transition:opacity .25s,transform .25s}
+    .service-cctv:hover:after,.service-cctv:focus-visible:after{opacity:1}
+    .service-cctv:hover .service-cctv-copy,.service-cctv:focus-visible .service-cctv-copy{opacity:1;transform:none}
+    .service-cctv:hover .service-cctv-photo{transform:scale(1.045)}
+    @media(hover:none){.service-cctv:after{opacity:1}.service-cctv-copy{opacity:1;transform:none}}
+    @media(max-width:650px){.service-cctv{min-height:0;aspect-ratio:1/1}.service-cctv-copy{padding:18px}.service-cctv-copy h3{font-size:.95rem}.service-cctv-copy p{font-size:.79rem}}  </style>
 </head>
 <body>
   <div class="topline"></div>
@@ -56,7 +65,7 @@
   <main>
     <section class="hero hero-image-only" id="home" aria-label="Secure Axis integrated security systems"><img class="hero-landscape" src="security-systems-3d.png" alt="3D security systems showcase: CCTV cameras, access control reader, vehicle barrier and intrusion sensor"></section>
     <section id="services"><div class="wrap"><div class="section-head center"><span class="eyebrow">What we do</span><h2>Connected security solutions</h2><p>We bring your core security systems together in one clear, reliable solution—from planning through handover.</p></div><div class="services-grid">
-      <article class="service service-cctv" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="camera-modal"><div class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 8h12a4 4 0 0 1 4 4v2h2v4h-3l-2 2h-4v-3H8l-2 3H3l2-6-2-6Z"/><circle cx="16" cy="12" r="1"/></svg></div><h3>CCTV & Video Surveillance</h3><p>Clear coverage, dependable recording and remote viewing options tailored to your property.</p><span class="tag">Monitoring · Recording · Visibility</span><span class="service-more">Explore camera catalogue <span aria-hidden="true">↗</span></span></article>
+      <article class="service service-cctv" role="button" tabindex="0" aria-haspopup="dialog" aria-controls="camera-modal"><img class="service-cctv-photo" src="cctv-card-camera.png" alt="" loading="lazy"><div class="service-cctv-copy"><h3>CCTV & Video Surveillance</h3><p>Clear coverage, dependable recording and remote viewing options tailored to your property.</p><span class="tag">Monitoring · Recording · Visibility</span><span class="service-more">Explore camera catalogue <span aria-hidden="true">↗</span></span></div></article>
       <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="9" r="2"/><path d="M8 16c1-2 7-2 8 0M12 3v2"/></svg></div><h3>Access Control</h3><p>Manage who can enter, where they can go and when, with flexible permissions for your team.</p><span class="tag">Credentials · Permissions · Entry</span></article>
       <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 19h18M5 19V8m14 11V8M5 8h14M8 8l4-4 4 4M12 8v11"/></svg></div><h3>Car Park Barriers</h3><p>Control vehicle access with dependable barrier systems designed for smooth, secure entry.</p><span class="tag">Vehicle access · Parking control</span></article>
       <article class="service"><div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6l8-3Z"/><path d="M9 12h.01M15 12h.01M12 15v.01"/></svg></div><h3>Intrusion Detection</h3><p>Detect unexpected activity with sensors and alarm systems planned for your risk profile.</p><span class="tag">Detection · Alerts · Response</span></article>
