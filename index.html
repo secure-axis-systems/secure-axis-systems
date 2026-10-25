@@ -366,7 +366,7 @@
       const family = button.dataset.cameraCategory;
       const art = document.createElement('span'); art.className = 'category-art'; art.setAttribute('aria-hidden','true'); art.innerHTML = cameraArt(family,`art-${family}`); button.prepend(art);
     });
-    fetch('./bandwidth-calculator.txt').then(response => { if (!response.ok) throw new Error('Image asset unavailable'); return response.text(); }).then(encodedImage => { const image = document.querySelector('.bandwidth-photo'); if (image) image.src = 'data:image/png;base64,' + encodedImage.trim(); }).catch(() => {});
+    fetch('./bandwidth-calculator.txt').then(response => { if (!response.ok) throw new Error('Image asset unavailable'); return response.text(); }).then(encodedImage => { const image = document.querySelector('.bandwidth-photo'); if (!image) return; const binary = atob(encodedImage.trim()); const bytes = new Uint8Array(binary.length); for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i); image.src = URL.createObjectURL(new Blob([bytes], { type: 'image/png' })); }).catch(error => { const image = document.querySelector('.bandwidth-photo'); if (image) { image.alt = 'Bandwidth and storage planning artwork could not be loaded'; image.style.display = 'none'; } console.error('Bandwidth artwork failed to load', error); });
     const whatsappUrl = text => 'https://wa.me/201111130127?text=' + encodeURIComponent(text);
     const cameraArtFamily = {bullet:'bullet',dome:'dome',turret:'turret',ptz:'ptz',fisheye:'fisheye',panoramic:'panoramic',thermal:'thermal',wireless:'wireless',anpr:'anpr',analog:'analog',special:'special'};
     document.querySelectorAll('[data-camera-category]').forEach(button => button.addEventListener('click', () => {
