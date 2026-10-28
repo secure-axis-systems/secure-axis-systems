@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "SECURE AXIS CCTV Engineering",
-  "short_name": "SECURE AXIS",
-  "description": "CCTV system design and engineering tools",
+  "name": "SCA — Security Calculator app",
+  "short_name": "SCA",
+  "description": "Security Calculator app for camera system engineering",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
