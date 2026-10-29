@@ -62,9 +62,10 @@ function syncIpPlannerRoute(){
   heading.innerHTML='<p></p><h1></h1><span></span>';const nav=document.getElementById("cameraModeSwitch");if(nav)nav.after(heading);else target.before(heading);
  }
  const ar=document.documentElement.lang==="ar";
- heading.querySelector("p").textContent=ar?"SCA · تخطيط أنظمة الكاميرات":"SCA · CAMERA SYSTEM PLANNING";
- heading.querySelector("h1").textContent=ar?"مخطط كاميرات IP":"IP Camera Planner";
- heading.querySelector("span").textContent=ar?"جهّز عناوين الشبكة وجدول الكاميرات وراجع حسابات المشروع في مساحة واحدة.":"Plan network addressing, camera schedules, and project calculations in one focused workspace.";
+ const text=(selector,value)=>{const node=heading.querySelector(selector);if(node&&node.textContent!==value)node.textContent=value};
+ text("p",ar?"SCA · تخطيط أنظمة الكاميرات":"SCA · CAMERA SYSTEM PLANNING");
+ text("h1",ar?"مخطط كاميرات IP":"IP Camera Planner");
+ text("span",ar?"جهّز عناوين الشبكة وجدول الكاميرات وراجع حسابات المشروع في مساحة واحدة.":"Plan network addressing, camera schedules, and project calculations in one focused workspace.");
  if(!ipPlannerRouteScrolled){
   ipPlannerRouteScrolled=true;
   requestAnimationFrame(()=>requestAnimationFrame(()=>heading.scrollIntoView({block:"start",behavior:"smooth"})));
