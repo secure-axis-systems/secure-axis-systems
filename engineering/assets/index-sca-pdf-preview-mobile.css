@@ -103,3 +103,12 @@
 .feature-grid .feature-card h4{color:var(--ink);line-height:1.45}
 .feature-grid .feature-card .mini-tag{display:block;color:var(--muted);margin-top:5px;font-size:.74rem}
 @media(prefers-reduced-transparency:reduce){.feature-grid .feature-card{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+/* Persistent SCA letter animation in the open side of the hero panel. */
+.hero-panel{position:relative}
+.sca-hero-mark{position:absolute;inset-inline-end:clamp(20px,6vw,92px);top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:.035em;z-index:0;pointer-events:none;user-select:none;font-size:clamp(7rem,14vw,12.5rem);font-weight:780;letter-spacing:-.09em;line-height:1;color:var(--blue);opacity:.34}
+.sca-hero-mark span{display:inline-block;color:var(--blue);opacity:.42;animation:sca-hero-letter 2.4s ease-in-out infinite;animation-delay:calc(var(--letter-index)*.8s)}
+@keyframes sca-hero-letter{0%,17%,100%{opacity:.34;transform:translateY(0) scale(1);text-shadow:none}30%,52%{opacity:1;transform:translateY(-8px) scale(1.045);text-shadow:0 0 24px color-mix(in srgb,var(--blue) 38%,transparent)}}
+@media(max-width:900px){.sca-hero-mark{inset-inline-end:24px;font-size:clamp(5.5rem,14vw,9rem);opacity:.25}}
+@media(max-width:640px){.hero-panel{gap:14px}.sca-hero-mark{position:relative;inset:auto;top:auto;transform:none;justify-content:flex-end;align-self:end;font-size:clamp(3.3rem,18vw,5.4rem);opacity:.58;margin-top:4px;margin-inline-end:5px}.sca-hero-mark span{animation-duration:2.4s}}
+@media(prefers-reduced-motion:reduce){.sca-hero-mark span{animation:none;opacity:.72;transform:none;text-shadow:none}}
