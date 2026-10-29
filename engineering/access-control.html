@@ -220,7 +220,8 @@ function buildReportHtml(data){
  const cells=data.metrics.map(([a,b])=>'<div class="report-cell"><small>'+escapeHtml(a)+'</small><strong>'+escapeHtml(String(b))+'</strong></div>').join("");
  const bom='<h3>'+escapeHtml(t("item"))+'</h3><table class="report-table"><tbody>'+data.bom.map(([a,b])=>"<tr><td>"+escapeHtml(String(a))+"</td><td>"+escapeHtml(String(b))+"</td></tr>").join("")+"</tbody></table>";
  const checks='<h3>'+escapeHtml(lang==="en"?"Commissioning checks":"اختبارات التشغيل")+'</h3><table class="report-table"><tbody>'+data.checks.map(r=>"<tr><td>"+escapeHtml(r[0])+"</td><td>"+escapeHtml(r[1])+"</td></tr>").join("")+"</tbody></table>";
- return '<div class="report-head"><h2>SCA · '+escapeHtml(t("pdf"))+'</h2><p>'+escapeHtml(data.project)+' · '+escapeHtml(data.date)+'</p></div><div class="report-grid">'+cells+'</div>'+bom+'<h3>'+escapeHtml(lang==="en"?"Door schedule":"جدول الأبواب")+'</h3>'+table+checks+'<p class="note">'+escapeHtml(t("calcNote"))+'</p>';
+ const wiring='<h3>'+escapeHtml(lang==="en"?"Door wiring guide":"دليل توصيل الباب")+'</h3><ol>'+data.wiring.map(x=>'<li>'+escapeHtml(x)+'</li>').join("")+'</ol>';
+ return '<div class="report-head"><h2>SCA · '+escapeHtml(t("pdf"))+'</h2><p>'+escapeHtml(data.project)+' · '+escapeHtml(data.date)+'</p></div><div class="report-grid">'+cells+'</div>'+bom+'<h3>'+escapeHtml(lang==="en"?"Door schedule":"جدول الأبواب")+'</h3>'+table+checks+wiring+'<p class="note">'+escapeHtml(t("calcNote"))+'</p>';
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function drawReportPages(data){
