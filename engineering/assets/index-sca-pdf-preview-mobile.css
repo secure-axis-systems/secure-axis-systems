@@ -123,5 +123,5 @@
 @media(prefers-reduced-motion:reduce){.sca-hero-subtitle{opacity:1;transform:none;animation:none}}
 
 /* Softer camera system selector colors for both themes. */
-.camera-mode-switch a[data-mode="analog"]{background:color-mix(in srgb,var(--blue) 16%,var(--surface));color:var(--blue-dark);border:1px solid color-mix(in srgb,var(--blue) 42%,var(--line))}
-.camera-mode-switch a[data-mode="analog"]:hover{background:color-mix(in srgb,var(--blue) 24%,var(--surface));color:var(--blue-dark)}
+.camera-mode-switch a[data-mode="analog"]{background:var(--blue-soft);color:var(--blue-dark)}
+.camera-mode-switch a[data-mode="analog"]:hover{background:var(--blue-soft);color:var(--blue-dark)}
