@@ -31,7 +31,13 @@ function mountCameraModeSwitch(){
    overlay.querySelector("p").textContent=arabic?"جارٍ فتح مساحة الكاميرات":"Opening camera workspace";
    overlay.querySelector("strong").textContent=link.dataset.mode==="analog"?(arabic?"كاميرات Analog":"Analog Camera Planner"):(link.dataset.mode==="access"?(arabic?"التحكم في الدخول":"Access Control"):(arabic?"كاميرات IP":"IP Camera Planner"));
    overlay.classList.add("show");document.body.classList.add("page-leave");
-   setTimeout(()=>location.href=href,520);
+   const destination=new URL(href,location.href),sameDocument=destination.origin===location.origin&&destination.pathname===location.pathname&&destination.search===location.search;
+   setTimeout(()=>{
+    if(!sameDocument){location.href=href;return}
+    if(destination.hash!==location.hash)location.hash=destination.hash;
+    else document.getElementById("ipCameraPlanner")?.scrollIntoView({block:"start",behavior:"smooth"});
+    setTimeout(()=>{overlay.classList.remove("show");document.body.classList.remove("page-leave");setTimeout(()=>overlay.remove(),220)},220);
+   },520);
   }));
  }else{
   const links=mode.querySelectorAll("a");
