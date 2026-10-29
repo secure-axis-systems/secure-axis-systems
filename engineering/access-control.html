@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#B0D7D8">
+<meta name="description" content="SCA Access Control Planner — door, controller, power and handover planning.">
+<title>SCA | Access Control Planner</title>
+<link rel="icon" type="image/svg+xml" href="./favicon.svg?v=4">
+<link rel="manifest" href="./manifest.webmanifest">
+<style>
+:root{color-scheme:light;--page:#f2f6f7;--surface:#fff;--surface2:#f7fafb;--ink:#172a3d;--muted:#617786;--line:#d6e2e5;--accent:#427F82;--accent2:#e3f0f0;--good:#18794e;--warn:#8a5b00;--bad:#a33232;--shadow:0 14px 40px #122f3a0d;font-family:Inter,"Segoe UI",Arial,sans-serif}
+:root[data-theme=dark]{color-scheme:dark;--page:#0b1118;--surface:#121d28;--surface2:#172530;--ink:#e6edf3;--muted:#a3b4bf;--line:#314553;--accent:#B0D7D8;--accent2:#20383a;--good:#7bd9ac;--warn:#f1cb79;--bad:#ff9c9c;--shadow:0 14px 40px #0003}
+*{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--ink);font:16px/1.55 Inter,"Segoe UI",Arial,sans-serif}button,input,select{font:inherit}button,a{touch-action:manipulation}a{color:inherit;text-decoration:none}.wrap{width:min(1180px,calc(100% - 32px));margin:auto;padding:16px 0 52px}
+.header{position:sticky;top:8px;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:14px;padding:13px 17px;border:1px solid var(--line);border-radius:16px;background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(18px) saturate(150%);box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:10px;min-width:175px}.brand-mark{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--accent2);color:var(--accent);font-weight:900;letter-spacing:.03em}.brand small,.brand strong{display:block}.brand small{font-size:.7rem;color:var(--muted);letter-spacing:.12em}.brand strong{font-size:1rem}
+.header-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.header-tools button,.nav a{min-height:40px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-weight:650;cursor:pointer}.header-tools button:hover,.nav a:hover{border-color:var(--accent);background:var(--accent2)}
+.nav{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:14px 0 20px;padding:7px;border:1px solid var(--line);border-radius:13px;background:var(--surface);width:max-content;max-width:100%}.nav a{display:flex;align-items:center;justify-content:center;font-size:.86rem}.nav a.active{background:var(--accent2);border-color:color-mix(in srgb,var(--accent) 55%,var(--line));color:var(--accent)}
+.hero,.card{border:1px solid var(--line);border-radius:18px;background:var(--surface);box-shadow:var(--shadow)}.hero{padding:clamp(22px,4vw,42px);background:radial-gradient(ellipse at 94% 8%,var(--accent2),transparent 50%),var(--surface)}.eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.14em;color:var(--accent)}h1{font-size:clamp(2rem,5.5vw,3.4rem);line-height:1.08;letter-spacing:-.04em;margin:8px 0 12px;max-width:760px}.hero p{max-width:780px;color:var(--muted);margin:0;font-size:1.04rem}.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:19px}.tag{padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--surface) 80%,var(--accent2));font-size:.76rem;font-weight:700;color:var(--muted)}
+.section-title{margin:27px 0 11px}.section-title h2{margin:0;font-size:1.35rem}.section-title p{margin:4px 0 0;color:var(--muted);font-size:.9rem}
+.layout{display:grid;grid-template-columns:minmax(0,1.13fr) minmax(300px,.87fr);align-items:start;gap:14px;margin-top:14px}.card{padding:clamp(16px,2.5vw,24px)}.card h2,.card h3{margin:0 0 4px}.sub{margin:0 0 16px;color:var(--muted);font-size:.86rem}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:grid;align-content:start;gap:6px;font-size:.83rem;font-weight:700;color:var(--muted)}.field input,.field select{min-width:0;width:100%;min-height:46px;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--ink);padding:10px 12px;outline:none}.field input:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent)}.field small{font-weight:450;font-size:.73rem;color:var(--muted)}.wide{grid-column:1/-1}.advanced-toggle{margin-top:14px;padding:11px 13px;width:100%;text-align:start;border:1px solid var(--line);border-radius:10px;background:var(--surface2);color:var(--ink);font-weight:700;cursor:pointer}.advanced{display:none;margin-top:13px}.advanced.open{display:block}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.btn{min-height:44px;padding:10px 15px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font-weight:750;cursor:pointer}.btn.primary{background:var(--accent);border-color:var(--accent);color:#102a32}.btn:hover{filter:brightness(1.04)}.results{position:sticky;top:96px}.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.metric{min-height:88px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}.metric small{display:block;color:var(--muted);font-size:.74rem}.metric strong{display:block;margin-top:4px;font-size:1.08rem;overflow-wrap:anywhere}.metric.emphasis{background:var(--accent2);border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}.note{margin:13px 0 0;padding:11px 12px;border-inline-start:3px solid var(--accent);background:var(--accent2);color:var(--muted);font-size:.78rem}
+.checks{display:grid;gap:9px}.check{display:flex;align-items:flex-start;gap:10px;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--surface2)}.check input{width:19px;height:19px;margin-top:2px;accent-color:var(--accent);flex:none}.check span{font-size:.86rem}.check small{display:block;color:var(--muted);font-size:.74rem}.list{display:grid;gap:8px}.bom-item{display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.86rem}.bom-item span:first-child{color:var(--muted)}.bom-item strong{text-align:end}.diagram{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px}.controller-box{padding:13px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));border-radius:12px;background:var(--accent2)}.controller-box strong,.controller-box span{display:block}.controller-box span{font-size:.77rem;color:var(--muted);margin-top:4px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:760px;font-size:.8rem}th,td{padding:10px 11px;border-bottom:1px solid var(--line);text-align:start;vertical-align:top}th{background:var(--surface2);color:var(--muted);font-size:.74rem}tbody tr:last-child td{border-bottom:0}.status{display:inline-block;padding:3px 8px;border-radius:999px;background:var(--accent2);color:var(--accent);font-weight:750;font-size:.72rem}.warning{color:var(--warn)}.footer{margin-top:26px;text-align:center;color:var(--muted);font-size:.78rem}
+.modal{position:fixed;inset:0;z-index:80;display:none;place-items:center;padding:14px;background:#06101bd1;backdrop-filter:blur(8px)}.modal.open{display:grid}.modal-box{width:min(900px,100%);max-height:92dvh;overflow:auto;padding:clamp(16px,3vw,28px);border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink)}.modal-head{position:sticky;top:-17px;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0 12px;background:var(--surface)}.report-head{border-bottom:2px solid var(--accent);padding-bottom:12px;margin-bottom:12px}.report-head h2{margin:0}.report-head p{margin:3px 0;color:var(--muted)}.report-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.report-cell{padding:10px;border:1px solid var(--line);border-radius:9px;background:var(--surface2)}.report-cell small{display:block;color:var(--muted)}.report-table{width:100%;border-collapse:collapse;margin-top:13px}.report-table th,.report-table td{border:1px solid var(--line);padding:7px;text-align:start}.print-root{display:none}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.results{position:static;top:auto}.nav a{font-size:.79rem;padding:7px 9px}}
+@media(max-width:540px){.wrap{width:calc(100% - 18px);padding-top:8px}.header{top:5px;padding:10px;align-items:flex-start;flex-wrap:wrap}.brand{min-width:0;flex:1}.brand-mark{width:38px;height:38px}.header-tools{justify-content:flex-end}.header-tools button{min-height:38px;padding:7px 9px;font-size:.78rem}.nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;margin:10px 0 14px}.nav a{min-width:0;min-height:41px;padding:6px 4px;text-align:center;font-size:.72rem}.fields{grid-template-columns:1fr}.wide{grid-column:auto}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.actions .btn{flex:1 1 45%}.report-grid{grid-template-columns:1fr}.diagram{grid-template-columns:1fr 1fr}}
+@media print{body{background:white;color:#111}.wrap,.header,.nav,.hero,.section-title,.layout,#bomSection,#diagramSection,#scheduleSection,#commissionSection,.footer{display:none!important}.print-root{display:block!important;padding:0 10px;color:#111}.print-root *{color:#111!important;background:white!important;box-shadow:none!important}.print-root h1{font-size:22px}.print-root table{min-width:0;font-size:9px}.print-root th,.print-root td{padding:5px;border:1px solid #aaa!important}.print-root .report-cell{border:1px solid #aaa!important}@page{size:A4;margin:12mm}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="header">
+<a class="brand" href="./index.html#calculators"><span class="brand-mark">SCA</span><span><small>SCA · SECURITY CALCULATOR APP</small><strong data-en="Access Control Planner" data-ar="مخطط التحكم في الدخول">Access Control Planner</strong></span></a>
+<div class="header-tools"><button id="themeBtn">Dark mode</button><button id="langBtn" aria-label="Switch language">العربية</button></div>
+</header>
+<nav class="nav" aria-label="SCA sections">
+<a href="./index.html#calculators" data-en="IP cameras" data-ar="كاميرات IP">IP cameras</a>
+<a href="./analog.html" data-en="Analog cameras" data-ar="كاميرات Analog">Analog cameras</a>
+<a class="active" href="./access-control.html" data-en="Access control" data-ar="Access Control">Access control</a>
+</nav>
+<section class="hero"><span class="eyebrow" data-en="ACCESS CONTROL ENGINEERING" data-ar="هندسة التحكم في الدخول">ACCESS CONTROL ENGINEERING</span>
+<h1 data-en="Plan the panel. Wire with confidence." data-ar="خطط اللوحة وجهّزها بثقة.">Plan the panel. Wire with confidence.</h1>
+<p data-en="A clear project planner for doors, readers, locks, controller capacity, power and handover. Enter the equipment model when known, then review the assumptions before using the wiring schedule." data-ar="مخطط واضح للأبواب والقراء والأقفال وسعة الكنترولر والطاقة والتسليم. أدخل موديل الجهاز عند معرفته، وراجع الافتراضات قبل استخدام جدول التوصيلات.">A clear project planner for doors, readers, locks, controller capacity, power and handover. Enter the equipment model when known, then review the assumptions before using the wiring schedule.</p>
+<div class="hero-tags"><span class="tag">Bosch</span><span class="tag">Mercury</span><span class="tag">ELOCK</span><span class="tag">IXM / Invixium</span></div>
+</section>
+<div class="section-title"><h2 data-en="Project setup" data-ar="إعداد المشروع">Project setup</h2><p data-en="Start with the door and equipment details you know. Advanced values can be reviewed by the engineer." data-ar="ابدأ ببيانات الأبواب والمعدات المتاحة. يمكن للمهندس مراجعة القيم المتقدمة.">Start with the door and equipment details you know. Advanced values can be reviewed by the engineer.</p></div>
+<div class="layout">
+<section class="card">
+<h2 data-en="1. Project and equipment" data-ar="١. المشروع والمعدات">1. Project and equipment</h2><p class="sub" data-en="Fields marked optional can be completed later." data-ar="الخانات الاختيارية يمكن استكمالها لاحقًا.">Fields marked optional can be completed later.</p>
+<div class="fields">
+<label class="field"><span data-en="Project / site name" data-ar="اسم المشروع / الموقع">Project / site name</span><input id="projectName" autocomplete="organization" placeholder="e.g. Main office"></label>
+<label class="field"><span data-en="Engineer / technician" data-ar="اسم المهندس / الفني">Engineer / technician</span><input id="engineerName" autocomplete="name" placeholder="Optional"></label>
+<label class="field"><span data-en="Controller brand" data-ar="ماركة الكنترولر">Controller brand</span><select id="controllerBrand"><option value="Bosch">Bosch</option><option value="Mercury">Mercury</option><option value="Other">Other</option></select></label>
+<label class="field"><span data-en="Exact controller model (optional)" data-ar="موديل الكنترولر (اختياري)">Exact controller model (optional)</span><input id="controllerModel" placeholder="Enter model from label"></label>
+<label class="field"><span data-en="Reader brand (optional)" data-ar="ماركة القارئ (اختياري)">Reader brand (optional)</span><select id="readerBrand"><option>IXM / Invixium</option><option>ELOCK</option><option>Other</option></select></label>
+<label class="field"><span data-en="Reader model (optional)" data-ar="موديل القارئ (اختياري)">Reader model (optional)</span><input id="readerModel" placeholder="Enter model from label"></label>
+</div>
+<button class="advanced-toggle" id="advancedToggle" aria-expanded="false" data-en="Show engineer settings" data-ar="إظهار إعدادات المهندس">Show engineer settings</button>
+<div class="advanced" id="advancedFields"><div class="fields">
+<label class="field"><span data-en="Doors supported per controller (verify exact model)" data-ar="عدد الأبواب المدعوم لكل كنترولر (تحقق من الموديل)">Doors supported per controller (verify exact model)</span><input id="doorsPerController" type="number" min="1" max="64" value="2" inputmode="numeric"><small data-en="A planning assumption only. Confirm the selected model and door configuration in its manual." data-ar="افتراض تخطيطي فقط. أكد دعم الموديل وطريقة تقسيم الأبواب من الدليل الفني.">A planning assumption only. Confirm the selected model and door configuration in its manual.</small></label>
+<label class="field"><span data-en="Readers per door" data-ar="عدد القراء لكل باب">Readers per door</span><select id="readersPerDoor"><option value="1">1</option><option value="2">2 (entry / exit)</option></select></label>
+<label class="field"><span data-en="Reader communication" data-ar="طريقة اتصال القارئ">Reader communication</span><select id="readerProtocol"><option value="OSDP">OSDP / RS-485</option><option value="Wiegand">Wiegand</option><option value="Standalone">Standalone / local relay</option></select></label>
+<label class="field"><span data-en="Lock type" data-ar="نوع القفل">Lock type</span><select id="lockType"><option value="Magnetic lock">Magnetic lock</option><option value="Electric strike">Electric strike</option><option value="Other">Other / motorized</option></select></label>
+<label class="field"><span data-en="Lock behavior" data-ar="طريقة عمل القفل">Lock behavior</span><select id="lockBehavior"><option value="Fail-safe">Power to lock (fail-safe)</option><option value="Fail-secure">Power to unlock (fail-secure)</option></select><small data-en="Confirm egress and fire-safety requirements for the site before selection." data-ar="راجع متطلبات الهروب والحريق بالموقع قبل الاختيار.">Confirm egress and fire-safety requirements for the site before selection.</small></label>
+<label class="field"><span data-en="Lock voltage (V DC)" data-ar="جهد القفل (فولت DC)">Lock voltage (V DC)</span><select id="lockVoltage"><option value="12">12 V</option><option value="24">24 V</option></select></label>
+<label class="field"><span data-en="Current per lock (A)" data-ar="تيار القفل الواحد (أمبير)">Current per lock (A)</span><input id="lockCurrent" type="number" min="0.05" max="10" step="0.05" value="0.5" inputmode="decimal"></label>
+<label class="field"><span data-en="Reader current (A)" data-ar="تيار القارئ (أمبير)">Reader current (A)</span><input id="readerCurrent" type="number" min="0.01" max="3" step="0.01" value="0.25" inputmode="decimal"></label>
+<label class="field"><span data-en="Controller current (A, per controller)" data-ar="تيار الكنترولر (أمبير لكل كنترولر)">Controller current (A, per controller)</span><input id="controllerCurrent" type="number" min="0.05" max="10" step="0.05" value="0.6" inputmode="decimal"></label>
+<label class="field"><span data-en="Control power supply voltage" data-ar="جهد مزود طاقة الكنترول والقراء">Control power supply voltage</span><select id="controlVoltage"><option value="12">12 V DC</option><option value="24">24 V DC</option></select></label>
+<label class="field"><span data-en="Backup duration (hours)" data-ar="مدة البطارية الاحتياطية (ساعة)">Backup duration (hours)</span><input id="backupHours" type="number" min="0" max="48" step="0.5" value="4" inputmode="decimal"></label>
+</div></div>
+<div class="actions"><button class="btn primary" id="calculateBtn" data-en="Calculate panel requirements" data-ar="احسب متطلبات اللوحة">Calculate panel requirements</button><button class="btn" id="resetBtn" data-en="Reset" data-ar="إعادة ضبط">Reset</button></div>
+<p class="note" data-en="Planning aid only. Exact terminal numbers, relay limits, reader support, lock wiring and code requirements depend on the exact equipment and project rules. Always use the manufacturer's wiring diagram and approved life-safety design." data-ar="أداة تخطيط مبدئي. أرقام الأطراف وحدود الريلاي ودعم القارئ وتوصيل القفل واشتراطات الكود تختلف حسب الموديل والمشروع. استخدم مخطط الشركة المصنّعة وتصميم السلامة المعتمد دائمًا.">Planning aid only. Exact terminal numbers, relay limits, reader support, lock wiring and code requirements depend on the exact equipment and project rules. Always use the manufacturer's wiring diagram and approved life-safety design.</p>
+</section>
+<aside class="card results" aria-live="polite">
+<h2 data-en="Recommended panel" data-ar="تجهيز اللوحة المقترح">Recommended panel</h2><p class="sub" data-en="Updates automatically as you edit the project." data-ar="تتحدث النتائج تلقائيًا عند تعديل البيانات.">Updates automatically as you edit the project.</p>
+<div class="metrics">
+<div class="metric emphasis"><small data-en="Controller units" data-ar="عدد الكنترولرات">Controller units</small><strong id="controllerQty">—</strong></div>
+<div class="metric"><small data-en="Doors / readers" data-ar="الأبواب / القراء">Doors / readers</small><strong id="doorReaderQty">—</strong></div>
+<div class="metric"><small data-en="Control PSU recommendation" data-ar="مزود طاقة الكنترول والقراء">Control PSU recommendation</small><strong id="controlPsu">—</strong></div>
+<div class="metric"><small data-en="Lock PSU recommendation" data-ar="مزود طاقة الأقفال">Lock PSU recommendation</small><strong id="lockPsu">—</strong></div>
+<div class="metric"><small data-en="Control backup battery" data-ar="بطارية احتياطية للكنترول">Control backup battery</small><strong id="controlBattery">—</strong></div>
+<div class="metric"><small data-en="Lock backup battery" data-ar="بطارية احتياطية للأقفال">Lock backup battery</small><strong id="lockBattery">—</strong></div>
+</div>
+<p class="note" id="compatibilityNote">Select a model and review its manual for exact capacities.</p>
+<div class="actions"><button class="btn" id="previewBtn" data-en="Preview report" data-ar="معاينة التقرير">Preview report</button><button class="btn primary" id="downloadBtn" data-en="Download PDF" data-ar="تنزيل PDF">Download PDF</button></div>
+</aside>
+</div>
+<section class="card" id="bomSection" style="margin-top:14px"><h2 data-en="Bill of materials" data-ar="قائمة المكونات">Bill of materials</h2><p class="sub" data-en="Automatic quantities based on the project inputs." data-ar="كميات تلقائية حسب بيانات المشروع.">Automatic quantities based on the project inputs.</p><div class="list" id="bom"></div></section>
+<section class="card" id="diagramSection" style="margin-top:14px"><h2 data-en="Panel layout overview" data-ar="نظرة عامة على تقسيم اللوحة">Panel layout overview</h2><p class="sub" data-en="A simple, printable map of controller groups and doors." data-ar="تقسيم مبسط وقابل للطباعة لمجموعات الكنترولر والأبواب.">A simple, printable map of controller groups and doors.</p><div class="diagram" id="diagram"></div></section>
+<section class="card" id="scheduleSection" style="margin-top:14px"><h2 data-en="Door wiring and label schedule" data-ar="جدول توصيلات وملصقات الأبواب">Door wiring and label schedule</h2><p class="sub" data-en="Use generic signal names here; use the selected model's own terminal drawing for pin numbers." data-ar="هذا الجدول يوضح أسماء الإشارات فقط؛ استخدم مخطط الموديل المحدد لمعرفة أرقام الأطراف.">Use generic signal names here; use the selected model's own terminal drawing for pin numbers.</p><div class="table-wrap"><table><thead><tr><th data-en="Door ID" data-ar="رقم الباب">Door ID</th><th data-en="Reader label / bus" data-ar="ملصق القارئ / الناقل">Reader label / bus</th><th data-en="Lock label" data-ar="ملصق القفل">Lock label</th><th data-en="Door contact input" data-ar="دخل حساس الباب">Door contact input</th><th data-en="REX input" data-ar="دخل زر الخروج">REX input</th><th data-en="Controller group" data-ar="مجموعة الكنترولر">Controller group</th><th data-en="Notes" data-ar="ملاحظات">Notes</th></tr></thead><tbody id="doorRows"></tbody></table></div></section>
+<section class="layout" style="margin-top:14px">
+<section class="card" id="commissionSection"><h2 data-en="Commissioning checks" data-ar="اختبارات التشغيل والتسليم">Commissioning checks</h2><p class="sub" data-en="Tick each item after on-site verification." data-ar="ضع علامة بعد التحقق الفعلي في الموقع.">Tick each item after on-site verification.</p><div class="checks" id="checks"></div></section>
+<section class="card"><h2 data-en="Compatibility and safe handover" data-ar="التوافق والتسليم الآمن">Compatibility and safe handover</h2><p class="sub" data-en="What the engineer should confirm before energizing the panel." data-ar="ما يجب على المهندس مراجعته قبل تشغيل اللوحة.">What the engineer should confirm before energizing the panel.</p><div id="handoverNotes"></div></section>
+</section>
+<p class="footer">SCA · Security Calculator app · Eng. Abdelrahman Saeed</p>
+</div>
+<section class="print-root" id="printRoot" aria-hidden="true"></section>
+<div class="modal" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="previewTitle"><div class="modal-box"><div class="modal-head"><h2 id="previewTitle" data-en="Access control report preview" data-ar="معاينة تقرير التحكم في الدخول">Access control report preview</h2><button class="btn" id="closePreview" data-en="Close" data-ar="إغلاق">Close</button></div><div id="previewContent"></div><div class="actions"><button class="btn primary" id="previewDownload" data-en="Download PDF" data-ar="تنزيل PDF">Download PDF</button></div></div></div>
+<script>
+(() => {
+const $=id=>document.getElementById(id);
+let lang="en";
+const labels={
+en:{project:"Project / site",engineer:"Engineer / technician",doors:"Number of doors",controllers:"Controllers",readers:"Readers",readerModel:"Reader model",controllerModel:"Controller model",lock:"Lock type",protocol:"Reader protocol",behavior:"Lock behavior",controlLoad:"Control load with reserve",lockLoad:"Lock load with reserve",controlBattery:"Control battery estimate",lockBattery:"Lock battery estimate",psu:"Recommended power supplies",duration:"Backup hours",checks:["Controller model and door capacity checked against its current datasheet.","Reader protocol and secure-channel capability verified at both ends.","Lock relay rating and the required fail-safe / fail-secure behavior verified.","Separate lock supply and protection confirmed where required by the design.","Door contact and request-to-exit inputs tested at every opening.","Normal operation, power-fail and battery status checked and documented.","Panel enclosure tamper, grounding and cable labels checked."],handover:["Confirm local fire, egress and accessibility requirements before finalizing lock behavior.","Use the exact manufacturer wiring diagram for terminal numbers and electrical limits.","Label both ends of every cable and keep the panel schedule with the as-built drawings.","Record the actual power-supply and battery models, settings, and test results."],door:"Door",reader:"Reader",lockLabel:"Lock",contact:"Door contact",rex:"Request to exit",group:"Controller",wiring:"Follow exact model diagram",osdp:"OSDP / RS-485 bus",wie:"Wiegand pair",local:"Local reader relay",readerCurrent:"Reader current",controllerCurrent:"Controller current",brand:"Controller brand",model:"Exact model",capacity:"Openings per controller",hours:"Backup duration",qty:"Quantity",item:"Component",source:"Estimate from entered ratings",supported:"Confirm in model manual",checkStatus:"checked",notChecked:"not checked",pdf:"PDF report",date:"Prepared on",warning:"Model-specific review required",noProject:"Access control project",power:"Power and backup",controller:"Controller",readerDevice:"Access reader",lockDevice:"Door lock",doorContact:"Door contact",rexDevice:"REX button / sensor",enclosure:"Controller enclosure",psuItem:"Power supply",batteryItem:"Backup battery",contInput:"Control",lockInput:"Locks",calcNote:"Estimates include 25% design reserve. Battery capacity is a simplified sizing aid; verify battery chemistry, discharge curve, temperature, standby/alarm state and local code with the supplier.",perDoor:"per door",readerWord:"readers",amp:"A",volt:"V DC",hour:"h",doorLabel:"Door ID"},
+ar:{project:"المشروع / الموقع",engineer:"المهندس / الفني",doors:"عدد الأبواب",controllers:"الكنترولرات",readers:"القراء",readerModel:"موديل القارئ",controllerModel:"موديل الكنترولر",lock:"نوع القفل",protocol:"بروتوكول القارئ",behavior:"طريقة عمل القفل",controlLoad:"حمل الكنترول مع الاحتياطي",lockLoad:"حمل الأقفال مع الاحتياطي",controlBattery:"تقدير بطارية الكنترول",lockBattery:"تقدير بطارية الأقفال",psu:"مزودات الطاقة المقترحة",duration:"ساعات الاحتياطي",checks:["مراجعة موديل الكنترولر وسعة الأبواب من الداتا شيت الحالية.","التأكد من دعم بروتوكول القارئ وقناة الاتصال الآمنة من الطرفين.","مراجعة حد ريلاي القفل وطريقة عمله Fail-safe أو Fail-secure.","مراجعة مصدر طاقة الأقفال والحماية المطلوبة حسب التصميم.","اختبار حساس الباب وزر الخروج لكل باب.","اختبار التشغيل الطبيعي وفصل الكهرباء وحالة البطارية وتسجيل النتائج.","مراجعة Tamper للوحة والتأريض وملصقات الكابلات."],handover:["راجع اشتراطات الحريق والهروب وسهولة الوصول قبل اعتماد طريقة عمل القفل.","استخدم مخطط الشركة للموديل نفسه لتحديد أرقام الأطراف والحدود الكهربائية.","ضع ملصقًا على طرفي كل كابل واحتفظ بجدول اللوحة مع مخططات As-built.","سجل موديل مزود الطاقة والبطارية والإعدادات ونتائج الاختبار الفعلية."],door:"باب",reader:"قارئ",lockLabel:"قفل",contact:"حساس الباب",rex:"زر الخروج",group:"كنترولر",wiring:"راجع مخطط الموديل المحدد",osdp:"ناقل OSDP / RS-485",wie:"زوج Wiegand",local:"ريلاي القارئ المحلي",readerCurrent:"تيار القراء",controllerCurrent:"تيار الكنترولرات",brand:"ماركة الكنترولر",model:"الموديل المحدد",capacity:"الأبواب لكل كنترولر",hours:"مدة الاحتياطي",qty:"الكمية",item:"المكون",source:"تقدير حسب القيم المدخلة",supported:"راجع الدليل الفني",checkStatus:"تم",notChecked:"لم يتم",pdf:"تقرير PDF",date:"تاريخ الإعداد",warning:"يلزم التحقق من الموديل",noProject:"مشروع تحكم في الدخول",power:"الطاقة والبطارية",controller:"كنترولر",readerDevice:"قارئ دخول",lockDevice:"قفل باب",doorContact:"حساس باب",rexDevice:"زر / حساس خروج",enclosure:"صندوق الكنترولر",psuItem:"مزود طاقة",batteryItem:"بطارية احتياطية",contInput:"التحكم",lockInput:"الأقفال",calcNote:"الحساب يتضمن احتياطي تصميم 25%. تقدير البطارية مبسط؛ راجع نوع البطارية ومنحنى التفريغ والحرارة وحالة الاستعداد/الإنذار واشتراطات الكود مع المورد.",perDoor:"لكل باب",readerWord:"قارئ",amp:"أمبير",volt:"فولت DC",hour:"ساعة",doorLabel:"رقم الباب"}
+};
+const t=key=>labels[lang][key];
+const setText=(el,key)=>{if(el)el.textContent=t(key)};
+function setLanguage(next){
+ lang=next;document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+ document.querySelectorAll("[data-en][data-ar]").forEach(el=>el.textContent=el.dataset[lang]);
+ $("langBtn").textContent=lang==="en"?"العربية":"English";
+ $("themeBtn").textContent=lang==="en"?(document.documentElement.dataset.theme==="dark"?"Light mode":"Dark mode"):(document.documentElement.dataset.theme==="dark"?"الوضع الفاتح":"الوضع الداكن");
+ render();
+}
+function val(id){return Number($(id).value)}
+function fmt(n,d=1){return new Intl.NumberFormat(lang==="ar"?"ar-EG":"en-US",{minimumFractionDigits:d,maximumFractionDigits:d}).format(Number.isFinite(n)?n:0)}
+function nextPsu(amps){return [1,2,3,5,7,10,15,20,30].find(x=>x>=amps)||Math.ceil(amps)}
+function nextBattery(ah){return [1.3,2.3,3.2,7,9,12,18,26,40,65,100].find(x=>x>=ah)||Math.ceil(ah)}
+function getData(){
+ const doors=Math.max(1,Math.min(512,Math.floor(val("doors")||1)));
+ const capacity=Math.max(1,Math.min(64,Math.floor(val("doorsPerController")||2)));
+ const rpd=Math.max(1,Math.min(2,Math.floor(val("readersPerDoor")||1)));
+ const readers=doors*rpd, controllers=Math.ceil(doors/capacity);
+ const v=val("controlVoltage")||12, lv=val("lockVoltage")||12;
+ const ci=Math.max(0,val("controllerCurrent")||0.6), ri=Math.max(0,val("readerCurrent")||0.25), li=Math.max(0,val("lockCurrent")||0.5);
+ const controlA=controllers*ci+readers*ri, lockA=doors*li;
+ const controlW=controlA*v, lockW=lockA*lv;
+ const sameRail=lv===v;
+ const controlPsuA=(controlA+(sameRail?lockA:0))*1.25;
+ const lockPsuA=lockA*1.25;
+ const controlBatteryAh=controlA*val("backupHours")/0.8;
+ const lockBatteryAh=lockA*val("backupHours")/0.8;
+ return {doors,capacity,rpd,readers,controllers,v,lv,ci,ri,li,controlA,lockA,controlW,lockW,sameRail,controlPsuA,lockPsuA,controlBatteryAh,lockBatteryAh};
+}
+function rowsData(d){
+ return [
+ [t("controller"),d.controllers+" × "+$("controllerModel").value.trim()||$("controllerBrand").value],
+ [t("readerDevice"),d.readers+" × "+$("readerBrand").value+( $("readerModel").value.trim()?" · "+$("readerModel").value.trim():"")],
+ [t("lockDevice"),d.doors+" × "+$("lockType").value],
+ [t("doorContact"),d.doors],
+ [t("rexDevice"),d.doors],
+ [t("enclosure"),d.controllers],
+ [t("psuItem"),nextPsu(d.controlPsuA)+" A · "+d.v+" "+t("volt")+(d.sameRail?" (shared rail)":"")],
+ [t("psuItem")+" — "+t("lockInput"),d.sameRail?t("source"):nextPsu(d.lockPsuA)+" A · "+d.lv+" "+t("volt")],
+ [t("batteryItem")+" — "+t("contInput"),nextBattery(d.controlBatteryAh)+" Ah"],
+ [t("batteryItem")+" — "+t("lockInput"),nextBattery(d.lockBatteryAh)+" Ah"]
+ ];
+}
+function render(){
+ const d=getData();
+ $("controllerQty").textContent=d.controllers;
+ $("doorReaderQty").textContent=d.doors+" / "+d.readers;
+ $("controlPsu").textContent=nextPsu(d.controlPsuA)+" A · "+d.v+" "+t("volt");
+ $("lockPsu").textContent=d.sameRail?t("source"):nextPsu(d.lockPsuA)+" A · "+d.lv+" "+t("volt");
+ $("controlBattery").textContent=nextBattery(d.controlBatteryAh)+" Ah";
+ $("lockBattery").textContent=nextBattery(d.lockBatteryAh)+" Ah";
+ const known=$("controllerModel").value.trim();
+ $("compatibilityNote").textContent=(known?t("model")+": "+known+" · ":"")+t("warning")+" — "+t("supported");
+ const bom=$("bom");bom.replaceChildren();
+ rowsData(d).forEach(([name,quantity])=>{const row=document.createElement("div");row.className="bom-item";const a=document.createElement("span"),b=document.createElement("strong");a.textContent=name;b.textContent=quantity;row.append(a,b);bom.append(row)});
+ const diagram=$("diagram");diagram.replaceChildren();
+ for(let i=0;i<d.controllers;i++){const box=document.createElement("div");box.className="controller-box";const first=i*d.capacity+1,last=Math.min((i+1)*d.capacity,d.doors);box.innerHTML="<strong></strong><span></span><span></span>";box.children[0].textContent=t("controller")+" "+(i+1);box.children[1].textContent=t("doorLabel")+" "+first+"–"+last+" · "+t("readers")+" "+((last-first+1)*d.rpd);box.children[2].textContent=$("controllerBrand").value+(known?" · "+known:"");diagram.append(box)}
+ const schedule=$("doorRows");schedule.replaceChildren();
+ const protocol=$("readerProtocol").value==="OSDP"?t("osdp"):($("readerProtocol").value==="Wiegand"?t("wie"):t("local"));
+ for(let i=1;i<=d.doors;i++){const tr=document.createElement("tr"),items=["D-"+String(i).padStart(2,"0"),"R-"+String(i).padStart(2,"0")+" · "+protocol,"L-"+String(i).padStart(2,"0"),"IN-DC-"+String(i).padStart(2,"0"),"IN-REX-"+String(i).padStart(2,"0"),"CTRL-"+(Math.ceil(i/d.capacity)),t("wiring")];items.forEach(x=>{const td=document.createElement("td");td.textContent=x;tr.append(td)});schedule.append(tr)}
+ const checks=$("checks");if(!checks.children.length)labels.en.checks.forEach((_,i)=>{const label=document.createElement("label");label.className="check";const input=document.createElement("input");input.type="checkbox";input.dataset.check=String(i);const content=document.createElement("span");content.textContent=t("checks")[i];label.append(input,content);checks.append(label)});
+ [...checks.children].forEach((el,i)=>{el.querySelector("span").textContent=t("checks")[i]});
+ const notes=$("handoverNotes");notes.replaceChildren();const ul=document.createElement("ul");ul.style.margin="0";ul.style.paddingInlineStart="20px";t("handover").forEach(item=>{const li=document.createElement("li");li.textContent=item;li.style.marginBottom="9px";ul.append(li)});notes.append(ul);
+}
+const inputs=["projectName","engineerName","controllerBrand","controllerModel","readerBrand","readerModel","doors","doorsPerController","readersPerDoor","readerProtocol","lockType","lockBehavior","lockVoltage","lockCurrent","readerCurrent","controllerCurrent","controlVoltage","backupHours"];
+$("doors").value=4;
+inputs.forEach(id=>$(id).addEventListener("input",render));
+$("advancedToggle").onclick=()=>{const p=$("advancedFields");const open=p.classList.toggle("open");$("advancedToggle").setAttribute("aria-expanded",String(open));$("advancedToggle").textContent=lang==="en"?(open?"Hide engineer settings":"Show engineer settings"):(open?"إخفاء إعدادات المهندس":"إظهار إعدادات المهندس")};
+$("themeBtn").onclick=()=>{document.documentElement.dataset.theme=document.documentElement.dataset.theme==="dark"?"light":"dark";try{localStorage.setItem("secure-axis-theme",document.documentElement.dataset.theme)}catch(_){}setLanguage(lang)};
+$("langBtn").onclick=()=>setLanguage(lang==="en"?"ar":"en");
+function makeReport(){
+ const d=getData(),date=new Date().toLocaleDateString(lang==="ar"?"ar-EG":"en-GB");
+ const project=$("projectName").value.trim()||t("noProject"),engineer=$("engineerName").value.trim()||"—";
+ const metrics=[[t("project"),project],[t("engineer"),engineer],[t("brand"),$("controllerBrand").value],[t("controllerModel"),$("controllerModel").value.trim()||"—"],[t("doors"),d.doors],[t("controllers"),d.controllers],[t("readers"),d.readers],[t("lock"),$("lockType").value+" · "+$("lockVoltage").value+" V DC · "+$("lockCurrent").value+" A"],[t("protocol"),$("readerProtocol").value],[t("behavior"),$("lockBehavior").value],[t("controlLoad"),fmt(d.controlW*1.25,1)+" W"],[t("lockLoad"),fmt(d.lockW*1.25,1)+" W"],[t("controlBattery"),nextBattery(d.controlBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("lockBattery"),nextBattery(d.lockBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("date"),date]];
+ const tableRows=[];for(let i=1;i<=d.doors;i++)tableRows.push(["D-"+String(i).padStart(2,"0"),"R-"+String(i).padStart(2,"0")+" · "+$("readerProtocol").value,"L-"+String(i).padStart(2,"0"),"IN-DC-"+String(i).padStart(2,"0"),"IN-REX-"+String(i).padStart(2,"0"),"CTRL-"+Math.ceil(i/d.capacity)]);
+ const checks=[...document.querySelectorAll("#checks input")].map((el,i)=>[t("checks")[i],el.checked?t("checkStatus"):t("notChecked")]);
+ return {project,engineer,date,metrics,tableRows,checks,bom:rowsData(d),d};
+}
+function buildReportHtml(data){
+ const table='<table class="report-table"><thead><tr>'+["Door ID","Reader","Lock","Contact","REX","Controller"].map((x,i)=>'<th>'+(["رقم الباب","القارئ","القفل","الحساس","الخروج","الكنترولر"][i]||x)+'</th>').join("")+'</tr></thead><tbody>'+data.tableRows.map(r=>"<tr>"+r.map(x=>"<td>"+escapeHtml(x)+"</td>").join("")+"</tr>").join("")+"</tbody></table>';
+ const cells=data.metrics.map(([a,b])=>'<div class="report-cell"><small>'+escapeHtml(a)+'</small><strong>'+escapeHtml(String(b))+'</strong></div>').join("");
+ const bom='<h3>'+escapeHtml(t("item"))+'</h3><table class="report-table"><tbody>'+data.bom.map(([a,b])=>"<tr><td>"+escapeHtml(String(a))+"</td><td>"+escapeHtml(String(b))+"</td></tr>").join("")+"</tbody></table>";
+ const checks='<h3>'+escapeHtml(lang==="en"?"Commissioning checks":"اختبارات التشغيل")+'</h3><table class="report-table"><tbody>'+data.checks.map(r=>"<tr><td>"+escapeHtml(r[0])+"</td><td>"+escapeHtml(r[1])+"</td></tr>").join("")+"</tbody></table>";
+ return '<div class="report-head"><h2>SCA · '+escapeHtml(t("pdf"))+'</h2><p>'+escapeHtml(data.project)+' · '+escapeHtml(data.date)+'</p></div><div class="report-grid">'+cells+'</div>'+bom+'<h3>'+escapeHtml(lang==="en"?"Door schedule":"جدول الأبواب")+'</h3>'+table+checks+'<p class="note">'+escapeHtml(t("calcNote"))+'</p>';
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function drawReportPages(data){
+ const W=1190,H=1684,margin=70,pages=[];
+ const allRows=data.tableRows,perPage=27,pageCount=Math.max(1,Math.ceil(allRows.length/perPage));
+ for(let p=0;p<pageCount;p++){
+  const canvas=document.createElement("canvas");canvas.width=W;canvas.height=H;
+  const ctx=canvas.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,W,H);
+  const rtl=lang==="ar";ctx.direction=rtl?"rtl":"ltr";ctx.textAlign=rtl?"right":"left";
+  const x=rtl?W-margin:margin,right=rtl?margin:W-margin;
+  let y=92;
+  ctx.fillStyle="#285f63";ctx.font="bold 26px Arial";ctx.fillText("SCA · "+t("pdf"),x,y);y+=30;
+  ctx.fillStyle="#172a3d";ctx.font="bold 34px Arial";ctx.fillText(data.project,x,y);y+=28;
+  ctx.fillStyle="#617786";ctx.font="20px Arial";ctx.fillText(t("engineer")+": "+data.engineer+"     "+t("date")+": "+data.date,x,y);y+=42;
+  const colW=(W-2*margin)/2,cellH=58;
+  data.metrics.slice(2,14).forEach((pair,i)=>{const col=i%2,row=Math.floor(i/2);const px=rtl?W-margin-(col+1)*colW:margin+col*colW;const py=y+row*cellH;ctx.fillStyle="#f1f6f6";ctx.fillRect(px+4,py+3,colW-8,cellH-6);ctx.fillStyle="#617786";ctx.font="16px Arial";ctx.textAlign=rtl?"right":"left";ctx.fillText(String(pair[0]),rtl?px+colW-15:px+15,py+24);ctx.fillStyle="#172a3d";ctx.font="bold 19px Arial";ctx.fillText(String(pair[1]).slice(0,50),rtl?px+colW-15:px+15,py+47)});
+  y+=Math.ceil(12/2)*cellH+22;
+  ctx.fillStyle="#285f63";ctx.font="bold 22px Arial";ctx.textAlign=rtl?"right":"left";ctx.fillText((lang==="en"?"Door schedule":"جدول الأبواب")+" · "+(p+1)+"/"+pageCount,x,y);y+=25;
+  const cols=rtl?["CTRL","REX","Contact","Lock","Reader","Door"]:["Door","Reader","Lock","Contact","REX","CTRL"];
+  const widths=[125,210,150,170,150,135],tableW=widths.reduce((a,b)=>a+b,0),start=rtl?W-margin-tableW:margin;
+  ctx.fillStyle="#e5eeee";ctx.fillRect(start,y,tableW,32);ctx.fillStyle="#284d50";ctx.font="bold 14px Arial";ctx.textAlign="left";let xx=start+8;cols.forEach((c,i)=>{ctx.fillText(c,xx,y+21);xx+=widths[i]});
+  y+=32;ctx.font="14px Arial";
+  allRows.slice(p*perPage,(p+1)*perPage).forEach((row,j)=>{if(j%2===1){ctx.fillStyle="#f7f9f9";ctx.fillRect(start,y,tableW,32)}ctx.fillStyle="#172a3d";let ordered=rtl?[row[5],row[4],row[3],row[2],row[1],row[0]]:row;xx=start+8;ordered.forEach((c,i)=>{ctx.fillText(String(c).slice(0,26),xx,y+21);xx+=widths[i]});ctx.strokeStyle="#d8e1e1";ctx.beginPath();ctx.moveTo(start,y+32);ctx.lineTo(start+tableW,y+32);ctx.stroke();y+=32});
+  ctx.fillStyle="#637786";ctx.font="14px Arial";ctx.textAlign=rtl?"right":"left";ctx.fillText(t("calcNote"),x,H-70,{maxWidth:W-2*margin});
+  pages.push(canvas.toDataURL("image/jpeg",.9));
+ }
+ return pages;
+}
+function pdfBlob(){
+ const pages=drawReportPages(makeReport()),objs=[];
+ objs[1]="<< /Type /Catalog /Pages 2 0 R >>";
+ objs[2]="<< /Type /Pages /Kids ["+pages.map((_,i)=>(3+i*3)+" 0 R").join(" ")+"] /Count "+pages.length+" >>";
+ pages.forEach((uri,i)=>{const base=3+i*3,pageNo=base,imgNo=base+1,contentNo=base+2;const raw=atob(uri.split(",")[1]),img=new Uint8Array(raw.length);for(let j=0;j<raw.length;j++)img[j]=raw.charCodeAt(j);
+ objs[pageNo]="<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im0 "+imgNo+" 0 R >> >> /Contents "+contentNo+" 0 R >>";
+ objs[imgNo]={image:img,width:1190,height:1684};
+ const stream="q\n595.28 0 0 841.89 0 0 cm\n/Im0 Do\nQ";
+ objs[contentNo]="<< /Length "+stream.length+" >>\nstream\n"+stream+"\nendstream";
+ });
+ const enc=new TextEncoder(),chunks=[],offsets=[0];let total=0;
+ const push=b=>{chunks.push(b);total+=b.length};
+ push(enc.encode("%PDF-1.4\n%SCA\n"));
+ for(let i=1;i<objs.length;i++){offsets[i]=total;push(enc.encode(i+" 0 obj\n"));const o=objs[i];if(typeof o==="string")push(enc.encode(o));else{push(enc.encode("<< /Type /XObject /Subtype /Image /Width "+o.width+" /Height "+o.height+" /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length "+o.image.length+" >>\nstream\n"));push(o.image);push(enc.encode("\nendstream"))}push(enc.encode("\nendobj\n"))}
+ const xref=total;push(enc.encode("xref\n0 "+objs.length+"\n0000000000 65535 f \n"));for(let i=1;i<objs.length;i++)push(enc.encode(String(offsets[i]).padStart(10,"0")+" 00000 n \n"));push(enc.encode("trailer\n<< /Size "+objs.length+" /Root 1 0 R >>\nstartxref\n"+xref+"\n%%EOF"));
+ return new Blob(chunks,{type:"application/pdf"});
+}
+async function downloadPdf(){
+ const blob=pdfBlob(),name=(($("projectName").value.trim()||"SCA-access-control").replace(/[^\p{L}\p{N}-]+/gu,"-").slice(0,50)||"SCA-access-control")+".pdf";
+ const file=new File([blob],name,{type:"application/pdf"});
+ if(navigator.canShare&&navigator.canShare({files:[file]})&&/Android|iPhone|iPad/i.test(navigator.userAgent)){try{await navigator.share({files:[file],title:t("pdf")});return}catch(e){if(e.name==="AbortError")return}}
+ const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.style.display="none";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000)
+}
+function preparePreview(){const data=makeReport();$("previewContent").innerHTML=buildReportHtml(data);$("previewModal").classList.add("open")}
+$("previewBtn").onclick=preparePreview;$("closePreview").onclick=()=>$("previewModal").classList.remove("open");$("previewModal").addEventListener("click",e=>{if(e.target===$("previewModal"))$("previewModal").classList.remove("open")});$("previewDownload").onclick=downloadPdf;$("downloadBtn").onclick=downloadPdf;$("calculateBtn").onclick=()=>{$("resultsTop")?.scrollIntoView({behavior:"smooth"})};
+$("resetBtn").onclick=()=>{inputs.forEach(id=>{const el=$(id);if(el.tagName==="SELECT")el.selectedIndex=0;else el.value=el.type==="number"?(id==="doors"?"4":(id==="doorsPerController"?"2":(id==="readersPerDoor"?"1":(id==="lockCurrent"?"0.5":(id==="readerCurrent"?"0.25":(id==="controllerCurrent"?"0.6":(id==="backupHours"?"4":"")))))):""});$("controllerBrand").value="Bosch";$("readerBrand").value="IXM / Invixium";$("doors").value=4;$("doorsPerController").value=2;$("readersPerDoor").value=1;$("lockVoltage").value=12;$("controlVoltage").value=12;$("backupHours").value=4;document.querySelectorAll("#checks input").forEach(x=>x.checked=false);render()};
+document.querySelectorAll("#checks").forEach(el=>el.addEventListener("change",()=>{}));
+try{document.documentElement.dataset.theme=localStorage.getItem("secure-axis-theme")||"light"}catch(_){document.documentElement.dataset.theme="light"}
+setLanguage("en");
+})();
+</script>
+</body>
+</html>
