@@ -154,6 +154,7 @@ function wiringSteps(d){
   :"Lock ("+lock+"): dedicated "+lv+"V DC lock supply → correctly rated fuse → approved emergency-release circuit → lock relay COM and "+(failSafe?"NC":"NO")+" contact → lock → PSU return. Do not carry lock current through the controller unless its relay is rated for it.";
  return [
   reader,
+  ar?"كل باب يتضمن: قارئ، قفل، Break Glass، زر خروج REX، وحساس باب؛ استخدم أسماء الإشارات المطابقة لجدول الأبواب.":"Each opening includes a reader, lock, break-glass release, REX button, and door contact; use the matching signal labels in the door schedule.",
   ar?"حساس الباب: وصل COM/NC أو EOL حسب التصميم إلى مدخل مراقب مخصص للباب، ثم اضبطه في البرنامج.":"Door contact: connect COM/NC or EOL supervision as designed to a dedicated monitored input, then configure it in software.",
   ar?"زر الخروج REX: وصل نقاط الزر إلى مدخل REX حسب منطق NO/NC المحدد، واختبر الخروج من الداخل.":"REX button: connect its contacts to the configured REX input using the required NO/NC logic; test free egress from inside.",
   ar?"Break Glass: يركب في مسار تحرير القفل حسب مخطط السلامة، بحيث يحرر القفل عند الحاجة حتى لو تعطل الكنترولر.":"Break glass: install in the approved lock-release path so the required egress release works even if the controller fails.",
@@ -169,6 +170,7 @@ function rowsData(d){
  [t("lockDevice"),d.doors+" × "+selectedLabel("lockType")+" · "+$("lockBrand").value+($("lockModel").value.trim()?" · "+$("lockModel").value.trim():"")],
  [t("doorContact"),d.doors],
  [t("rexDevice"),d.doors],
+ [lang==="en"?"Break-glass release device":"زر تحرير الطوارئ / Break Glass",d.doors],
  [t("enclosure"),d.controllers],
  [t("psuItem"),nextPsu(d.controlPsuA)+" A · "+d.v+" "+t("volt")+(d.sameRail?" (shared rail)":"")],
  [t("psuItem")+" — "+t("lockInput"),d.sameRail?t("source"):nextPsu(d.lockPsuA)+" A · "+d.lv+" "+t("volt")],
