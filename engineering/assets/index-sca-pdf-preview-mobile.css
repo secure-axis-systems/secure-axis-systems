@@ -96,3 +96,10 @@
 
 /* Light mode shares SCA's dark-mode teal palette, with light readable surfaces. */
 :root:not([data-theme="dark"]){color-scheme:light;--page:#F2F7F7;--page-soft:#EAF1F1;--surface:#FAFCFC;--surface-muted:#EEF4F4;--surface-blue:#E4EFEF;--ink:#173438;--ink-soft:#34575A;--muted:#5E797C;--muted-light:#7E9698;--line:#C9DADB;--line-soft:#DCE8E8;--blue:#427F82;--blue-dark:#356B6E;--blue-soft:#E1EEEE;--shadow-card:0 8px 26px #123a3d12;--shadow-header:0 4px 18px #123a3d18;background:var(--page);color:var(--ink)}
+
+/* Theme-aware frosted glass cards for the three engineering shortcuts. */
+.feature-grid .feature-card{grid-template-columns:minmax(0,1fr);align-items:start;min-height:155px;background:color-mix(in srgb,var(--surface) 74%,transparent);-webkit-backdrop-filter:blur(16px) saturate(125%);backdrop-filter:blur(16px) saturate(125%);border-color:color-mix(in srgb,var(--blue) 24%,var(--line));box-shadow:inset 0 1px 0 color-mix(in srgb,var(--surface) 55%,transparent),0 10px 26px color-mix(in srgb,var(--ink) 7%,transparent)}
+.feature-grid .feature-card:hover,.feature-grid .feature-card:focus-within{background:color-mix(in srgb,var(--surface) 88%,transparent);border-color:color-mix(in srgb,var(--blue) 48%,var(--line));box-shadow:var(--shadow-card);transform:translateY(-2px)}
+.feature-grid .feature-card h4{color:var(--ink);line-height:1.45}
+.feature-grid .feature-card .mini-tag{display:block;color:var(--muted);margin-top:5px;font-size:.74rem}
+@media(prefers-reduced-transparency:reduce){.feature-grid .feature-card{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}}
