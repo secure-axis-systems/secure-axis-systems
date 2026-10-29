@@ -161,7 +161,7 @@ body.ip-camera-route #root #reports .camera-plan-heading{scroll-margin-top:110px
 .ip-planner-route-heading{margin:8px 0 18px;padding:clamp(20px,4vw,34px);border:1px solid var(--line);border-radius:16px;background:linear-gradient(135deg,var(--surface),var(--surface-blue));box-shadow:var(--shadow-card);animation:ip-planner-arrive .56s cubic-bezier(.2,.7,.2,1) both}
 .ip-planner-route-heading p{margin:0 0 9px;color:var(--blue-dark);font-size:.72rem;font-weight:800;letter-spacing:.14em}
 .ip-planner-route-heading h1{margin:0;color:var(--ink);font-size:clamp(1.75rem,5vw,2.7rem);line-height:1.12;letter-spacing:-.035em}
-.ip-planner-route-heading span{display:block;max-width:720px;margin-top:10px;color:var(--muted);font-size:clamp(.92rem,2.2vw,1.05rem)}
+.ip-planner-route-heading>span{display:block;max-width:720px;margin-top:10px;color:var(--muted);font-size:clamp(.92rem,2.2vw,1.05rem)}
 @keyframes ip-planner-arrive{from{opacity:0;transform:translateY(18px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
 @media(prefers-reduced-motion:reduce){.ip-planner-route-heading{animation:none}}
 @media(max-width:760px){.ip-planner-route-heading{margin:4px 0 12px;padding:20px 16px}}
@@ -183,16 +183,16 @@ html.sca-intro-complete .hero-copy .status-pill{animation:scaPageTextIn .55s eas
 .ip-planner-route-heading{opacity:0;transform:translateY(18px);filter:blur(8px);animation:none}
 html.sca-intro-complete .ip-planner-route-heading{animation:ip-planner-arrive .62s cubic-bezier(.2,.7,.2,1) both}
 .ip-planner-route-heading p{color:var(--sca-motion)!important;opacity:0}
-.ip-planner-route-heading h1,.ip-planner-route-heading span{opacity:0}
+.ip-planner-route-heading h1,.ip-planner-route-heading>span{opacity:0}
 html.sca-intro-complete .ip-planner-route-heading p{animation:ipPlannerCopyIn .55s ease .12s both}
 html.sca-intro-complete .ip-planner-route-heading h1{animation:ipPlannerCopyIn .62s cubic-bezier(.2,.7,.2,1) .26s both}
-html.sca-intro-complete .ip-planner-route-heading span{animation:ipPlannerCopyIn .62s cubic-bezier(.2,.7,.2,1) .4s both}
-.ip-planner-brand-animation{display:flex;align-items:baseline;flex-wrap:wrap;gap:clamp(8px,2vw,16px);margin-bottom:8px}
-.ip-planner-letters{display:inline-flex;align-items:center;gap:.025em;color:var(--sca-motion);font-size:clamp(2.7rem,8vw,4.7rem);font-weight:850;letter-spacing:-.09em;line-height:.9}
+html.sca-intro-complete .ip-planner-route-heading>span{animation:ipPlannerCopyIn .62s cubic-bezier(.2,.7,.2,1) .4s both}
+.ip-planner-brand-animation{display:flex;flex-direction:column;align-items:flex-start;gap:4px;margin:0 0 12px;min-width:0}
+.ip-planner-letters{display:flex;align-items:center;gap:.025em;color:var(--sca-motion);font-size:clamp(3rem,7vw,5rem);font-weight:850;letter-spacing:-.09em;line-height:.82}
 .ip-planner-letters span{display:inline-block;color:var(--sca-motion);opacity:.4;animation:ipPlannerLetterWave 2.4s ease-in-out infinite;animation-delay:calc(var(--letter-index)*.38s)}
-.ip-planner-app-title{color:var(--muted);font-size:clamp(.82rem,1.4vw,1rem);font-weight:700;letter-spacing:.025em;opacity:0;transform:translateY(7px)}
+.ip-planner-app-title{display:block;color:var(--muted);font-size:clamp(.82rem,1.4vw,1rem);font-weight:700;letter-spacing:.025em;line-height:1.35;opacity:0;transform:translateY(7px)}
 html.sca-intro-complete .ip-planner-app-title{animation:ipPlannerCopyIn .5s ease .9s forwards}
 @keyframes ipPlannerLetterWave{0%,17%,100%{opacity:.4;transform:translateY(0) scale(1);text-shadow:none}34%,54%{opacity:1;transform:translateY(-5px) scale(1.035);text-shadow:0 0 20px color-mix(in srgb,var(--sca-motion) 35%,transparent)}}
 @keyframes ipPlannerCopyIn{from{opacity:0;transform:translateY(8px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
-@media(max-width:640px){.ip-planner-route-heading{padding:18px 14px}.ip-planner-brand-animation{gap:8px}.ip-planner-letters{font-size:clamp(2.5rem,15vw,3.8rem)}.ip-planner-route-heading h1{font-size:clamp(1.55rem,7vw,2.15rem)}}
-@media(prefers-reduced-motion:reduce){.ip-planner-route-heading{opacity:1;transform:none;filter:none}html.sca-intro-complete .ip-planner-route-heading,html.sca-intro-complete .ip-planner-route-heading p,html.sca-intro-complete .ip-planner-route-heading h1,html.sca-intro-complete .ip-planner-route-heading span,html.sca-intro-complete .ip-planner-app-title{animation:none;opacity:1;transform:none;filter:none}.ip-planner-letters span{animation:none;opacity:.8;transform:none;text-shadow:none}}
+@media(max-width:640px){.ip-planner-route-heading{padding:18px 14px}.ip-planner-brand-animation{gap:4px;margin-bottom:10px}.ip-planner-letters{font-size:clamp(2.6rem,15vw,3.8rem)}.ip-planner-route-heading h1{font-size:clamp(1.55rem,7vw,2.15rem);overflow-wrap:anywhere}.ip-planner-route-heading>span{overflow-wrap:anywhere}}
+@media(prefers-reduced-motion:reduce){.ip-planner-route-heading{opacity:1;transform:none;filter:none}html.sca-intro-complete .ip-planner-route-heading,html.sca-intro-complete .ip-planner-route-heading p,html.sca-intro-complete .ip-planner-route-heading h1,html.sca-intro-complete .ip-planner-route-heading>span,html.sca-intro-complete .ip-planner-app-title{animation:none;opacity:1;transform:none;filter:none}.ip-planner-letters span{animation:none;opacity:.8;transform:none;text-shadow:none}}
