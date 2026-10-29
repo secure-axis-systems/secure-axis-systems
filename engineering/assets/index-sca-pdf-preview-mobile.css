@@ -173,3 +173,6 @@ body.ip-camera-route #root #reports .camera-plan-heading{scroll-margin-top:110px
 .install-app-button{white-space:nowrap;min-height:42px}@media(max-width:760px){.header-actions{display:flex;flex-wrap:wrap;gap:8px}.install-app-button{min-height:44px;padding-inline:12px}}
 
 @media(max-width:400px){.install-app-button{width:100%;white-space:normal}.header-actions{width:100%}}
+
+/* Staggered hero copy reveal after the SCA intro. */
+html.sca-intro-complete .hero-copy .status-pill{animation:scaPageTextIn .55s ease both}html.sca-intro-complete .hero-copy h2{animation:scaPageTextIn .62s cubic-bezier(.2,.7,.2,1) .12s both}html.sca-intro-complete .hero-copy>p{animation:scaPageTextIn .62s cubic-bezier(.2,.7,.2,1) .24s both}html.sca-intro-complete .hero-copy .cta-row{animation:scaPageTextIn .62s cubic-bezier(.2,.7,.2,1) .36s both}@keyframes scaPageTextIn{from{opacity:0;transform:translateY(10px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}@media(prefers-reduced-motion:reduce){html.sca-intro-complete .hero-copy .status-pill,html.sca-intro-complete .hero-copy h2,html.sca-intro-complete .hero-copy>p,html.sca-intro-complete .hero-copy .cta-row{animation:none;opacity:1;filter:none;transform:none}}
