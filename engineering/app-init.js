@@ -29,8 +29,8 @@ function mountCameraModeSwitch(){
   }));
  }else{
   const links=mode.querySelectorAll("a");
-  if(links[0])links[0].textContent=document.documentElement.lang==="ar"?"كاميرات IP":"IP camera planner";
-  if(links[1])links[1].textContent=document.documentElement.lang==="ar"?"كاميرات Analog":"Analog camera planner";
+  if(links[0]){const label=document.documentElement.lang==="ar"?"كاميرات IP":"IP camera planner";if(links[0].textContent!==label)links[0].textContent=label;}
+  if(links[1]){const label=document.documentElement.lang==="ar"?"كاميرات Analog":"Analog camera planner";if(links[1].textContent!==label)links[1].textContent=label;}
  }
  return true;
 }
