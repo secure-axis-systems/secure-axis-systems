@@ -70,3 +70,5 @@
 .sca-start-line span{background:#B0D7D8;box-shadow:0 0 12px #B0D7D8}
 @media(max-width:760px){.camera-mode-switch{width:100%;display:grid;grid-template-columns:1fr 1fr;margin-bottom:14px}.camera-mode-switch a{font-size:.78rem;padding:9px 6px}}
 @media(prefers-reduced-motion:reduce){.camera-mode-transition-card,.camera-mode-transition-card i{animation:none}.camera-mode-transition{transition:none}}
+
+.sca-overline{color:#B0D7D8!important}.sca-caption{color:#B0D7D8!important}.camera-transition-icon{display:block;width:64px;height:64px;margin:0 auto 10px}
