@@ -39,7 +39,7 @@ function mountCameraModeSwitch(){
  }
  return true;
 }
-function mountHeroMark(){const hero=document.querySelector(".hero-panel");if(!hero||hero.querySelector(".sca-hero-mark"))return;const mark=document.createElement("div");mark.className="sca-hero-mark";mark.setAttribute("aria-hidden","true");["S","C","A"].forEach((letter,index)=>{const span=document.createElement("span");span.textContent=letter;span.style.setProperty("--letter-index",index);mark.append(span)});hero.append(mark)}
+function mountHeroMark(){const hero=document.querySelector(".hero-panel");if(!hero||hero.querySelector(".sca-hero-mark"))return;const mark=document.createElement("div");mark.className="sca-hero-mark";mark.setAttribute("aria-hidden","true");const letters=document.createElement("div");letters.className="sca-hero-letters";["S","C","A"].forEach((letter,index)=>{const span=document.createElement("span");span.textContent=letter;span.style.setProperty("--letter-index",index);letters.append(span)});const subtitle=document.createElement("div");subtitle.className="sca-hero-subtitle";subtitle.textContent="Security Calculator app";mark.append(letters,subtitle);hero.append(mark)}
 const cameraModeObserver=new MutationObserver(()=>{mountCameraModeSwitch();mountHeroMark()});
 cameraModeObserver.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["lang"]});
 mountCameraModeSwitch();mountHeroMark();
