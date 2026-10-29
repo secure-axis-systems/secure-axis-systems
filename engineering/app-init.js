@@ -86,4 +86,4 @@ function syncIpPlannerRoute(){
 window.addEventListener("hashchange",()=>{ipPlannerRouteScrolled=false;syncIpPlannerRoute()});
 const cameraModeObserver=new MutationObserver(()=>{mountCameraModeSwitch();mountHeroMark();syncIpPlannerRoute()});
 cameraModeObserver.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["lang"]});
-mountCameraModeSwitch();mountHeroMark();mountInstall();syncIpPlannerRoute();
+mountCameraModeSwitch();mountHeroMark();mountInstall();mountLanguageToggle();syncIpPlannerRoute();
