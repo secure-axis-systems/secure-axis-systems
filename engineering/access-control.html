@@ -25,17 +25,19 @@
 @media(max-width:540px){.wrap{width:calc(100% - 18px);padding-top:8px}.header{top:5px;padding:10px;align-items:flex-start;flex-wrap:wrap}.brand{min-width:0;flex:1}.brand-mark{width:38px;height:38px}.header-tools{justify-content:flex-end}.header-tools button{min-height:38px;padding:7px 9px;font-size:.78rem}.nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;margin:10px 0 14px}.nav a{min-width:0;min-height:41px;padding:6px 4px;text-align:center;font-size:.72rem}.fields{grid-template-columns:1fr}.wide{grid-column:auto}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.actions .btn{flex:1 1 45%}.report-grid{grid-template-columns:1fr}.diagram{grid-template-columns:1fr 1fr}}
 @media print{body{background:white;color:#111}.wrap,.header,.nav,.hero,.section-title,.layout,#bomSection,#diagramSection,#scheduleSection,#commissionSection,.footer{display:none!important}.print-root{display:block!important;padding:0 10px;color:#111}.print-root *{color:#111!important;background:white!important;box-shadow:none!important}.print-root h1{font-size:22px}.print-root table{min-width:0;font-size:9px}.print-root th,.print-root td{padding:5px;border:1px solid #aaa!important}.print-root .report-cell{border:1px solid #aaa!important}@page{size:A4;margin:12mm}}
 @keyframes sca-arrive{0%{opacity:1;visibility:visible}75%{opacity:1}100%{opacity:0;visibility:hidden}}@keyframes sca-letter{0%{opacity:0;transform:translateY(16px);filter:blur(7px)}100%{opacity:1;transform:none;filter:none}}.access-intro{position:fixed;inset:0;z-index:100;background:#0b1118;color:#f4fbfb;display:grid;place-items:center;animation:sca-arrive 1.7s ease forwards;pointer-events:none}.access-intro-inner{text-align:center}.access-intro strong{display:block;font-size:clamp(3.4rem,12vw,7rem);letter-spacing:.18em;color:#B0D7D8}.access-intro strong span{display:inline-block;animation:sca-letter .38s both}.access-intro strong span:nth-child(2){animation-delay:.18s}.access-intro strong span:nth-child(3){animation-delay:.36s}.access-intro small{display:block;margin-top:4px;font-size:clamp(.9rem,2vw,1.2rem);letter-spacing:.14em;opacity:0;animation:sca-letter .42s .72s both}@media(prefers-reduced-motion:reduce){.access-intro{display:none}}
- .board-scroll{overflow-x:auto;padding:10px 0}.board-svg{display:block;width:100%;min-width:820px;height:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface2)}.board-svg text{font-family:Inter,"Segoe UI",Arial,sans-serif}.board-note-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}.board-note-links a{color:var(--accent);text-decoration:underline;font-weight:700}\n</style>
+ .board-scroll{overflow-x:auto;padding:10px 0}.board-svg{display:block;width:100%;min-width:820px;height:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface2)}.board-svg text{font-family:Inter,"Segoe UI",Arial,sans-serif}.board-note-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}.board-note-links a{color:var(--accent);text-decoration:underline;font-weight:700}\n
+#scheduleSection .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}#scheduleSection table{min-width:1020px;table-layout:fixed}#scheduleSection th,#scheduleSection td{white-space:normal;overflow-wrap:anywhere;word-break:normal;line-height:1.45}#scheduleSection th:nth-child(1){width:9%}#scheduleSection th:nth-child(2){width:20%}#scheduleSection th:nth-child(3){width:12%}#scheduleSection th:nth-child(4),#scheduleSection th:nth-child(5){width:20%}#scheduleSection th:nth-child(6){width:19%}.report-schedule-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.report-schedule-wrap .report-table{min-width:880px}.report-table{table-layout:fixed}.report-table th,.report-table td{white-space:normal;overflow-wrap:anywhere;line-height:1.45}.board-svg{max-width:100%;direction:ltr;overflow:visible}.board-svg text{unicode-bidi:plaintext}
+</style>
 </head>
 <body>
 <div class="access-intro" id="accessIntro" aria-hidden="true"><div class="access-intro-inner"><strong><span>S</span><span>C</span><span>A</span></strong><small data-en="ACCESS CONTROL PLANNER" data-ar="مخطط التحكم في الدخول">ACCESS CONTROL PLANNER</small></div></div>
 <div class="wrap">
 <header class="header">
-<a class="brand" href="./index.html#calculators"><span class="brand-mark">SCA</span><span><small>SCA · SECURITY CALCULATOR APP</small><strong data-en="Access Control Planner" data-ar="مخطط التحكم في الدخول">Access Control Planner</strong></span></a>
+<a class="brand" href="./index.html#ipCameraPlanner"><span class="brand-mark">SCA</span><span><small>SCA · SECURITY CALCULATOR APP</small><strong data-en="Access Control Planner" data-ar="مخطط التحكم في الدخول">Access Control Planner</strong></span></a>
 <div class="header-tools"><button id="themeBtn">Dark mode</button><button id="langBtn" aria-label="Switch language">العربية</button></div>
 </header>
 <nav class="nav" aria-label="SCA sections">
-<a href="./index.html#calculators" data-en="IP cameras" data-ar="كاميرات IP">IP cameras</a>
+<a href="./index.html#ipCameraPlanner" data-en="IP cameras" data-ar="كاميرات IP">IP cameras</a>
 <a href="./analog.html" data-en="Analog cameras" data-ar="كاميرات Analog">Analog cameras</a>
 <a class="active" href="./access-control.html" data-en="Access control" data-ar="Access Control">Access control</a>
 </nav>
@@ -154,10 +156,10 @@ function getData(){
 function boardPlan(d){
  const ar=lang==="ar",p=d.profile,doors=d.doors;
  let label="",count="",detail="",capacity=0,overflow="";
- if(p==="mp1502"){capacity=d.capacity;const exp=Math.ceil(Math.max(0,doors-2)/capacity);label="Mercury MP1502";count="1 MP1502 + "+exp+" compatible expansion board(s)";detail=ar?"MP1502 يتحكم أصليًا في بابين ويقبل التوسع حتى 64 بابًا/فتحة مع وحدات متوافقة. العدد الافتراضي هنا يفترض وحدات توسعة لبابين؛ تحقق من توافق موديل MR52 وإصدار النظام قبل الجمع بينهما.":"MP1502 natively controls 2 openings and supports expansion up to 64 with compatible modules. This estimate assumes "+capacity+" openings per expansion; confirm MR52 model/generation compatibility before mixing.";
- }else if(p==="mp1501"){capacity=1;const ext=Math.max(0,doors-1);label="Mercury MP1501 + MR62e";count="1 MP1501 + "+ext+" MR62e door controller(s)";detail=ar?"MP1501 لباب واحد على اللوحة، ويمكن توسيعه حتى 16 وحدة MR62e (إجمالي 17 بابًا) أو وحدات Serial I/O متوافقة حسب تصميم النظام.":"MP1501 has 1 native opening and can expand with up to 16 MR62e door controllers (17 total openings), or compatible serial I/O modules according to the system design.";if(doors>17)overflow=ar?"العدد يتجاوز 17 بابًا لهذا التكوين؛ قسّم النظام أو اختر هندسة معتمدة أخرى.":"This configuration exceeds 17 openings; split the system or select another supported architecture.";
- }else if(p==="mr52"){capacity=2;const n=Math.ceil(doors/2);label="Mercury host controller + MR52";count="1 compatible host + "+n+" MR52 board(s)";detail=ar?"كل MR52 يخدم بابين، وقارئين، ومدخلات/ريلايات حسب مراجعة البوردة. يحتاج كنترولر Mercury مضيفًا متوافقًا؛ لا تفترض توافق MR52 مع MP1501/MP1502 دون مراجعة دليل الموديل وإصدار النظام.":"Each MR52 serves 2 doors with reader, input, and relay I/O according to its board revision. It requires a compatible Mercury host controller; do not assume MR52 compatibility with MP1501/MP1502 without checking exact manuals and system generation.";
- }else if(p==="bosch9512"||p==="bosch8512"||p==="bosch6512"){capacity=1;const max=p==="bosch9512"?32:(p==="bosch8512"?8:4),name=p==="bosch9512"?"B9512G":(p==="bosch8512"?"B8512G":"B6512");label="Bosch "+name+" + B901";count="1 "+name+" + "+doors+" B901 module(s)";detail=ar?"كل B901 مخصص لباب واحد ويظهر كجهاز على ناقل SDI/SDI2. تحقق من عناوين الوحدات وحد النظام؛ السعة القصوى الموثقة لهذا المضيف "+max+" وحدات B901.":"One B901 module serves one door and is addressed on the SDI/SDI2 bus. Check module addressing and panel limits; this host supports up to "+max+" B901 modules.";if(doors>max)overflow=ar?"العدد يتجاوز حد وحدات B901 لهذا الكنترولر؛ قسّم على أكثر من لوحة حسب دليل Bosch.":"Door count exceeds the B901 module limit for this panel; split across panels per the Bosch manual.";
+ if(p==="mp1502"){capacity=d.capacity;const exp=Math.ceil(Math.max(0,doors-2)/capacity);label="Mercury MP1502";count=ar?"1 لوحة MP1502 + "+exp+" لوحة/وحدة توسعة متوافقة":"1 MP1502 + "+exp+" compatible expansion board(s)";detail=ar?"MP1502 يتحكم أصليًا في بابين ويقبل التوسع حتى 64 بابًا/فتحة مع وحدات متوافقة. العدد الافتراضي هنا يفترض وحدات توسعة لبابين؛ تحقق من توافق موديل MR52 وإصدار النظام قبل الجمع بينهما.":"MP1502 natively controls 2 openings and supports expansion up to 64 with compatible modules. This estimate assumes "+capacity+" openings per expansion; confirm MR52 model/generation compatibility before mixing.";
+ }else if(p==="mp1501"){capacity=1;const ext=Math.max(0,doors-1);label="Mercury MP1501 + MR62e";count=ar?"1 لوحة MP1501 + "+ext+" وحدة تحكم أبواب MR62e":"1 MP1501 + "+ext+" MR62e door controller(s)";detail=ar?"MP1501 لباب واحد على اللوحة، ويمكن توسيعه حتى 16 وحدة MR62e (إجمالي 17 بابًا) أو وحدات Serial I/O متوافقة حسب تصميم النظام.":"MP1501 has 1 native opening and can expand with up to 16 MR62e door controllers (17 total openings), or compatible serial I/O modules according to the system design.";if(doors>17)overflow=ar?"العدد يتجاوز 17 بابًا لهذا التكوين؛ قسّم النظام أو اختر هندسة معتمدة أخرى.":"This configuration exceeds 17 openings; split the system or select another supported architecture.";
+ }else if(p==="mr52"){capacity=2;const n=Math.ceil(doors/2);label="Mercury host controller + MR52";count=ar?"مضيف Mercury متوافق واحد + "+n+" لوحة MR52":"1 compatible host + "+n+" MR52 board(s)";detail=ar?"كل MR52 يخدم بابين، وقارئين، ومدخلات/ريلايات حسب مراجعة البوردة. يحتاج كنترولر Mercury مضيفًا متوافقًا؛ لا تفترض توافق MR52 مع MP1501/MP1502 دون مراجعة دليل الموديل وإصدار النظام.":"Each MR52 serves 2 doors with reader, input, and relay I/O according to its board revision. It requires a compatible Mercury host controller; do not assume MR52 compatibility with MP1501/MP1502 without checking exact manuals and system generation.";
+ }else if(p==="bosch9512"||p==="bosch8512"||p==="bosch6512"){capacity=1;const max=p==="bosch9512"?32:(p==="bosch8512"?8:4),name=p==="bosch9512"?"B9512G":(p==="bosch8512"?"B8512G":"B6512");label="Bosch "+name+" + B901";count=ar?"لوحة Bosch "+name+" واحدة + "+doors+" وحدة B901":"1 "+name+" + "+doors+" B901 module(s)";detail=ar?"كل B901 مخصص لباب واحد ويظهر كجهاز على ناقل SDI/SDI2. تحقق من عناوين الوحدات وحد النظام؛ السعة القصوى الموثقة لهذا المضيف "+max+" وحدات B901.":"One B901 module serves one door and is addressed on the SDI/SDI2 bus. Check module addressing and panel limits; this host supports up to "+max+" B901 modules.";if(doors>max)overflow=ar?"العدد يتجاوز حد وحدات B901 لهذا الكنترولر؛ قسّم على أكثر من لوحة حسب دليل Bosch.":"Door count exceeds the B901 module limit for this panel; split across panels per the Bosch manual.";
  }else{capacity=d.capacity;const n=Math.ceil(doors/capacity);label=$("controllerBrand").value+" · "+($("controllerModel").value.trim()|| (ar?"تكوين مخصص":"custom profile"));count=n+" "+(ar?"وحدة تحكم حسب سعة":"controller unit(s) at")+" "+capacity+" "+(ar?"باب/وحدة":"doors/unit");detail=ar?"حساب عام حسب سعة الأبواب التي أدخلها المهندس؛ لا يفترض موديل توسعة معينًا.":"Generic sizing from the engineer-entered door capacity; no specific expansion model is assumed."}
  return {label,count,detail,capacity,overflow,units:d.controllers,profile:p};
 }
@@ -212,58 +214,125 @@ function svgNode(tag,attrs,parent){
  Object.entries(attrs||{}).forEach(([key,value])=>el.setAttribute(key,String(value)));
  if(parent)parent.appendChild(el);return el;
 }
+function doorTerminalMap(d,i){
+ const en=lang==="en",pair=(n)=>"IN"+n;
+ if(d.profile==="mp1502"){
+  if(i<=2)return {reader:(i===1?"TB1603":"TB1601")+" · "+(d.rpd===2?(en?"two readers":"قارئان")+" · ":"")+$("readerProtocol").value,contact:pair(i===1?1:3),rex:pair(i===1?2:4),relay:"TB1800 · OUT"+i};
+  const module=Math.ceil((i-2)/d.capacity);
+  return {reader:(en?"Expansion ":"توسعة ")+module+" · "+(en?"reader terminals per module":"أطراف القارئ حسب الموديل"),contact:en?"Expansion input · door contact":"مدخل التوسعة · حساس الباب",rex:en?"Expansion input · REX":"مدخل التوسعة · طلب الخروج",relay:en?"Expansion relay per module":"ريلاي التوسعة حسب الموديل"};
+ }
+ if(d.profile==="mp1501"){
+  if(i===1)return {reader:"TB1301 · "+$("readerProtocol").value,contact:"TB1400 · IN1",rex:"TB1400 · IN2",relay:"TB1401 · K1"};
+  return {reader:"MR62e · "+(en?"reader terminals":"أطراف القارئ"),contact:"MR62e · "+(en?"assigned input":"مدخل مخصص"),rex:"MR62e · "+(en?"assigned input":"مدخل مخصص"),relay:"MR62e · "+(en?"assigned relay":"ريلاي مخصص")};
+ }
+ if(d.profile==="mr52"){
+  const slot=(i-1)%2+1,board=Math.ceil(i/2),contact=slot===1?1:3,rex=contact+1;
+  return {reader:"MR52 "+board+" · "+(slot===1?"TB8":"TB9")+" · "+$("readerProtocol").value,contact:"MR52 "+board+" · TB1–4 IN"+contact,rex:"MR52 "+board+" · TB1–4 IN"+rex,relay:"MR52 "+board+" · TB10–12 RLY"+slot};
+ }
+ if(["bosch9512","bosch8512","bosch6512"].includes(d.profile))return {reader:"B901 "+i+" · "+$("readerProtocol").value,contact:"B901 "+i+" · ZN+ / COM",rex:"B901 "+i+" · REX input",relay:"B901 "+i+" · C / NC / NO"};
+ return {reader:"R-"+String(i).padStart(2,"0")+" · "+$("readerProtocol").value,contact:"IN-DC-"+String(i).padStart(2,"0"),rex:"IN-REX-"+String(i).padStart(2,"0"),relay:en?"LOCAL · rated output":"خرج ريلاي محلي مناسب"};
+}
+function boardTerminalGroups(d){
+ const en=lang==="en";
+ if(d.profile==="mp1502")return [
+  ["TB1603",en?"Reader 1":"قارئ 1","GND · DAT/D0/TR− · CLK/D1/TR+ · BZR · LED · VO"],
+  ["TB1601",en?"Reader 2":"قارئ 2","GND · DAT/D0/TR− · CLK/D1/TR+ · BZR · LED · VO"],
+  ["TB1800",en?"Relay outputs 1–2":"مخارج ريلاي 1–2","OUT1 NO/C/NC · OUT2 NO/C/NC"],
+  ["TB1802",en?"Relay outputs 3–4":"مخارج ريلاي 3–4","OUT3 NO/C/NC · OUT4 NO/C/NC"],
+  ["TB1703",en?"Inputs 1–2":"المداخل 1–2","IN1 · IN2"],
+  ["TB1701",en?"Inputs 3–4":"المداخل 3–4","IN3 · IN4"],
+  ["TB1705",en?"Inputs 5–6":"المداخل 5–6","IN5 · IN6"],
+  ["TB1707",en?"Inputs 7–8":"المداخل 7–8","IN7 · IN8"]
+ ];
+ if(d.profile==="mp1501")return [
+  ["TB1301",en?"Reader 1":"قارئ 1","GND · DAT/D0/TR− · CLK/D1/TR+ · BZR · LED · VO"],
+  ["TB1300",en?"Reader 2":"قارئ 2","GND · DAT/D0/TR− · CLK/D1/TR+ · BZR · LED · VO"],
+  ["TB1400",en?"Inputs":"المداخل",en?"IN1 · IN2 · assign contact / REX":"IN1 · IN2 · تعيين حساس الباب وطلب الخروج"],
+  ["TB1401",en?"Relay outputs":"مخارج الريلاي","K1 NO/C/NC · K2 NO/C/NC"],
+  ["TB300",en?"Power / auxiliary":"التغذية / المساعدة",en?"12V IN · AUX · GND · PoE+ per approved design":"12V IN · AUX · GND · PoE+ حسب التصميم المعتمد"]
+ ];
+ if(d.profile==="mr52")return [
+  ["TB1–TB4",en?"Monitored inputs":"مداخل مراقبة",en?"IN1–IN8 · assign contact / REX by board setup":"IN1–IN8 · تعيين الحساس وطلب الخروج حسب إعداد البوردة"],
+  ["TB5",en?"Status inputs":"مداخل الحالة","TMP · GND · PFL · GND"],
+  ["TB6",en?"RS-485 host bus":"ناقل RS-485 للمضيف","TR+ · TR− · NC · NC · GND"],
+  ["TB7",en?"Board power":"تغذية البوردة","VIN · VOUT · GND"],
+  ["TB8 / TB9",en?"Reader interfaces 1 / 2":"واجهتا القارئ 1 / 2","LED · DATA · CLK · BZR · GND"],
+  ["TB10–TB12",en?"Door relay outputs":"مخارج ريلاي الأبواب","RLY1–RLY6 · NC / C / NO"]
+ ];
+ if(["bosch9512","bosch8512","bosch6512"].includes(d.profile))return [
+  ["Bosch host",en?"SDI2 bus to B901":"ناقل SDI2 إلى B901","PWR+/R · A/Y · B/G · COM/B"],
+  ["B901 reader",en?"Reader terminals":"أطراف القارئ","T+ · COM · ZN+ · RTE · REX · 12V · 5.2V"],
+  ["B901 data",en?"Reader signals":"إشارات القارئ","DATA0 · DATA1 · BUZZER · LED"],
+  ["B901 relay",en?"Lock relay":"ريلاي القفل","NC · C · NO · rated dry contacts"]
+ ];
+ return [
+  [en?"READER":"القارئ",en?"Reader port":"منفذ القارئ","OSDP A/B or Wiegand D0/D1"],
+  [en?"INPUT":"المداخل",en?"Door inputs":"مداخل الأبواب","IN-DC · IN-REX"],
+  [en?"OUTPUT":"المخارج",en?"Lock relay":"ريلاي القفل","NO / C / NC · "+(en?"check exact board manual":"راجع دليل البوردة المحدد")],
+  [en?"POWER":"التغذية",en?"Approved PSU":"مزود طاقة معتمد",en?"Voltage, current and fusing by device rating":"الجهد والتيار والفيوز حسب تصنيف الجهاز"]
+ ];
+}
 function renderBoardDrawing(d,plan){
  const host=$("boardDrawing");host.replaceChildren();
- if(d.protocol==="Standalone"){const p=document.createElement("p");p.className="sub";p.textContent=lang==="en"?"Standalone mode has no central controller board; the drawing shows door devices grouped by local reader relay.":"الوضع المستقل لا يستخدم لوحة كنترولر مركزية؛ الرسم يوضح الأجهزة حسب ريلاي القارئ المحلي.";host.append(p)}
- const shown=Math.min(d.doors,12),height=210+shown*88;
- const svg=svgNode("svg",{class:"board-svg",viewBox:"0 0 1100 "+height,role:"img","aria-label":lang==="en"?"Calculated access control board and door wiring":"رسم بوردة وتوصيلات التحكم في الدخول"});
- svgNode("rect",{x:12,y:12,width:1076,height:height-24,rx:18,fill:"var(--surface2)",stroke:"var(--line)"},svg);
- const boardTitle=d.protocol==="Standalone"?(lang==="en"?"LOCAL READER RELAYS":"ريلاي قارئ مستقل"):plan.label;
- svgNode("text",{x:38,y:43,fill:"var(--ink)","font-size":20,"font-weight":800},svg).textContent=boardTitle;
- const bx=32,by=58,bw=265,bh=120;
- svgNode("rect",{x:bx,y:by,width:bw,height:bh,rx:12,fill:"var(--accent2)",stroke:"var(--accent)","stroke-width":2},svg);
- const boardLines=d.profile==="bosch9512"||d.profile==="bosch8512"||d.profile==="bosch6512"
-  ?(lang==="en"?["Host: Bosch control panel","B901 bus: SDI2 PWR / A / B / COM","Door I/O: Reader · RTE / REX · ZN+","Lock output: relay C / NC / NO"]:["اللوحة: كنترولر Bosch","ناقل B901: SDI2 PWR / A / B / COM","أجهزة الباب: Reader · RTE / REX · ZN+","خرج القفل: ريلاي C / NC / NO"])
-  :d.profile==="mr52"
-   ?(lang==="en"?["Host: compatible Mercury EP","MR52 I/O: 2 doors / 2 readers","Inputs & relays per board revision","SIO bus · local board supply"]:["المضيف: Mercury EP متوافق","MR52: بابان / قارئان","مداخل وريلايات حسب مراجعة البوردة","ناقل SIO · تغذية محلية"])
-   :d.profile==="mp1502"
-    ?(lang==="en"?["MP1502 main controller · 2 native doors","4 reader ports · 8 input points","4 output relays · ETH / USB / SIO","Compatible expansion to project size"]:["MP1502 · بابان أساسيان","4 منافذ قارئ · 8 نقاط دخل","4 مخارج ريلاي · ETH / USB / SIO","توسعة متوافقة حسب حجم المشروع"])
-   :d.profile==="mp1501"
-    ?(lang==="en"?["MP1501 main controller · 1 native door","2 reader ports · 2 inputs / 2 outputs","MR62e network door modules (if selected)","PoE+ / local PSU per approved design"]:["MP1501 · باب أساسي واحد","منفذا قارئ · مدخلاَن / مخرجان","وحدات أبواب MR62e عند اختيارها","PoE+ / مزود محلي حسب التصميم"])
-   :(lang==="en"?["Controller / expansion boards","Reader ports: "+Math.min(d.readers,4)+" shown","Door contact + REX input groups","Lock relay groups · PSU / network"]:["كنترولر / وحدات توسعة","منافذ قارئ: "+Math.min(d.readers,4)+" ظاهرة","مجموعات دخل حساس الباب وREX","مخارج ريلاي القفل · باور / شبكة"]);
- boardLines.forEach((line,i)=>svgNode("text",{x:bx+13,y:by+25+i*25,fill:"var(--ink)","font-size":13,"font-weight":i===0?700:500},svg).textContent=line);
- const moduleTitle=lang==="en"?"Calculated board count: ":"عدد البوردات المحسوب: ";
- svgNode("text",{x:bx,y:by+bh+26,fill:"var(--accent)","font-size":13,"font-weight":700},svg).textContent=moduleTitle+plan.count;
- const busX=333;svgNode("path",{d:"M 297 130 H "+busX+" V "+(by+bh+60),fill:"none",stroke:"var(--accent)","stroke-width":3},svg);
- const readerDesc=$("readerProtocol").value==="OSDP"?"OSDP A/B":$("readerProtocol").value==="Wiegand"?"Wiegand D0/D1":"Local relay";
- for(let i=1;i<=shown;i++){
-  const y=205+(i-1)*88;
-  svgNode("path",{d:"M "+busX+" "+y+" H 371",fill:"none",stroke:"var(--accent)","stroke-width":2},svg);
-  svgNode("rect",{x:371,y:y-28,width:698,height:72,rx:10,fill:"var(--surface)",stroke:"var(--line)"},svg);
-  const db=doorBoardLabel(d,i);
-  svgNode("text",{x:385,y:y-7,fill:"var(--accent)","font-size":13,"font-weight":800},svg).textContent="D-"+String(i).padStart(2,"0")+" · "+db;
-  const boxes=[
-   ["READER",readerDesc],
-   ["CONTACT","IN-DC-"+String(i).padStart(2,"0")],
-   ["REX","IN-REX-"+String(i).padStart(2,"0")],
-   ["BREAK GLASS",lang==="en"?"Emergency release":"تحرير طوارئ"],
-   ["LOCK / PSU",selectedLabel("lockType")+" · "+$("lockVoltage").value+"V"]
-  ];
-  boxes.forEach((box,j)=>{
-   const x=385+j*133;
-   svgNode("rect",{x,y:y+3,width:124,height:31,rx:6,fill:j===4?"var(--accent2)":"var(--surface2)",stroke:"var(--line)"},svg);
-   svgNode("text",{x:x+6,y:y+16,fill:"var(--muted)","font-size":8,"font-weight":800},svg).textContent=box[0];
-   svgNode("text",{x:x+6,y:y+28,fill:"var(--ink)","font-size":9},svg).textContent=box[1];
+ if(d.protocol==="Standalone"){const p=document.createElement("p");p.className="sub";p.textContent=lang==="en"?"Standalone mode has no central controller board; the diagram shows the door signal path.":"الوضع المستقل لا يستخدم لوحة كنترولر مركزية؛ الرسم يوضح مسار إشارات الباب.";host.append(p)}
+ const shown=Math.min(d.doors,12),rowH=92,top=268,height=top+shown*rowH+45;
+ const svg=svgNode("svg",{class:"board-svg",viewBox:"0 0 1500 "+height,role:"img",direction:"ltr","aria-label":lang==="en"?"Model-specific board terminal layout and door wiring":"توزيع أطراف البوردة وتوصيلات الأبواب حسب الموديل"});
+ svg.style.direction="ltr";svg.style.width="100%";svg.style.height="auto";svg.style.display="block";
+ svgNode("rect",{x:10,y:10,width:1480,height:height-20,rx:18,fill:"var(--surface2)",stroke:"var(--line)"},svg);
+ const en=lang==="en",title=d.protocol==="Standalone"?(en?"LOCAL READER RELAYS":"ريلاي قارئ مستقل"):plan.label;
+ const txt=(x,y,value,size=14,weight=500,color="var(--ink)",anchor="start")=>{const n=svgNode("text",{x,y,fill:color,"font-size":size,"font-weight":weight,"text-anchor":anchor,direction:"ltr","unicode-bidi":"plaintext"},svg);n.textContent=value;return n};
+ txt(34,43,title,21,800);
+ const bx=30,by=58,bw=510,bh=d.profile==="mp1502"?250:188,boardName=d.profile==="mp1502"?"Mercury MP1502":d.profile==="mp1501"?"Mercury MP1501":d.profile==="mr52"?"Mercury MR52":["bosch9512","bosch8512","bosch6512"].includes(d.profile)?"Bosch host + B901":"Controller board";
+ svgNode("rect",{x:bx,y:by,width:bw,height:bh,rx:16,fill:"var(--surface)",stroke:"var(--accent)","stroke-width":3},svg);
+ txt(bx+18,by+30,boardName,17,800,"var(--accent)");
+ const groups=boardTerminalGroups(d);
+ const terminal=(g,x,y,w,h,fs=10)=>{svgNode("rect",{x,y,width:w,height:h,rx:6,fill:"var(--surface2)",stroke:"var(--line)"},svg);txt(x+6,y+15,g[0]+" · "+g[1],fs,800,"var(--ink)");const maxLen=Math.max(10,Math.floor((w-12)/(fs*.58))),raw=String(g[2]),lines=[];for(let i=0;i<raw.length;i+=maxLen)lines.push(raw.slice(i,i+maxLen));const maxLines=Math.max(1,Math.floor((h-20)/10));lines.slice(0,maxLines).forEach((line,i)=>txt(x+6,y+30+i*10,line,fs-1,550,"var(--muted)"))};
+ if(d.profile==="mr52"){
+  txt(bx+15,by+53,en?"STATUS LEDS · A/B · 1–8 · TMP/PFL · R1/R2":"لمبات الحالة · A/B · 1–8 · TMP/PFL · R1/R2",9,750,"var(--muted)");
+  terminal(groups[0],bx+12,by+62,150,54,9);terminal(groups[1],bx+170,by+62,150,54,9);terminal(groups[2],bx+170,by+121,150,54,9);terminal(groups[4],bx+328,by+62,164,54,9);terminal(groups[3],bx+12,by+121,150,54,9);
+  svgNode("rect",{x:bx+170,y:by+121,width:70,height:54,rx:6,fill:"var(--surface2)",stroke:"var(--line)"},svg);txt(bx+176,by+137,"DIP 1–8",8,800);txt(bx+176,by+153,en?"switches":"مفاتيح",7,550,"var(--muted)");
+  terminal(groups[5],bx+248,by+121,244,54,9);
+  txt(bx+12,by+184,en?"Inputs · left":"المداخل · يسار",8,650,"var(--muted)");txt(bx+328,by+184,en?"Readers · right / relays · lower-right":"القراء · يمين / الريلايات · أسفل اليمين",8,650,"var(--muted)");
+ }else if(d.profile==="mp1501"){
+  groups.forEach((g,i)=>terminal(g,bx+12+i*98,by+57,92,68,8));
+  txt(bx+16,by+145,en?"Ethernet J1000 · DIP SW800 · status LEDs · USB J1201 · earth ground":"Ethernet J1000 · مفاتيح SW800 · لمبات الحالة · USB J1201 · أرضي",9,700,"var(--muted)");
+  txt(bx+16,by+163,en?"Terminal order follows the MP1501 hardware figure":"ترتيب الأطراف مطابق لتوزيع الشكل في دليل MP1501",8,550,"var(--muted)");
+ }else{
+  const cols=2,gw=235,gh=groups.length>4?47:48;
+  groups.forEach((g,i)=>{const col=i%cols,row=Math.floor(i/cols),x=bx+16+col*245,y=by+43+row*gh;
+   svgNode("rect",{x,y,width:gw,height:gh-5,rx:7,fill:"var(--surface2)",stroke:"var(--line)"},svg);
+   txt(x+8,y+16,g[0]+" · "+g[1],11,800,"var(--ink)");
+   const lines=String(g[2]).split(" · ");let current="",lineY=y+31;
+   for(const token of lines){const next=current?current+" · "+token:token;if(next.length>33&&current){txt(x+8,lineY,current,9,550,"var(--muted)");lineY+=12;current=token}else current=next}
+   if(current)txt(x+8,lineY,current,9,550,"var(--muted)");
   });
  }
- if(d.doors>shown)svgNode("text",{x:38,y:height-25,fill:"var(--muted)","font-size":13},svg).textContent=lang==="en"?(d.doors-shown)+" more doors are detailed in the complete schedule and PDF.":"باقي "+(d.doors-shown)+" أبواب موضحة في الجدول الكامل وملف PDF.";
+ txt(bx+18,by+bh+21,(en?"Calculated modules: ":"عدد الوحدات المحسوب: ")+plan.count,12,750,"var(--accent)");
+ const rx=570,cardW=900,colW=171,labels=en?["READER","DOOR CONTACT","REX","BREAK GLASS","LOCK / PSU"]:["القارئ","حساس الباب","طلب الخروج","كاسر الزجاج","القفل / التغذية"];
+ txt(rx,43,en?"DOOR CONNECTION MAP":"خريطة توصيل كل باب",14,800,"var(--accent)");
+ const reader=$("readerProtocol").value==="OSDP"?"OSDP A/B":$("readerProtocol").value==="Wiegand"?"Wiegand D0/D1":"Local relay";
+ for(let i=1;i<=shown;i++){
+  const y=top+(i-1)*rowH,db=doorBoardLabel(d,i);
+  svgNode("rect",{x:rx,y,width:cardW,height:80,rx:11,fill:"var(--surface)",stroke:"var(--line)"},svg);
+  txt(rx+12,y+21,"D-"+String(i).padStart(2,"0")+" · "+db,13,800,"var(--accent)");
+  const map=doorTerminalMap(d,i);const terminals=[map.reader,map.contact,map.rex,en?"Series egress circuit":"دائرة تحرير الطوارئ على التوالي",map.relay];
+  const values=[terminals[0],terminals[1],terminals[2],en?"Release as approved":"حسب دائرة التحرير المعتمدة",terminals[4]+" · "+selectedLabel("lockType")+" "+$("lockVoltage").value+"V"];
+  values.forEach((v,j)=>{const x=rx+10+j*colW;
+   svgNode("rect",{x,y:y+30,width:colW-7,height:40,rx:6,fill:j===4?"var(--accent2)":"var(--surface2)",stroke:"var(--line)"},svg);
+   txt(x+7,y+44,labels[j],9,800,"var(--muted)");
+   const display=v.length>26?v.slice(0,24)+"…":v;txt(x+7,y+61,display,9,600,"var(--ink)");
+  });
+  if(i<shown)svgNode("path",{d:"M "+(rx+cardW/2)+" "+(y+80)+" V "+(y+rowH),stroke:"var(--accent)","stroke-width":1.5,fill:"none"},svg);
+ }
+ if(d.doors>shown)txt(rx,top+shown*rowH+20,(d.doors-shown)+(en?" more doors are in the complete schedule.":" أبواب إضافية موضحة في الجدول الكامل."),12,600,"var(--muted)");
  host.append(svg);
  const note=$("boardPlanNote");note.replaceChildren();
  const text=document.createElement("span");text.textContent=plan.detail+(plan.overflow?" "+plan.overflow:"");note.append(text);
  const links=document.createElement("div");links.className="board-note-links";
- const refs=[["Mercury MP1502","https://www.mercury-security.com/products/mp1502/"],["Mercury MP1501","https://www.mercury-security.com/products/mp1501/"],["Mercury MR52","https://www.mercury-security.com/products/mr52/"],["Bosch B901 manual","https://cdn.commerce.boschsecurity.com/public/documents/B901_InGuide_Installation_Manual_enUS_18582745355.pdf"]];
+ const refs=[["Mercury MP1502","https://www.mercury-security.com/products/mp1502/"],["Mercury MP1501 manual","https://www.mercury-security.com/wp-content/uploads/2025/11/PLT-07669-A.4-Mercury-MP1501-Controller-Installation-and-Specifications.pdf"],["Mercury MR52-S3B manual","https://www.mercury-security.com/wp-content/uploads/2026/02/PLT-06451-A.3-Mercury-MR52-S3B-Reader-Interface-Installation-and-Specifications.pdf"],["Bosch B901 manual","https://cdn.commerce.boschsecurity.com/public/documents/B901_InGuide_Installation_Manual_enUS_18582745355.pdf"]];
  refs.forEach(([label,url])=>{const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=label;links.append(a)});note.append(links);
 }
+
 function render(){
  const d=getData(),plan=boardPlan(d);
  $("controllerQty").textContent=d.protocol==="Standalone"?(lang==="en"?"Standalone readers":"قراء مستقلون"):plan.count;
@@ -301,12 +370,13 @@ function makeReport(){
  const project=$("projectName").value.trim()||t("noProject"),engineer=$("engineerName").value.trim()||"—";
  const metrics=[[t("project"),project],[t("engineer"),engineer],[t("brand"),$("controllerBrand").value],[t("controllerModel"),$("controllerModel").value.trim()||"—"],[t("doors"),d.doors],[t("controllers"),board.count],[lang==="en"?"Board profile":"نوع البوردة",board.label],[t("readers"),d.readers],[t("lock"),selectedLabel("lockType")+" · "+$("lockBrand").value+($("lockModel").value.trim()?" · "+$("lockModel").value.trim():"")+" · "+$("lockVoltage").value+" V DC · "+$("lockCurrent").value+" A"],[t("protocol"),selectedLabel("readerProtocol")],[t("behavior"),selectedLabel("lockBehavior")],[t("controlLoad"),fmt(d.controlW*1.25,1)+" W"],[t("lockLoad"),fmt(d.lockW*1.25,1)+" W"],[t("controlBattery"),nextBattery(d.controlBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("lockBattery"),d.sameRail?(lang==="en"?"Shared control supply":"مشتركة مع مزود التحكم"):nextBattery(d.lockBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("date"),date]];
  const protocol=d.protocol;
- const tableRows=[];for(let i=1;i<=d.doors;i++)tableRows.push(["D-"+String(i).padStart(2,"0"),"R-"+String(i).padStart(2,"0")+" · "+selectedLabel("readerProtocol"),"L-"+String(i).padStart(2,"0"),"IN-DC-"+String(i).padStart(2,"0"),"IN-REX-"+String(i).padStart(2,"0"),d.protocol==="Standalone"?"LOCAL":doorBoardLabel(d,i)]);
+ const tableRows=[];for(let i=1;i<=d.doors;i++){const map=doorTerminalMap(d,i);tableRows.push(["D-"+String(i).padStart(2,"0"),map.reader,"L-"+String(i).padStart(2,"0"),map.contact,map.rex,d.protocol==="Standalone"?"LOCAL":doorBoardLabel(d,i)]);}
  const checks=[...document.querySelectorAll("#checks input")].map((el,i)=>[t("checks")[i],el.checked?t("checkStatus"):t("notChecked")]);
  return {project,engineer,date,metrics,tableRows,checks,bom:rowsData(d),wiring,board,boardSvg,d};
 }
 function buildReportHtml(data){
- const table='<table class="report-table"><thead><tr>'+["Door ID","Reader","Lock","Contact","REX","Controller"].map((x,i)=>'<th>'+(["رقم الباب","القارئ","القفل","الحساس","الخروج","الكنترولر"][i]||x)+'</th>').join("")+'</tr></thead><tbody>'+data.tableRows.map(r=>"<tr>"+r.map(x=>"<td>"+escapeHtml(x)+"</td>").join("")+"</tr>").join("")+"</tbody></table>";
+ const headers=lang==="en"?["Door ID","Reader","Lock","Contact","REX","Controller"]:["رقم الباب","القارئ","القفل","حساس الباب","طلب الخروج","الكنترولر"];
+ const table='<div class="table-wrap report-schedule-wrap"><table class="report-table"><thead><tr>'+headers.map(x=>'<th>'+x+'</th>').join("")+'</tr></thead><tbody>'+data.tableRows.map(r=>"<tr>"+r.map(x=>"<td>"+escapeHtml(x)+"</td>").join("")+"</tr>").join("")+"</tbody></table></div>";
  const cells=data.metrics.map(([a,b])=>'<div class="report-cell"><small>'+escapeHtml(a)+'</small><strong>'+escapeHtml(String(b))+'</strong></div>').join("");
  const bom='<h3>'+escapeHtml(t("item"))+'</h3><table class="report-table"><tbody>'+data.bom.map(([a,b])=>"<tr><td>"+escapeHtml(String(a))+"</td><td>"+escapeHtml(String(b))+"</td></tr>").join("")+"</tbody></table>";
  const checks='<h3>'+escapeHtml(lang==="en"?"Commissioning checks":"اختبارات التشغيل")+'</h3><table class="report-table"><tbody>'+data.checks.map(r=>"<tr><td>"+escapeHtml(r[0])+"</td><td>"+escapeHtml(r[1])+"</td></tr>").join("")+"</tbody></table>";
@@ -362,8 +432,8 @@ function drawReportPages(data){
    const from=(p-1)*perPage,to=Math.min(rows.length,from+perPage);
    ctx.fillStyle="#285f63";ctx.font="bold 22px Arial";ctx.textAlign=align;
    ctx.fillText((lang==="en"?"Door wiring and label schedule":"جدول توصيلات وملصقات الأبواب")+" · "+p+"/"+(pageCount-1),x,194);
-   const headings=rtl?["Controller","REX","Contact","Lock","Reader","Door"]:["Door","Reader","Lock","Contact","REX","Controller"];
-   const widths=[110,205,155,180,155,145],tableW=widths.reduce((a,b)=>a+b,0),left=rtl?W-margin-tableW:margin;
+   const headings=rtl?["الكنترولر","طلب الخروج","حساس الباب","القفل","القارئ","الباب"]:["Door","Reader","Lock","Contact","REX","Controller"];
+   const widths=[130,190,155,175,155,145],tableW=widths.reduce((a,b)=>a+b,0),left=rtl?W-margin-tableW:margin;
    let y=213;ctx.fillStyle="#e5eeee";ctx.fillRect(left,y,tableW,32);ctx.fillStyle="#284d50";ctx.font="bold 13px Arial";ctx.textAlign="left";
    let xx=left+7;headings.forEach((h,i)=>{ctx.fillText(h,xx,y+21);xx+=widths[i]});
    y+=32;ctx.font="13px Arial";
@@ -401,20 +471,22 @@ function drawReportPages(data){
   q.fillStyle="#285f63";q.font="bold 25px Arial";q.fillText(lang==="en"?"Calculated panel and door wiring":"رسم اللوحة وتوصيلات الأبواب",x,70);
   q.fillStyle="#172a3d";q.font="bold 20px Arial";q.fillText(data.project+" · "+data.board.label,x,110);
   q.fillStyle="#617786";q.font="16px Arial";q.fillText(data.board.count+" · "+(p+1)+"/"+mapPages,x,143);
-  q.fillStyle="#e3f0f0";q.strokeStyle="#427F82";q.lineWidth=2;q.fillRect(margin,165,W-2*margin,115);q.strokeRect(margin,165,W-2*margin,115);
-  q.fillStyle="#172a3d";q.font="bold 19px Arial";q.fillText(data.board.label,x,198);
-  q.font="15px Arial";q.fillText(String(data.board.detail).slice(0,145),x,230);
-  const from=0,to=Math.min(data.d.doors,12);
+  q.fillStyle="#e3f0f0";q.strokeStyle="#427F82";q.lineWidth=2;const mapPanelH=Math.max(170,241+Math.ceil(boardTerminalGroups(data.d).length/2)*38+10-165);q.fillRect(margin,165,W-2*margin,mapPanelH);q.strokeRect(margin,165,W-2*margin,mapPanelH);
+  q.fillStyle="#172a3d";q.font="bold 19px Arial";q.fillText(data.board.label,x,195);
+  q.font="14px Arial";q.fillText((lang==="en"?"Panel terminal layout · ":"توزيع أطراف اللوحة · ")+String(data.board.detail).slice(0,118),x,224);
+  const banks=boardTerminalGroups(data.d),bankW=(W-2*margin-28)/2,bankH=38;
+  banks.forEach((bank,i)=>{const col=i%2,row=Math.floor(i/2),bx=margin+12+col*(bankW+4),by=241+row*bankH;q.fillStyle="#fff";q.strokeStyle="#d6e2e5";q.fillRect(bx,by,bankW-8,bankH-4);q.strokeRect(bx,by,bankW-8,bankH-4);q.fillStyle="#285f63";q.font="bold 11px Arial";q.textAlign="left";q.fillText(bank[0]+" · "+bank[1],bx+7,by+13);q.fillStyle="#172a3d";q.font="10px Arial";q.fillText(String(bank[2]).slice(0,78),bx+7,by+28)});
+  const from=0,to=Math.min(data.d.doors,12),startY=Math.max(370,241+Math.ceil(banks.length/2)*38+12),rowH=90;
   for(let i=from;i<to;i++){
-   const y=320+(i-from)*96,door=data.tableRows[i];
-   q.fillStyle=i%2?"#f6f9f9":"#fff";q.strokeStyle="#d6e2e5";q.fillRect(margin,y,W-2*margin,78);q.strokeRect(margin,y,W-2*margin,78);
-   q.fillStyle="#285f63";q.font="bold 15px Arial";q.textAlign=align;q.fillText(door[0]+" · "+door[5],x,y+19);
-   const items=lang==="en"?["Reader: "+(data.d.protocol==="OSDP"?"OSDP A/B":"Wiegand D0/D1"),"Contact: "+door[3],"REX: "+door[4],"Break glass: egress release","Lock: rated relay + PSU"]:["القارئ: "+(data.d.protocol==="OSDP"?"OSDP A/B":"Wiegand D0/D1"),"حساس: "+door[3],"خروج: "+door[4],"Break Glass: تحرير طوارئ","القفل: ريلاي ومزود مناسب"];
+   const y=startY+i*rowH,door=data.tableRows[i],map=doorTerminalMap(data.d,i+1);
+   q.fillStyle=i%2?"#f6f9f9":"#fff";q.strokeStyle="#d6e2e5";q.fillRect(margin,y,W-2*margin,79);q.strokeRect(margin,y,W-2*margin,79);
+   q.fillStyle="#285f63";q.font="bold 14px Arial";q.textAlign=align;q.fillText(door[0]+" · "+door[5],x,y+18);
+   const items=lang==="en"?["Reader · "+map.reader,"Contact · "+map.contact,"REX · "+map.rex,"Break glass · approved egress","Lock · "+map.relay]:["القارئ · "+map.reader,"حساس الباب · "+map.contact,"طلب الخروج · "+map.rex,"كاسر الزجاج · تحرير معتمد","القفل · "+map.relay];
    const colW=(W-2*margin)/5;
-   items.forEach((label,j)=>{const bx=margin+j*colW+6,by=y+29;q.fillStyle=j===4?"#e3f0f0":"#f2f6f7";q.fillRect(bx,by,colW-12,38);q.fillStyle="#172a3d";q.font="12px Arial";q.textAlign=rtl?"right":"left";q.fillText(label.slice(0,34),rtl?bx+colW-18:bx+7,by+23)});
+   items.forEach((label,j)=>{const bx=margin+j*colW+5,by=y+27;q.fillStyle=j===4?"#e3f0f0":"#f2f6f7";q.fillRect(bx,by,colW-10,42);q.fillStyle="#172a3d";q.font="10px Arial";q.direction=rtl?"rtl":"ltr";q.textAlign=rtl?"right":"left";const textX=rtl?bx+colW-17:bx+7;const words=String(label).split(/\\s+/);let line="",yy=by+17;for(const word of words){const next=line?line+" "+word:word;if(q.measureText(next).width>colW-27&&line){q.fillText(line,textX,yy);line=word;yy+=12}else line=next}if(line)q.fillText(line,textX,yy)});
   }
   q.fillStyle="#617786";q.font="13px Arial";q.textAlign=align;
-  q.fillText(lang==="en"?"Functional drawing, not physical terminal placement. Use exact manufacturer diagrams."+(data.d.doors>12?" Remaining doors are listed in the full door schedule.":""):"رسم وظيفي وليس ترتيبًا فعليًا للأطراف. راجع مخطط الشركة للموديل."+(data.d.doors>12?" باقي الأبواب موضحة في الجدول الكامل.":""),x,H-55);
+  q.fillText(lang==="en"?"Model-layout planning diagram derived from the selected manufacturer manual. Confirm exact hardware revision before wiring."+(data.d.doors>12?" Remaining doors are in the complete schedule.":""):"رسم تخطيطي بتوزيع أطراف الموديل حسب دليل الشركة. طابق مراجعة الجهاز قبل التوصيل."+(data.d.doors>12?" باقي الأبواب موضحة في جدول التوصيلات.":""),x,H-55);
   pages.push(c.toDataURL("image/jpeg",.9));
  }
  return pages;
