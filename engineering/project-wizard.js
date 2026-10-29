@@ -61,6 +61,27 @@
     });
   };
   let step = 1;
+  let complete = false;
+  const syncAnalogReport = () => {
+    if (!analog) return;
+    let data;
+    try { data = JSON.parse(localStorage.getItem(storageKey) || "{}"); } catch (_) { return; }
+    const list = document.getElementById("reportList");
+    if (!list || data.system !== "analog" || !data.project) return;
+    const rows = [[text("name"), data.project],[text("who"), data.engineer || "—"]];
+    rows.forEach(([label, value], i) => {
+      let row = list.querySelector('[data-wizard-row="' + i + '"]');
+      if (!row) { row = document.createElement("div"); row.className = "report-row"; row.dataset.wizardRow = String(i); row.innerHTML = "<dt></dt><dd></dd>"; list.append(row); }
+      if (row.children[0].textContent !== label) row.children[0].textContent = label;
+      if (row.children[1].textContent !== value) row.children[1].textContent = value;
+    });
+    const previewList = document.querySelector("#previewContent .report-list");
+    if (previewList) rows.forEach(([label, value], i) => {
+      let row = previewList.querySelector('[data-wizard-row="' + i + '"]');
+      if (!row) { row = document.createElement("div"); row.className = "report-row"; row.dataset.wizardRow = String(i); row.innerHTML = "<dt></dt><dd></dd>"; previewList.append(row); }
+      row.children[0].textContent = label; row.children[1].textContent = value;
+    });
+  };
   const render = () => {
     const c = copy[lang()];
     launch.textContent = c.launch;
@@ -95,13 +116,14 @@
       bitrateInput.value = saved.bitrate || "4";
       mpInput.value = saved.mp || "2";
     } catch (_) {}
-    step = 1; render(); overlay.classList.add("open"); projectInput.focus();
+    step = 1; complete = false; render(); overlay.classList.add("open"); projectInput.focus();
   };
   const close = () => overlay.classList.remove("open");
   launch.addEventListener("click", open);
   q(".close").addEventListener("click", close);
   q(".back").addEventListener("click", () => { step = 1; render(); });
   q(".next").addEventListener("click", () => {
+    if (complete) { close(); return; }
     if (step === 1) {
       if (!projectInput.value.trim()) { projectInput.focus(); projectInput.reportValidity?.(); return; }
       step = 2; render(); countInput.focus(); return;
@@ -113,15 +135,7 @@
     if (analog) {
       const set = (id, value) => { const el = document.getElementById(id); if (!el) return; el.value = value; el.dispatchEvent(new Event("input",{bubbles:true})); el.dispatchEvent(new Event("change",{bubbles:true})); };
       set("count", count); set("days", days); set("mp", data.mp);
-      const list = document.getElementById("reportList");
-      if (list) {
-        const rows = [[text("name"), data.project],[text("who"), data.engineer || "—"]];
-        rows.forEach(([label, value], i) => {
-          let row = list.querySelector('[data-wizard-row="' + i + '"]');
-          if (!row) { row = document.createElement("div"); row.className = "report-row"; row.dataset.wizardRow = String(i); row.innerHTML = "<dt></dt><dd></dd>"; list.append(row); }
-          row.children[0].textContent = label; row.children[1].textContent = value;
-        });
-      }
+      syncAnalogReport();
     } else {
       setSection("#storage", [0,1,2], [count, data.bitrate, days]);
       setSection("#bandwidth", [0,1], [count, data.bitrate]);
@@ -132,12 +146,13 @@
     q(".success").textContent = text("saved");
     q(".success").hidden = false;
     q(".next").textContent = text("close");
-    q(".next").onclick = close;
+    complete = true;
     document.querySelector(analog ? ".report" : "#reports")?.scrollIntoView({behavior:"smooth",block:"start"});
   });
   overlay.addEventListener("click", (event) => { if (event.target === overlay) close(); });
   document.addEventListener("keydown", (event) => { if (event.key === "Escape" && overlay.classList.contains("open")) close(); });
-  const languageObserver = new MutationObserver(render);
+  ["count","days","mp"].forEach((id) => document.getElementById(id)?.addEventListener("input", () => setTimeout(syncAnalogReport, 0)));
+  const languageObserver = new MutationObserver(() => { render(); syncAnalogReport(); });
   languageObserver.observe(document.documentElement, {attributes:true,attributeFilter:["lang"]});
   render();
 })();
