@@ -131,7 +131,15 @@ function getData(){
  const profile=$("boardProfile").value;
  const capacity=Math.max(1,Math.min(64,Math.floor(val("doorsPerController")||2)));
  const rpd=Math.max(1,Math.min(2,Math.floor(val("readersPerDoor")||1)));
- const readers=doors*rpd, protocol=$("readerProtocol").value, controllers=protocol==="Standalone"?0:Math.ceil(doors/capacity);
+ const readers=doors*rpd, protocol=$("readerProtocol").value;
+ let controllers=0;
+ if(protocol!=="Standalone"){
+  if(profile==="mp1502")controllers=1+Math.ceil(Math.max(0,doors-2)/2);
+  else if(profile==="mp1501")controllers=1+Math.max(0,doors-1);
+  else if(profile==="mr52")controllers=1+Math.ceil(doors/2);
+  else if(profile==="bosch9512"||profile==="bosch8512"||profile==="bosch6512")controllers=1+doors;
+  else controllers=Math.ceil(doors/capacity);
+ }
  const v=val("controlVoltage")||12, lv=val("lockVoltage")||12;
  const ci=Math.max(0,val("controllerCurrent")||0.6), ri=Math.max(0,val("readerCurrent")||0.25), li=Math.max(0,val("lockCurrent")||0.5);
  const controlA=controllers*ci+readers*ri, lockA=doors*li;
@@ -142,6 +150,24 @@ function getData(){
  const controlBatteryAh=(controlA+(sameRail?lockA:0))*val("backupHours")/0.8;
  const lockBatteryAh=sameRail?0:lockA*val("backupHours")/0.8;
  return {doors,capacity,rpd,readers,controllers,protocol,profile,v,lv,ci,ri,li,controlA,lockA,controlW,lockW,sameRail,controlPsuA,lockPsuA,controlBatteryAh,lockBatteryAh};
+}
+function boardPlan(d){
+ const ar=lang==="ar",p=d.profile,doors=d.doors;
+ let label="",count="",detail="",capacity=0,overflow="";
+ if(p==="mp1502"){capacity=2;const exp=Math.ceil(Math.max(0,doors-2)/2);label="Mercury MP1502";count="1 MP1502 + "+exp+" compatible expansion board(s)";detail=ar?"MP1502 يتحكم أصليًا في بابين ويقبل التوسع حتى 64 بابًا/فتحة مع وحدات متوافقة. العدد الافتراضي هنا يفترض وحدات توسعة لبابين؛ تحقق من توافق موديل MR52 وإصدار النظام قبل الجمع بينهما.":"MP1502 natively controls 2 openings and supports expansion up to 64 with compatible modules. This estimate assumes 2 openings per expansion; confirm MR52 model/generation compatibility before mixing.";
+ }else if(p==="mp1501"){capacity=1;const ext=Math.max(0,doors-1);label="Mercury MP1501 + MR62e";count="1 MP1501 + "+ext+" MR62e door controller(s)";detail=ar?"MP1501 لباب واحد على اللوحة، ويمكن توسيعه حتى 16 وحدة MR62e (إجمالي 17 بابًا) أو وحدات Serial I/O متوافقة حسب تصميم النظام.":"MP1501 has 1 native opening and can expand with up to 16 MR62e door controllers (17 total openings), or compatible serial I/O modules according to the system design.";if(doors>17)overflow=ar?"العدد يتجاوز 17 بابًا لهذا التكوين؛ قسّم النظام أو اختر هندسة معتمدة أخرى.":"This configuration exceeds 17 openings; split the system or select another supported architecture.";
+ }else if(p==="mr52"){capacity=2;const n=Math.ceil(doors/2);label="Mercury host controller + MR52";count="1 compatible host + "+n+" MR52 board(s)";detail=ar?"كل MR52 يخدم بابين، وقارئين، ومدخلات/ريلايات حسب مراجعة البوردة. يحتاج كنترولر Mercury مضيفًا متوافقًا؛ لا تفترض توافق MR52 مع MP1501/MP1502 دون مراجعة دليل الموديل وإصدار النظام.":"Each MR52 serves 2 doors with reader, input, and relay I/O according to its board revision. It requires a compatible Mercury host controller; do not assume MR52 compatibility with MP1501/MP1502 without checking exact manuals and system generation.";
+ }else if(p==="bosch9512"||p==="bosch8512"||p==="bosch6512"){capacity=1;const max=p==="bosch9512"?32:(p==="bosch8512"?8:4),name=p==="bosch9512"?"B9512G":(p==="bosch8512"?"B8512G":"B6512");label="Bosch "+name+" + B901";count="1 "+name+" + "+doors+" B901 module(s)";detail=ar?"كل B901 مخصص لباب واحد ويظهر كجهاز على ناقل SDI/SDI2. تحقق من عناوين الوحدات وحد النظام؛ السعة القصوى الموثقة لهذا المضيف "+max+" وحدات B901.":"One B901 module serves one door and is addressed on the SDI/SDI2 bus. Check module addressing and panel limits; this host supports up to "+max+" B901 modules.";if(doors>max)overflow=ar?"العدد يتجاوز حد وحدات B901 لهذا الكنترولر؛ قسّم على أكثر من لوحة حسب دليل Bosch.":"Door count exceeds the B901 module limit for this panel; split across panels per the Bosch manual.";
+ }else{capacity=d.capacity;const n=Math.ceil(doors/capacity);label=$("controllerBrand").value+" · "+($("controllerModel").value.trim()|| (ar?"تكوين مخصص":"custom profile"));count=n+" "+(ar?"وحدة تحكم حسب سعة":"controller unit(s) at")+" "+capacity+" "+(ar?"باب/وحدة":"doors/unit");detail=ar?"حساب عام حسب سعة الأبواب التي أدخلها المهندس؛ لا يفترض موديل توسعة معينًا.":"Generic sizing from the engineer-entered door capacity; no specific expansion model is assumed."}
+ return {label,count,detail,capacity,overflow,units:d.controllers,profile:p};
+}
+function doorBoardLabel(d,i){
+ const p=d.profile;
+ if(p==="mp1502")return i<=2?"MP1502":"EXP-"+Math.ceil((i-2)/2);
+ if(p==="mp1501")return i===1?"MP1501":"MR62e-"+String(i-1).padStart(2,"0");
+ if(p==="mr52")return "MR52-"+String(Math.ceil(i/2)).padStart(2,"0");
+ if(p.startsWith("bosch"))return "B901-"+String(i).padStart(2,"0");
+ return "CTRL-"+Math.ceil(i/d.capacity);
 }
 function wiringSteps(d){
  const ar=lang==="ar",rp=$("readerProtocol").value,failSafe=$("lockBehavior").value==="Fail-safe",lock=selectedLabel("lockType"),lv=$("lockVoltage").value;
