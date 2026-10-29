@@ -18,7 +18,7 @@ function mountCameraModeSwitch(){
   analog.dataset.mode="analog";
   analog.className="analog-nav-link";
   analog.innerHTML='<svg class="mode-camera-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2"/><circle cx="12" cy="13" r="3"/><path d="M7 7l1.5-3h7L17 7M7 21h10"/></svg><span></span>';analog.querySelector("span").textContent=document.documentElement.lang==="ar"?"كاميرات Analog":"Analog camera planner";
-  const access=document.createElement("a");access.href="./access-control.html";access.dataset.mode="access";access.className="access-nav-link";access.innerHTML="<span></span>";access.querySelector("span").textContent=document.documentElement.lang==="ar"?"Access Control":"Access control";
+  const access=document.createElement("a");access.href="./access-control.html";access.dataset.mode="access";access.className="access-nav-link";access.innerHTML="<span></span>";access.querySelector("span").textContent=document.documentElement.lang==="ar"?"التحكم في الدخول":"Access control";
   mode.append(ip,analog,access);
   page.prepend(mode);
   mode.querySelectorAll("a").forEach(link=>link.addEventListener("click",event=>{
