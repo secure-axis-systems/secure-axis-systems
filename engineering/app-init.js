@@ -1,3 +1,11 @@
+const initialHomeEntry=location.hash===""||location.hash==="#calculators";
+if(location.hash==="#calculators")history.replaceState(history.state,"",location.pathname+location.search);
+if(initialHomeEntry){
+ try{history.scrollRestoration="manual"}catch(_){}
+ const returnToTop=()=>requestAnimationFrame(()=>window.scrollTo(0,0));
+ if(document.readyState==="complete")returnToTop();else window.addEventListener("load",returnToTop,{once:true});
+ window.addEventListener("load",()=>setTimeout(()=>{try{history.scrollRestoration="auto"}catch(_){}},1200),{once:true});
+}
 if("serviceWorker"in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register(new URL("./sw.js",import.meta.url),{scope:"./"}).catch(()=>{}))}let installPrompt=null;window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();installPrompt=event;mountInstall()});window.addEventListener("appinstalled",()=>{document.getElementById("installApp")?.remove();installPrompt=null});function mountInstall(){const host=document.querySelector(".header-actions");if(!host||document.getElementById("installApp")||window.matchMedia("(display-mode: standalone)").matches||navigator.standalone)return;const button=document.createElement("button");button.id="installApp";button.type="button";button.className="secondary-action install-app-button";const arabic=document.querySelector(".app-shell")?.dir==="rtl";button.textContent=arabic?"تثبيت التطبيق":"Install app";button.onclick=async()=>{if(installPrompt){const promptEvent=installPrompt;installPrompt=null;await promptEvent.prompt();const result=await promptEvent.userChoice;if(result?.outcome==="accepted")button.remove();return}alert(arabic?"لتثبيت التطبيق على الكمبيوتر: افتح قائمة المتصفح ⋮ واختر Install SCA أو تثبيت هذا الموقع كتطبيق. إذا لم يظهر الخيار، استخدم إصدارًا حديثًا من Chrome أو Edge ثم حدّث الصفحة.":"To install on desktop, open the browser menu ⋮ and choose Install SCA or Install this site as an app. If the option is missing, use an updated Chrome or Edge and reload this page.")};host.prepend(button)}const installObserver=new MutationObserver(()=>mountInstall());installObserver.observe(document.documentElement,{childList:true,subtree:true});
 function mountCameraModeSwitch(){
  const page=document.querySelector(".page-content");
