@@ -36,8 +36,9 @@
 
 /* Keep SCA in English reading order and stop the monogram after its entrance. */
 .page-brand-letters,.access-intro strong,.page-transition strong,.brand-mark,.mark{direction:ltr!important;unicode-bidi:isolate!important}
-.page-brand-letters span{animation:scaBrandLetterReveal .52s cubic-bezier(.2,.7,.2,1) both!important;animation-delay:calc(var(--sca-i,0)*.16s)!important;will-change:auto!important;text-shadow:none!important}
+.page-brand-letters span{animation:scaBrandLetterReveal .52s cubic-bezier(.2,.7,.2,1) both!important;will-change:auto!important;text-shadow:none!important}
 @keyframes scaBrandLetterReveal{from{opacity:0;transform:translate3d(0,8px,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+.page-brand-letters span:nth-child(1){animation-delay:0s!important}.page-brand-letters span:nth-child(2){animation-delay:.16s!important}.page-brand-letters span:nth-child(3){animation-delay:.32s!important}
 @media(prefers-reduced-motion:reduce){.page-brand-letters span{animation:none!important;opacity:.85!important;transform:none!important}}
 </style>
 </head>
