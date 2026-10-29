@@ -87,3 +87,9 @@
 #root .contact-dock-link{width:auto;min-width:44px;padding:8px 10px;display:flex}
 #root .contact-dock-link span{position:static;opacity:1;pointer-events:auto;background:transparent;color:#fff;padding:0}
 #root button:has(>svg:only-child)::after,#root a:has(>svg:only-child)::after{content:attr(aria-label);font-size:.78rem}
+
+/* Restore only WhatsApp and email icons in the contact dock. */
+#root .contact-dock-link{width:44px;height:44px;padding:0;display:grid}
+#root .contact-dock-link svg{display:block!important;width:22px;height:22px}
+#root .contact-dock-link span{position:absolute;opacity:0;pointer-events:none;background:#102b40;color:#fff;padding:7px 10px}
+#root .contact-dock-link:hover span,#root .contact-dock-link:focus-visible span{opacity:1}
