@@ -390,6 +390,29 @@ function drawReportPages(data){
  });
  g.fillStyle="#617786";g.font="14px Arial";g.fillText(lang==="en"?"Generic guidance only. Exact terminals and life-safety wiring must follow approved design and model manuals.":"إرشاد عام. أرقام الأطراف وتوصيلات السلامة حسب التصميم المعتمد وأدلة الموديلات.",gx,H-64);
  pages.push(guide.toDataURL("image/jpeg",.9));
+ const mapPages=Math.ceil(data.d.doors/12);
+ for(let p=0;p<mapPages;p++){
+  const c=document.createElement("canvas");c.width=W;c.height=H;const q=c.getContext("2d");q.fillStyle="#fff";q.fillRect(0,0,W,H);
+  const rtl=lang==="ar",x=rtl?W-margin:margin,align=rtl?"right":"left";q.direction=rtl?"rtl":"ltr";q.textAlign=align;
+  q.fillStyle="#285f63";q.font="bold 25px Arial";q.fillText(lang==="en"?"Calculated panel and door wiring":"رسم اللوحة وتوصيلات الأبواب",x,70);
+  q.fillStyle="#172a3d";q.font="bold 20px Arial";q.fillText(data.project+" · "+data.board.label,x,110);
+  q.fillStyle="#617786";q.font="16px Arial";q.fillText(data.board.count+" · "+(p+1)+"/"+mapPages,x,143);
+  q.fillStyle="#e3f0f0";q.strokeStyle="#427F82";q.lineWidth=2;q.fillRect(margin,165,W-2*margin,115);q.strokeRect(margin,165,W-2*margin,115);
+  q.fillStyle="#172a3d";q.font="bold 19px Arial";q.fillText(data.board.label,x,198);
+  q.font="15px Arial";q.fillText(String(data.board.detail).slice(0,145),x,230);
+  const from=p*12,to=Math.min(data.d.doors,from+12);
+  for(let i=from;i<to;i++){
+   const y=320+(i-from)*96,door=data.tableRows[i];
+   q.fillStyle=i%2?"#f6f9f9":"#fff";q.strokeStyle="#d6e2e5";q.fillRect(margin,y,W-2*margin,78);q.strokeRect(margin,y,W-2*margin,78);
+   q.fillStyle="#285f63";q.font="bold 15px Arial";q.textAlign=align;q.fillText(door[0]+" · "+door[5],x,y+19);
+   const items=lang==="en"?["Reader: "+(data.d.protocol==="OSDP"?"OSDP A/B":"Wiegand D0/D1"),"Contact: "+door[3],"REX: "+door[4],"Break glass: egress release","Lock: rated relay + PSU"]:["القارئ: "+(data.d.protocol==="OSDP"?"OSDP A/B":"Wiegand D0/D1"),"حساس: "+door[3],"خروج: "+door[4],"Break Glass: تحرير طوارئ","القفل: ريلاي ومزود مناسب"];
+   const colW=(W-2*margin)/5;
+   items.forEach((label,j)=>{const bx=margin+j*colW+6,by=y+29;q.fillStyle=j===4?"#e3f0f0":"#f2f6f7";q.fillRect(bx,by,colW-12,38);q.fillStyle="#172a3d";q.font="12px Arial";q.textAlign=rtl?"right":"left";q.fillText(label.slice(0,34),rtl?bx+colW-18:bx+7,by+23)});
+  }
+  q.fillStyle="#617786";q.font="13px Arial";q.textAlign=align;
+  q.fillText(lang==="en"?"Functional drawing, not physical terminal placement. Use exact manufacturer diagrams.":"رسم وظيفي وليس ترتيبًا فعليًا للأطراف. راجع مخطط الشركة للموديل.",x,H-55);
+  pages.push(c.toDataURL("image/jpeg",.9));
+ }
  return pages;
 }
 function pdfBlob(){
