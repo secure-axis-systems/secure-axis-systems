@@ -121,3 +121,7 @@
 @media(max-width:900px){.sca-hero-letters{font-size:clamp(5.5rem,14vw,9rem)}}
 @media(max-width:640px){.sca-hero-letters{font-size:clamp(3.3rem,18vw,5.4rem)}.sca-hero-subtitle{font-size:.84rem;margin-top:4px}}
 @media(prefers-reduced-motion:reduce){.sca-hero-subtitle{opacity:1;transform:none;animation:none}}
+
+/* Softer camera system selector colors for both themes. */
+.camera-mode-switch a[data-mode="analog"]{background:color-mix(in srgb,var(--blue) 16%,var(--surface));color:var(--blue-dark);border:1px solid color-mix(in srgb,var(--blue) 42%,var(--line))}
+.camera-mode-switch a[data-mode="analog"]:hover{background:color-mix(in srgb,var(--blue) 24%,var(--surface));color:var(--blue-dark)}
