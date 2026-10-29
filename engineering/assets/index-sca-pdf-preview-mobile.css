@@ -168,3 +168,6 @@ body.ip-camera-route #root #reports .camera-plan-heading{scroll-margin-top:110px
 
 /* Theme-aware camera mode transition */
 .camera-mode-transition{background:var(--page)!important;color:var(--ink)!important}.camera-mode-transition-card p{color:var(--muted)!important}.camera-mode-transition-card strong,.camera-mode-transition .camera-transition-icon{color:var(--blue)!important;stroke:var(--blue)!important}.camera-mode-transition-card i{background:linear-gradient(90deg,transparent,var(--blue),transparent)!important}
+
+/* PWA install controls stay reachable on compact mobile headers. */
+.install-app-button{white-space:nowrap;min-height:42px}@media(max-width:760px){.header-actions{display:flex;flex-wrap:wrap;gap:8px}.install-app-button{min-height:44px;padding-inline:12px}}
