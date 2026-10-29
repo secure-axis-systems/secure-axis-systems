@@ -50,7 +50,7 @@
 <label class="field"><span data-en="Number of doors" data-ar="عدد الأبواب">Number of doors</span><input id="doors" type="number" min="1" max="512" value="4" inputmode="numeric"></label>
 <label class="field"><span data-en="Project / site name" data-ar="اسم المشروع / الموقع">Project / site name</span><input id="projectName" autocomplete="organization" placeholder="Optional"></label>
 <label class="field"><span data-en="Engineer / technician" data-ar="اسم المهندس / الفني">Engineer / technician</span><input id="engineerName" autocomplete="name" placeholder="Optional"></label>
-<label class="field"><span data-en="Controller brand" data-ar="ماركة الكنترولر">Controller brand</span><select id="controllerBrand"><option value="Bosch">Bosch</option><option value="Mercury">Mercury</option><option value="Other">Other</option></select></label>
+<label class="field"><span data-en="Controller brand" data-ar="ماركة الكنترولر">Controller brand</span><select id="controllerBrand"><option value="Bosch">Bosch</option><option value="Mercury">Mercury</option><option value="ELOCK">ELOCK</option><option value="IXM / Invixium">IXM / Invixium (standalone)</option><option value="Other">Other</option></select></label>
 <label class="field"><span data-en="Exact controller model (optional)" data-ar="موديل الكنترولر (اختياري)">Exact controller model (optional)</span><input id="controllerModel" placeholder="Enter model from label"></label>
 <label class="field"><span data-en="Reader brand (optional)" data-ar="ماركة القارئ (اختياري)">Reader brand (optional)</span><select id="readerBrand"><option>IXM / Invixium</option><option>ELOCK</option><option>Other</option></select></label>
 <label class="field"><span data-en="Reader model (optional)" data-ar="موديل القارئ (اختياري)">Reader model (optional)</span><input id="readerModel" placeholder="Enter model from label"></label>
@@ -61,6 +61,8 @@
 <label class="field"><span data-en="Readers per door" data-ar="عدد القراء لكل باب">Readers per door</span><select id="readersPerDoor"><option value="1">1</option><option value="2">2 (entry / exit)</option></select></label>
 <label class="field"><span data-en="Reader communication" data-ar="طريقة اتصال القارئ">Reader communication</span><select id="readerProtocol"><option value="OSDP">OSDP / RS-485</option><option value="Wiegand">Wiegand</option><option value="Standalone">Standalone / local relay</option></select></label>
 <label class="field"><span data-en="Lock type" data-ar="نوع القفل">Lock type</span><select id="lockType"><option value="Magnetic lock">Magnetic lock</option><option value="Electric strike">Electric strike</option><option value="Other">Other / motorized</option></select></label>
+<label class="field"><span data-en="Lock brand" data-ar="ماركة القفل">Lock brand</span><select id="lockBrand"><option>ELOCK</option><option>Other</option></select></label>
+<label class="field"><span data-en="Lock model (optional)" data-ar="موديل القفل (اختياري)">Lock model (optional)</span><input id="lockModel" placeholder="Enter model from label"></label>
 <label class="field"><span data-en="Lock behavior" data-ar="طريقة عمل القفل">Lock behavior</span><select id="lockBehavior"><option value="Fail-safe">Power to lock (fail-safe)</option><option value="Fail-secure">Power to unlock (fail-secure)</option></select><small data-en="Confirm egress and fire-safety requirements for the site before selection." data-ar="راجع متطلبات الهروب والحريق بالموقع قبل الاختيار.">Confirm egress and fire-safety requirements for the site before selection.</small></label>
 <label class="field"><span data-en="Lock voltage (V DC)" data-ar="جهد القفل (فولت DC)">Lock voltage (V DC)</span><select id="lockVoltage"><option value="12">12 V</option><option value="24">24 V</option></select></label>
 <label class="field"><span data-en="Current per lock (A)" data-ar="تيار القفل الواحد (أمبير)">Current per lock (A)</span><input id="lockCurrent" type="number" min="0.05" max="10" step="0.05" value="0.5" inputmode="decimal"></label>
@@ -130,22 +132,22 @@ function getData(){
  const sameRail=lv===v;
  const controlPsuA=(controlA+(sameRail?lockA:0))*1.25;
  const lockPsuA=lockA*1.25;
- const controlBatteryAh=controlA*val("backupHours")/0.8;
- const lockBatteryAh=lockA*val("backupHours")/0.8;
+ const controlBatteryAh=(controlA+(sameRail?lockA:0))*val("backupHours")/0.8;
+ const lockBatteryAh=sameRail?0:lockA*val("backupHours")/0.8;
  return {doors,capacity,rpd,readers,controllers,v,lv,ci,ri,li,controlA,lockA,controlW,lockW,sameRail,controlPsuA,lockPsuA,controlBatteryAh,lockBatteryAh};
 }
 function rowsData(d){
  return [
  [t("controller"),d.controllers+" × "+($("controllerModel").value.trim()||$("controllerBrand").value)],
  [t("readerDevice"),d.readers+" × "+$("readerBrand").value+( $("readerModel").value.trim()?" · "+$("readerModel").value.trim():"")],
- [t("lockDevice"),d.doors+" × "+$("lockType").value],
+ [t("lockDevice"),d.doors+" × "+$("lockType").value+" · "+$("lockBrand").value+($("lockModel").value.trim()?" · "+$("lockModel").value.trim():"")],
  [t("doorContact"),d.doors],
  [t("rexDevice"),d.doors],
  [t("enclosure"),d.controllers],
  [t("psuItem"),nextPsu(d.controlPsuA)+" A · "+d.v+" "+t("volt")+(d.sameRail?" (shared rail)":"")],
  [t("psuItem")+" — "+t("lockInput"),d.sameRail?t("source"):nextPsu(d.lockPsuA)+" A · "+d.lv+" "+t("volt")],
  [t("batteryItem")+" — "+t("contInput"),nextBattery(d.controlBatteryAh)+" Ah"],
- [t("batteryItem")+" — "+t("lockInput"),nextBattery(d.lockBatteryAh)+" Ah"]
+ [t("batteryItem")+" — "+t("lockInput"),d.sameRail?(lang==="en"?"Shared":"مشتركة"):nextBattery(d.lockBatteryAh)+" Ah"]
  ];
 }
 function render(){
@@ -155,7 +157,7 @@ function render(){
  $("controlPsu").textContent=nextPsu(d.controlPsuA)+" A · "+d.v+" "+t("volt");
  $("lockPsu").textContent=d.sameRail?t("source"):nextPsu(d.lockPsuA)+" A · "+d.lv+" "+t("volt");
  $("controlBattery").textContent=nextBattery(d.controlBatteryAh)+" Ah";
- $("lockBattery").textContent=nextBattery(d.lockBatteryAh)+" Ah";
+ $("lockBattery").textContent=d.sameRail?(lang==="en"?"Shared with control":"مشتركة مع الكنترول"):nextBattery(d.lockBatteryAh)+" Ah";
  const known=$("controllerModel").value.trim();
  $("compatibilityNote").textContent=(known?t("model")+": "+known+" · ":"")+t("warning")+" — "+t("supported");
  const bom=$("bom");bom.replaceChildren();
@@ -169,7 +171,7 @@ function render(){
  [...checks.children].forEach((el,i)=>{el.querySelector("span").textContent=t("checks")[i]});
  const notes=$("handoverNotes");notes.replaceChildren();const ul=document.createElement("ul");ul.style.margin="0";ul.style.paddingInlineStart="20px";t("handover").forEach(item=>{const li=document.createElement("li");li.textContent=item;li.style.marginBottom="9px";ul.append(li)});notes.append(ul);
 }
-const inputs=["projectName","engineerName","controllerBrand","controllerModel","readerBrand","readerModel","doors","doorsPerController","readersPerDoor","readerProtocol","lockType","lockBehavior","lockVoltage","lockCurrent","readerCurrent","controllerCurrent","controlVoltage","backupHours"];
+const inputs=["projectName","engineerName","controllerBrand","controllerModel","readerBrand","readerModel","lockBrand","lockModel","doors","doorsPerController","readersPerDoor","readerProtocol","lockType","lockBehavior","lockVoltage","lockCurrent","readerCurrent","controllerCurrent","controlVoltage","backupHours"];
 $("doors").value=4;
 inputs.forEach(id=>$(id).addEventListener("input",render));
 $("advancedToggle").onclick=()=>{const p=$("advancedFields");const open=p.classList.toggle("open");$("advancedToggle").setAttribute("aria-expanded",String(open));$("advancedToggle").textContent=lang==="en"?(open?"Hide engineer settings":"Show engineer settings"):(open?"إخفاء إعدادات المهندس":"إظهار إعدادات المهندس")};
@@ -178,7 +180,7 @@ $("langBtn").onclick=()=>setLanguage(lang==="en"?"ar":"en");
 function makeReport(){
  const d=getData(),date=new Date().toLocaleDateString(lang==="ar"?"ar-EG":"en-GB");
  const project=$("projectName").value.trim()||t("noProject"),engineer=$("engineerName").value.trim()||"—";
- const metrics=[[t("project"),project],[t("engineer"),engineer],[t("brand"),$("controllerBrand").value],[t("controllerModel"),$("controllerModel").value.trim()||"—"],[t("doors"),d.doors],[t("controllers"),d.controllers],[t("readers"),d.readers],[t("lock"),$("lockType").value+" · "+$("lockVoltage").value+" V DC · "+$("lockCurrent").value+" A"],[t("protocol"),$("readerProtocol").value],[t("behavior"),$("lockBehavior").value],[t("controlLoad"),fmt(d.controlW*1.25,1)+" W"],[t("lockLoad"),fmt(d.lockW*1.25,1)+" W"],[t("controlBattery"),nextBattery(d.controlBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("lockBattery"),nextBattery(d.lockBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("date"),date]];
+ const metrics=[[t("project"),project],[t("engineer"),engineer],[t("brand"),$("controllerBrand").value],[t("controllerModel"),$("controllerModel").value.trim()||"—"],[t("doors"),d.doors],[t("controllers"),d.controllers],[t("readers"),d.readers],[t("lock"),$("lockType").value+" · "+$("lockBrand").value+($("lockModel").value.trim()?" · "+$("lockModel").value.trim():"")+" · "+$("lockVoltage").value+" V DC · "+$("lockCurrent").value+" A"],[t("protocol"),$("readerProtocol").value],[t("behavior"),$("lockBehavior").value],[t("controlLoad"),fmt(d.controlW*1.25,1)+" W"],[t("lockLoad"),fmt(d.lockW*1.25,1)+" W"],[t("controlBattery"),nextBattery(d.controlBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("lockBattery"),nextBattery(d.lockBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("date"),date]];
  const tableRows=[];for(let i=1;i<=d.doors;i++)tableRows.push(["D-"+String(i).padStart(2,"0"),"R-"+String(i).padStart(2,"0")+" · "+$("readerProtocol").value,"L-"+String(i).padStart(2,"0"),"IN-DC-"+String(i).padStart(2,"0"),"IN-REX-"+String(i).padStart(2,"0"),"CTRL-"+Math.ceil(i/d.capacity)]);
  const checks=[...document.querySelectorAll("#checks input")].map((el,i)=>[t("checks")[i],el.checked?t("checkStatus"):t("notChecked")]);
  return {project,engineer,date,metrics,tableRows,checks,bom:rowsData(d),d};
