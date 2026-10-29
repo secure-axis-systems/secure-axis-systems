@@ -26,7 +26,7 @@ function mountCameraModeSwitch(){
    const href=link.getAttribute("href");
    const arabic=document.documentElement.lang==="ar";
    let overlay=document.getElementById("cameraModeTransition");
-   if(!overlay){overlay=document.createElement("div");overlay.id="cameraModeTransition";overlay.className="camera-mode-transition";overlay.innerHTML='<div class="camera-mode-transition-card"><span class="camera-transition-icon">◉</span><p></p><strong></strong><i></i></div>';document.body.append(overlay)}
+   if(!overlay){overlay=document.createElement("div");overlay.id="cameraModeTransition";overlay.className="camera-mode-transition";overlay.innerHTML='<div class="camera-mode-transition-card"><svg class="camera-transition-icon" viewBox="0 0 24 24" fill="none" stroke="#B0D7D8" stroke-width="1.6"><rect x="3" y="7" width="18" height="12" rx="2"/><circle cx="12" cy="13" r="3"/><path d="M7 7l1.5-3h7L17 7M7 21h10"/></svg><p></p><strong></strong><i></i></div>';document.body.append(overlay)}
    overlay.querySelector("p").textContent=arabic?"جارٍ فتح مساحة الكاميرات":"Opening camera workspace";
    overlay.querySelector("strong").textContent=link.dataset.mode==="analog"?(arabic?"كاميرات Analog":"Analog Camera Planner"):(arabic?"كاميرات IP":"IP Camera Planner");
    overlay.classList.add("show");document.body.classList.add("page-leave");
