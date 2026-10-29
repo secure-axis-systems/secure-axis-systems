@@ -53,3 +53,20 @@
 .sca-letters span:nth-child(2){color:#fff!important}.sca-full-name{color:#fff!important}.sca-developer-credit{color:#d4e4ec}.sca-developer-credit strong{color:#fff}
 
 .camera-mode-switch{display:flex;gap:6px;width:max-content;max-width:100%;margin:0 0 18px;padding:5px;border:1px solid var(--line);border-radius:13px;background:var(--surface);box-shadow:0 3px 12px #132c3d0a}.camera-mode-switch a{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 14px;border-radius:9px;color:var(--ink-soft);font-size:.84rem;font-weight:650;text-decoration:none;white-space:nowrap;transition:background .18s,color .18s,transform .18s}.camera-mode-switch a:hover{transform:translateY(-1px);background:var(--surface-blue);color:var(--blue)}.camera-mode-switch a[data-mode="ip"]{background:var(--blue-soft);color:var(--blue-dark)}.camera-mode-switch a[data-mode="analog"]{background:var(--blue);color:#10212a}.analog-nav-link{color:var(--ink-soft)!important;font-weight:650!important}.page-leave .app-shell{opacity:.35;transform:translateY(8px);transition:opacity .16s ease,transform .16s ease}@media(max-width:760px){.camera-mode-switch{width:100%;display:grid;grid-template-columns:1fr 1fr;margin-bottom:14px}.camera-mode-switch a{font-size:.78rem;padding:9px 6px}}@media(prefers-reduced-motion:reduce){.camera-mode-switch a,.page-leave .app-shell{transition:none}}
+
+/* Camera tabs: visible icon and readable inactive Analog choice. */
+.camera-mode-switch a[data-mode="ip"]{background:var(--blue-soft);color:var(--blue-dark)}
+.camera-mode-switch a[data-mode="analog"]{background:var(--surface);color:var(--ink-soft)}
+.camera-mode-switch .mode-camera-icon{width:19px;height:19px;flex:none}
+.camera-mode-switch a:hover{background:var(--blue-soft);color:var(--blue-dark)}
+.camera-mode-transition{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#0b1118;color:#fff;opacity:0;pointer-events:none;transition:opacity .18s}
+.camera-mode-transition.show{opacity:1;pointer-events:auto}
+.camera-mode-transition-card{text-align:center;padding:28px;animation:sca-word-in .35s both}
+.camera-mode-transition-card p{color:#d4e4ec}
+.camera-mode-transition-card strong{display:block;font-size:clamp(1.4rem,6vw,2rem);color:#B0D7D8}
+.camera-transition-icon{display:block;color:#B0D7D8;font-size:60px;line-height:1}
+.camera-mode-transition-card i{display:block;width:150px;height:2px;margin:20px auto;background:linear-gradient(90deg,transparent,#B0D7D8,transparent);animation:sca-line-run .6s ease-in-out infinite alternate}
+.sca-letters span:nth-child(2){color:#B0D7D8}
+.sca-start-line span{background:#B0D7D8;box-shadow:0 0 12px #B0D7D8}
+@media(max-width:760px){.camera-mode-switch{width:100%;display:grid;grid-template-columns:1fr 1fr;margin-bottom:14px}.camera-mode-switch a{font-size:.78rem;padding:9px 6px}}
+@media(prefers-reduced-motion:reduce){.camera-mode-transition-card,.camera-mode-transition-card i{animation:none}.camera-mode-transition{transition:none}}
