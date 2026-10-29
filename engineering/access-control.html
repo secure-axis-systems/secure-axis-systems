@@ -226,6 +226,10 @@ function renderBoardDrawing(d,plan){
   ?(lang==="en"?["Host: Bosch control panel","B901 bus: SDI2 PWR / A / B / COM","Door I/O: Reader · RTE / REX · ZN+","Lock output: relay C / NC / NO"]:["اللوحة: كنترولر Bosch","ناقل B901: SDI2 PWR / A / B / COM","أجهزة الباب: Reader · RTE / REX · ZN+","خرج القفل: ريلاي C / NC / NO"])
   :d.profile==="mr52"
    ?(lang==="en"?["Host: compatible Mercury EP","MR52 I/O: 2 doors / 2 readers","Inputs & relays per board revision","SIO bus · local board supply"]:["المضيف: Mercury EP متوافق","MR52: بابان / قارئان","مداخل وريلايات حسب مراجعة البوردة","ناقل SIO · تغذية محلية"])
+   :d.profile==="mp1502"
+    ?(lang==="en"?["MP1502 main controller · 2 native doors","4 reader ports · 8 input points","4 output relays · ETH / USB / SIO","Compatible expansion to project size"]:["MP1502 · بابان أساسيان","4 منافذ قارئ · 8 نقاط دخل","4 مخارج ريلاي · ETH / USB / SIO","توسعة متوافقة حسب حجم المشروع"])
+   :d.profile==="mp1501"
+    ?(lang==="en"?["MP1501 main controller · 1 native door","2 reader ports · 2 inputs / 2 outputs","MR62e network door modules (if selected)","PoE+ / local PSU per approved design"]:["MP1501 · باب أساسي واحد","منفذا قارئ · مدخلاَن / مخرجان","وحدات أبواب MR62e عند اختيارها","PoE+ / مزود محلي حسب التصميم"])
    :(lang==="en"?["Controller / expansion boards","Reader ports: "+Math.min(d.readers,4)+" shown","Door contact + REX input groups","Lock relay groups · PSU / network"]:["كنترولر / وحدات توسعة","منافذ قارئ: "+Math.min(d.readers,4)+" ظاهرة","مجموعات دخل حساس الباب وREX","مخارج ريلاي القفل · باور / شبكة"]);
  boardLines.forEach((line,i)=>svgNode("text",{x:bx+13,y:by+25+i*25,fill:"var(--ink)","font-size":13,"font-weight":i===0?700:500},svg).textContent=line);
  const moduleTitle=lang==="en"?"Calculated board count: ":"عدد البوردات المحسوب: ";
