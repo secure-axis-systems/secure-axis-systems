@@ -394,7 +394,7 @@ function drawReportPages(data){
  });
  g.fillStyle="#617786";g.font="14px Arial";g.fillText(lang==="en"?"Generic guidance only. Exact terminals and life-safety wiring must follow approved design and model manuals.":"إرشاد عام. أرقام الأطراف وتوصيلات السلامة حسب التصميم المعتمد وأدلة الموديلات.",gx,H-64);
  pages.push(guide.toDataURL("image/jpeg",.9));
- const mapPages=Math.ceil(data.d.doors/12);
+ const mapPages=1;
  for(let p=0;p<mapPages;p++){
   const c=document.createElement("canvas");c.width=W;c.height=H;const q=c.getContext("2d");q.fillStyle="#fff";q.fillRect(0,0,W,H);
   const rtl=lang==="ar",x=rtl?W-margin:margin,align=rtl?"right":"left";q.direction=rtl?"rtl":"ltr";q.textAlign=align;
@@ -404,7 +404,7 @@ function drawReportPages(data){
   q.fillStyle="#e3f0f0";q.strokeStyle="#427F82";q.lineWidth=2;q.fillRect(margin,165,W-2*margin,115);q.strokeRect(margin,165,W-2*margin,115);
   q.fillStyle="#172a3d";q.font="bold 19px Arial";q.fillText(data.board.label,x,198);
   q.font="15px Arial";q.fillText(String(data.board.detail).slice(0,145),x,230);
-  const from=p*12,to=Math.min(data.d.doors,from+12);
+  const from=0,to=Math.min(data.d.doors,12);
   for(let i=from;i<to;i++){
    const y=320+(i-from)*96,door=data.tableRows[i];
    q.fillStyle=i%2?"#f6f9f9":"#fff";q.strokeStyle="#d6e2e5";q.fillRect(margin,y,W-2*margin,78);q.strokeRect(margin,y,W-2*margin,78);
@@ -414,7 +414,7 @@ function drawReportPages(data){
    items.forEach((label,j)=>{const bx=margin+j*colW+6,by=y+29;q.fillStyle=j===4?"#e3f0f0":"#f2f6f7";q.fillRect(bx,by,colW-12,38);q.fillStyle="#172a3d";q.font="12px Arial";q.textAlign=rtl?"right":"left";q.fillText(label.slice(0,34),rtl?bx+colW-18:bx+7,by+23)});
   }
   q.fillStyle="#617786";q.font="13px Arial";q.textAlign=align;
-  q.fillText(lang==="en"?"Functional drawing, not physical terminal placement. Use exact manufacturer diagrams.":"رسم وظيفي وليس ترتيبًا فعليًا للأطراف. راجع مخطط الشركة للموديل.",x,H-55);
+  q.fillText(lang==="en"?"Functional drawing, not physical terminal placement. Use exact manufacturer diagrams."+(data.d.doors>12?" Remaining doors are listed in the full door schedule.":""):"رسم وظيفي وليس ترتيبًا فعليًا للأطراف. راجع مخطط الشركة للموديل."+(data.d.doors>12?" باقي الأبواب موضحة في الجدول الكامل.":""),x,H-55);
   pages.push(c.toDataURL("image/jpeg",.9));
  }
  return pages;
