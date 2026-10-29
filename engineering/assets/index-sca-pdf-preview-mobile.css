@@ -150,7 +150,10 @@
 
 
 /* Focus the main application on the IP planning workspace when its route is open. */
-body.ip-camera-route #root .page-content>section:not(#reports){display:none!important}
+body.ip-camera-route #root .page-content>#dashboard,
+body.ip-camera-route #root .page-content>#calculators,
+body.ip-camera-route #root .page-content>#accessControl,
+body.ip-camera-route #root .page-content>#about{display:none!important}
 body.ip-camera-route #root .page-content>#reports{display:block!important}
 body.ip-camera-route #root #reports>.panel-header,
 body.ip-camera-route #root #reports>.site-summary-grid{display:none!important}
