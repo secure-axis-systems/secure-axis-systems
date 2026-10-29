@@ -282,6 +282,16 @@ function render(){
  const notes=$("handoverNotes");notes.replaceChildren();const ul=document.createElement("ul");ul.style.margin="0";ul.style.paddingInlineStart="20px";t("handover").forEach(item=>{const li=document.createElement("li");li.textContent=item;li.style.marginBottom="9px";ul.append(li)});notes.append(ul);
  const guide=$("wiringGuide");guide.replaceChildren();wiringSteps(d).forEach((item,i)=>{const row=document.createElement("div");row.className="bom-item";const a=document.createElement("strong"),b=document.createElement("span");a.textContent=(lang==="ar"?"التوصيل ":"Connection ")+(i+1);b.textContent=item;row.append(a,b);guide.append(row)});
 }
+const inputs=["projectName","engineerName","controllerBrand","boardProfile","controllerModel","readerBrand","readerModel","lockBrand","lockModel","doors","doorsPerController","readersPerDoor","readerProtocol","lockType","lockBehavior","lockVoltage","lockCurrent","readerCurrent","controllerCurrent","controlVoltage","backupHours"];
+$("doors").value=4;
+inputs.forEach(id=>{const el=$(id);el.addEventListener("input",render);el.addEventListener("change",render)});
+$("boardProfile").addEventListener("change",()=>{const preset={mp1502:["Mercury","MP1502"],mp1501:["Mercury","MP1501"],mr52:["Mercury","MR52-S3/S4"],bosch9512:["Bosch","B9512G"],bosch8512:["Bosch","B8512G"],bosch6512:["Bosch","B6512"]}[$("boardProfile").value];if(preset){$("controllerBrand").value=preset[0];$("controllerModel").value=preset[1]}render()});
+$("advancedToggle").onclick=()=>{const p=$("advancedFields"),open=p.classList.toggle("open");$("advancedToggle").setAttribute("aria-expanded",String(open));$("advancedToggle").textContent=lang==="en"?(open?"Hide engineer settings":"Show engineer settings"):(open?"إخفاء إعدادات المهندس":"إظهار إعدادات المهندس")};
+$("themeBtn").onclick=()=>{document.documentElement.dataset.theme=document.documentElement.dataset.theme==="dark"?"light":"dark";try{localStorage.setItem("secure-axis-theme",document.documentElement.dataset.theme)}catch(_){}setLanguage(lang)};
+$("langBtn").onclick=()=>setLanguage(lang==="en"?"ar":"en");
+$("calculateBtn").onclick=()=>{render();$("boardDrawingSection").scrollIntoView({behavior:"smooth",block:"start"})};
+$("resetBtn").onclick=()=>{for(const id of inputs){const el=$(id);if(el.tagName==="SELECT")el.selectedIndex=0;else if(el.type==="number")el.value=({doors:4,doorsPerController:2,readersPerDoor:1,lockCurrent:0.5,readerCurrent:0.25,controllerCurrent:0.6,lockVoltage:12,controlVoltage:12,backupHours:4}[id]??"");else el.value=""}$("controllerBrand").value="Bosch";$("readerBrand").value="IXM / Invixium";render()};
+$("previewBtn").onclick=preparePreview;$("closePreview").onclick=()=>$("previewModal").classList.remove("open");$("previewModal").addEventListener("click",e=>{if(e.target===$("previewModal"))$("previewModal").classList.remove("open")});$("previewDownload").onclick=downloadPdf;$("downloadBtn").onclick=downloadPdf;
 function makeReport(){
  const d=getData(),wiring=wiringSteps(d),date=new Date().toLocaleDateString(lang==="ar"?"ar-EG":"en-GB");
  const project=$("projectName").value.trim()||t("noProject"),engineer=$("engineerName").value.trim()||"—";
