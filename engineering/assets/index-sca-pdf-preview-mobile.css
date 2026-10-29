@@ -206,3 +206,9 @@ html.sca-intro-complete .ip-planner-app-title{animation:ipPlannerCopyIn .5s ease
 .ip-planner-route-heading>h1{margin:0;line-height:1.12}
 .ip-planner-route-heading>span{display:block;max-width:720px;margin-top:10px;line-height:1.55;overflow-wrap:anywhere}
 @media(max-width:640px){.ip-planner-route-heading .ip-planner-brand-animation{margin-bottom:12px}.ip-planner-route-heading .ip-planner-letters{font-size:clamp(2.7rem,15vw,3.7rem)}.ip-planner-route-heading .ip-planner-app-title{font-size:.88rem}.ip-planner-route-heading>h1{font-size:clamp(1.6rem,7vw,2.15rem)}.ip-planner-route-heading>span{font-size:.94rem}}
+
+/* Keep the IP Planner description independent from global SCA letter span styles. */
+.ip-planner-route-heading .ip-planner-description{display:block!important;position:static!important;inset:auto!important;width:100%;max-width:720px;margin:10px 0 0!important;padding:0!important;color:var(--muted)!important;font-size:clamp(.92rem,2.2vw,1.05rem)!important;font-weight:400!important;letter-spacing:normal!important;line-height:1.55!important;text-align:start!important;white-space:normal!important;overflow-wrap:anywhere!important;transform:none;opacity:0}
+html.sca-intro-complete .ip-planner-route-heading .ip-planner-description{animation:ipPlannerCopyIn .62s cubic-bezier(.2,.7,.2,1) .4s both}
+@media(max-width:640px){.ip-planner-route-heading .ip-planner-description{max-width:100%;font-size:.94rem!important;line-height:1.55!important;margin-top:8px!important}}
+@media(prefers-reduced-motion:reduce){.ip-planner-route-heading .ip-planner-description{opacity:1;transform:none;filter:none}html.sca-intro-complete .ip-planner-route-heading .ip-planner-description{animation:none}}
