@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SCA">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#B0D7D8">
 <meta name="description" content="SCA Access Control Planner — door, controller, power and handover planning.">
 <title>SCA | Access Control Planner</title>
@@ -35,7 +39,7 @@
 <div class="wrap">
 <header class="header">
 <a class="brand" href="./index.html#ipCameraPlanner"><span class="brand-mark">SCA</span><span><small>SCA · SECURITY CALCULATOR APP</small><strong data-en="Access Control Planner" data-ar="مخطط التحكم في الدخول">Access Control Planner</strong></span></a>
-<div class="header-tools"><button id="themeBtn">Dark mode</button><button id="langBtn" aria-label="Switch language">العربية</button></div>
+<div class="header-tools"><button id="themeBtn">Dark mode</button><button id="installApp" type="button" data-en="Install app" data-ar="تثبيت التطبيق">Install app</button><button id="langBtn" aria-label="Switch language">العربية</button></div>
 </header>
 <nav class="nav" aria-label="SCA sections">
 <a href="./index.html#ipCameraPlanner" data-en="IP cameras" data-ar="كاميرات IP">IP cameras</a>
@@ -521,6 +525,7 @@ $("resetBtn").onclick=()=>{for(const id of inputs){const el=$(id);if(el.tagName=
 document.querySelectorAll("#checks").forEach(el=>el.addEventListener("change",()=>{}));
 try{document.documentElement.dataset.theme=localStorage.getItem("secure-axis-theme")||"light"}catch(_){document.documentElement.dataset.theme="light"}
 document.querySelectorAll(".nav a, .brand").forEach(a=>a.addEventListener("click",e=>{if(e.ctrlKey||e.metaKey||e.shiftKey||e.altKey)return;const targetUrl=new URL(a.href,location.href);if(targetUrl.pathname===location.pathname)return;e.preventDefault();const overlay=$("pageTransition");if(!overlay)return;const target=overlay.querySelector("b");const caption=overlay.querySelector("p");const isArabic=lang==="ar";const isIp=targetUrl.pathname.endsWith("/index.html")&&targetUrl.hash==="#ipCameraPlanner";const isAnalog=targetUrl.pathname.endsWith("/analog.html");target.textContent=isIp?(isArabic?"كاميرات IP":"IP cameras"):isAnalog?(isArabic?"كاميرات Analog":"Analog cameras"):(a.dataset[isArabic?"ar":"en"]||a.textContent.trim());caption.textContent=isArabic?"جارٍ تجهيز الصفحة":"Preparing workspace";overlay.classList.add("show");if(isIp){try{sessionStorage.setItem("scaSkipIpIntro","1")}catch(_){}}setTimeout(()=>location.href=targetUrl.href,520)}));
+const installBtn=$("installApp");let deferredInstall=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredInstall=e});window.addEventListener("appinstalled",()=>installBtn?.remove());if(installBtn)installBtn.addEventListener("click",async()=>{if(deferredInstall){const prompt=deferredInstall;deferredInstall=null;await prompt.prompt();const result=await prompt.userChoice;if(result?.outcome==="accepted")installBtn.remove();return}const ua=navigator.userAgent||"",ios=/iPhone|iPad|iPod/i.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1),android=/Android/i.test(ua);const msg=ios?(lang==="ar"?"لتثبيت التطبيق: افتح الرابط في Safari ثم اضغط مشاركة واختر إضافة إلى الشاشة الرئيسية.":"To install: open this page in Safari, tap Share, then Add to Home Screen."):android?(lang==="ar"?"لتثبيت التطبيق: افتح الرابط في Chrome ثم القائمة ⋮ واختر تثبيت التطبيق أو إضافة إلى الشاشة الرئيسية.":"To install: open this page in Chrome, tap ⋮, then Install app or Add to Home screen."):(lang==="ar"?"افتح قائمة المتصفح واختر تثبيت التطبيق.":"Open the browser menu and choose Install app.");alert(msg)});if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{}),{once:true});
 setLanguage("en");
 if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){setTimeout(()=>{$("accessIntro")?.remove()},1750)}else $("accessIntro")?.remove();
 })();
