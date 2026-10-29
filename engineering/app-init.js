@@ -10,7 +10,7 @@ function mountCameraModeSwitch(){
   mode.className="camera-mode-switch";
   mode.setAttribute("aria-label","Camera system type");
   const ip=document.createElement("a");
-  ip.href="./index.html#calculators";
+  ip.href="./index.html#ipCameraPlanner";
   ip.dataset.mode="ip";
   ip.innerHTML='<svg class="mode-camera-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="7" width="18" height="12" rx="2"/><circle cx="12" cy="13" r="3"/><path d="M7 7l1.5-3h7L17 7M7 21h10"/></svg><span></span>';ip.querySelector("span").textContent=document.documentElement.lang==="ar"?"كاميرات IP":"IP camera planner";
   const analog=document.createElement("a");
@@ -42,6 +42,16 @@ function mountCameraModeSwitch(){
  return true;
 }
 function mountHeroMark(){const hero=document.querySelector(".hero-panel");if(!hero||hero.querySelector(".sca-hero-mark"))return;const mark=document.createElement("div");mark.className="sca-hero-mark";mark.setAttribute("aria-hidden","true");const letters=document.createElement("div");letters.className="sca-hero-letters";["S","C","A"].forEach((letter,index)=>{const span=document.createElement("span");span.textContent=letter;span.style.setProperty("--letter-index",index);letters.append(span)});const subtitle=document.createElement("div");subtitle.className="sca-hero-subtitle";subtitle.textContent="Security Calculator app";mark.append(letters,subtitle);hero.append(mark)}
-const cameraModeObserver=new MutationObserver(()=>{mountCameraModeSwitch();mountHeroMark()});
+let ipPlannerRouteScrolled=false;
+function scrollToIpPlanner(){
+ if(location.hash!=="#ipCameraPlanner"||ipPlannerRouteScrolled)return false;
+ const target=document.getElementById("ipCameraPlanner");
+ if(!target)return false;
+ ipPlannerRouteScrolled=true;target.style.scrollMarginTop="115px";
+ requestAnimationFrame(()=>requestAnimationFrame(()=>target.scrollIntoView({block:"start",behavior:"smooth"})));
+ return true;
+}
+window.addEventListener("hashchange",()=>{ipPlannerRouteScrolled=false;scrollToIpPlanner()});
+const cameraModeObserver=new MutationObserver(()=>{mountCameraModeSwitch();mountHeroMark();scrollToIpPlanner()});
 cameraModeObserver.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["lang"]});
-mountCameraModeSwitch();mountHeroMark();mountInstall();
+mountCameraModeSwitch();mountHeroMark();mountInstall();scrollToIpPlanner();
