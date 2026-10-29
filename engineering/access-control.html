@@ -127,7 +127,8 @@ function fmt(n,d=1){return new Intl.NumberFormat(lang==="ar"?"ar-EG":"en-US",{mi
 function nextPsu(amps){return [1,2,3,5,7,10,15,20,30].find(x=>x>=amps)||Math.ceil(amps)}
 function nextBattery(ah){return [1.3,2.3,3.2,7,9,12,18,26,40,65,100].find(x=>x>=ah)||Math.ceil(ah)}
 function getData(){
- const doors=Math.max(1,Math.min(512,Math.floor(val("doors")||1)));\n const profile=$("boardProfile").value;
+ const doors=Math.max(1,Math.min(512,Math.floor(val("doors")||1)));
+ const profile=$("boardProfile").value;
  const capacity=Math.max(1,Math.min(64,Math.floor(val("doorsPerController")||2)));
  const rpd=Math.max(1,Math.min(2,Math.floor(val("readersPerDoor")||1)));
  const readers=doors*rpd, protocol=$("readerProtocol").value, controllers=protocol==="Standalone"?0:Math.ceil(doors/capacity);
