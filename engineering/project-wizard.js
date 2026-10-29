@@ -16,7 +16,8 @@
   launch.className = "sca-wizard-launch";
   launch.textContent = text("launch");
   const anchor = document.querySelector(".page-content") || document.querySelector(".shell") || document.querySelector("main") || document.body;
-  anchor.insertBefore(launch, anchor.firstChild);
+  const switchNav = analog && document.querySelector(".switch");
+  if (switchNav) switchNav.insertAdjacentElement("afterend", launch); else anchor.insertBefore(launch, anchor.firstChild);
 
   const overlay = document.createElement("div");
   overlay.className = "sca-wizard-overlay";
