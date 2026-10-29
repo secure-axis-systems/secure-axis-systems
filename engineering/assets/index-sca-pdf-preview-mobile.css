@@ -72,3 +72,10 @@
 @media(prefers-reduced-motion:reduce){.camera-mode-transition-card,.camera-mode-transition-card i{animation:none}.camera-mode-transition{transition:none}}
 
 .sca-overline{color:#B0D7D8!important}.sca-caption{color:#B0D7D8!important}.camera-transition-icon{display:block;width:64px;height:64px;margin:0 auto 10px}
+
+/* First-visit intro uses the SCA teal accent palette. */
+#sca-intro{background:radial-gradient(ellipse at 50% 43%,#1b4246 0,#102b31 48%,#07111b 100%)}
+#sca-intro .sca-letters span{color:#B0D7D8!important;text-shadow:0 8px 34px #0006}
+#sca-intro .sca-full-name{color:#B0D7D8!important}
+#sca-intro .sca-overline,#sca-intro .sca-caption{color:#B0D7D8!important}
+#sca-intro .sca-start-line span{background:#B0D7D8;box-shadow:0 0 14px #B0D7D8}
