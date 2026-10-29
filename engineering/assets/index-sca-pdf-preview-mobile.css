@@ -128,3 +128,22 @@
 
 /* Three-way navigation for camera and access-control planners. */
 @media(max-width:760px){.camera-mode-switch{grid-template-columns:repeat(3,minmax(0,1fr))}.camera-mode-switch a{min-width:0;padding-inline:6px;font-size:.74rem}}
+
+
+/* Keep every planner choice visually consistent in light and dark themes. */
+.camera-mode-switch a,
+.camera-mode-switch a[data-mode="ip"],
+.camera-mode-switch a[data-mode="analog"],
+.camera-mode-switch a[data-mode="access"]{
+ background:var(--blue-soft)!important;
+ color:var(--blue-dark)!important;
+ border:1px solid var(--line);
+}
+.camera-mode-switch a:hover,.camera-mode-switch a:focus-visible{
+ background:var(--blue-soft)!important;
+ color:var(--blue-dark)!important;
+ filter:brightness(.96);
+}
+.camera-mode-transition-card{opacity:0;transform:translateY(14px);animation:camera-mode-enter .48s cubic-bezier(.2,.7,.2,1) both}
+@keyframes camera-mode-enter{from{opacity:0;transform:translateY(14px) scale(.98);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@media(prefers-reduced-motion:reduce){.camera-mode-transition-card{opacity:1;transform:none;filter:none;animation:none}}
