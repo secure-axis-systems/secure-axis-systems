@@ -171,3 +171,5 @@ body.ip-camera-route #root #reports .camera-plan-heading{scroll-margin-top:110px
 
 /* PWA install controls stay reachable on compact mobile headers. */
 .install-app-button{white-space:nowrap;min-height:42px}@media(max-width:760px){.header-actions{display:flex;flex-wrap:wrap;gap:8px}.install-app-button{min-height:44px;padding-inline:12px}}
+
+@media(max-width:400px){.install-app-button{width:100%;white-space:normal}.header-actions{width:100%}}
