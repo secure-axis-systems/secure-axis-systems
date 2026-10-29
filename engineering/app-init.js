@@ -59,7 +59,7 @@ function syncIpPlannerRoute(){
  target.style.scrollMarginTop="115px";
  if(!heading){
   heading=document.createElement("header");heading.id="ipPlannerRouteHeading";heading.className="ip-planner-route-heading";
-  heading.innerHTML='<p></p><h1></h1><span></span>';target.before(heading);
+  heading.innerHTML='<p></p><h1></h1><span></span>';const nav=document.getElementById("cameraModeSwitch");if(nav)nav.after(heading);else target.before(heading);
  }
  const ar=document.documentElement.lang==="ar";
  heading.querySelector("p").textContent=ar?"SCA · تخطيط أنظمة الكاميرات":"SCA · CAMERA SYSTEM PLANNING";
