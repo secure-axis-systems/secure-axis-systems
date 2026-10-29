@@ -73,7 +73,7 @@ function syncIpPlannerRoute(){
  }
  const ar=document.documentElement.lang==="ar";
  const text=(selector,value)=>{const node=heading.querySelector(selector);if(node&&node.textContent!==value)node.textContent=value};
- text(".ip-planner-app-title",ar?"تطبيق حاسبة الأنظمة الأمنية":"Security Calculator app");
+ text(".ip-planner-app-title","Security Calculator app");
  text("p",ar?"SCA · تخطيط أنظمة الكاميرات":"SCA · CAMERA SYSTEM PLANNING");
  text("h1",ar?"مخطط كاميرات IP":"IP Camera Planner");
  text(".ip-planner-description",ar?"جهّز عناوين الشبكة وجدول الكاميرات وراجع حسابات المشروع في مساحة واحدة.":"Plan network addressing, camera schedules, and project calculations in one focused workspace.");
