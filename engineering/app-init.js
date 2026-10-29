@@ -67,10 +67,11 @@ function syncIpPlannerRoute(){
  target.style.scrollMarginTop="115px";
  if(!heading){
   heading=document.createElement("header");heading.id="ipPlannerRouteHeading";heading.className="ip-planner-route-heading";
-  heading.innerHTML='<p></p><h1></h1><span></span>';const nav=document.getElementById("cameraModeSwitch");if(nav)nav.after(heading);else target.before(heading);
+  heading.innerHTML='<div class="ip-planner-brand-animation" aria-label="SCA Security Calculator app"><div class="ip-planner-letters" aria-hidden="true"><span style="--letter-index:0">S</span><span style="--letter-index:1">C</span><span style="--letter-index:2">A</span></div><strong class="ip-planner-app-title"></strong></div><p></p><h1></h1><span></span>';const nav=document.getElementById("cameraModeSwitch");if(nav)nav.after(heading);else target.before(heading);
  }
  const ar=document.documentElement.lang==="ar";
  const text=(selector,value)=>{const node=heading.querySelector(selector);if(node&&node.textContent!==value)node.textContent=value};
+ text(".ip-planner-app-title",ar?"تطبيق حاسبة الأنظمة الأمنية":"Security Calculator app");
  text("p",ar?"SCA · تخطيط أنظمة الكاميرات":"SCA · CAMERA SYSTEM PLANNING");
  text("h1",ar?"مخطط كاميرات IP":"IP Camera Planner");
  text("span",ar?"جهّز عناوين الشبكة وجدول الكاميرات وراجع حسابات المشروع في مساحة واحدة.":"Plan network addressing, camera schedules, and project calculations in one focused workspace.");
