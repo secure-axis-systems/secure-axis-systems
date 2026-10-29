@@ -289,6 +289,21 @@ function drawReportPages(data){
   if(p===0){ctx.fillStyle="#617786";ctx.font="12px Arial";ctx.textAlign=align;ctx.fillText(lang==="en"?"Planning estimate · confirm exact model ratings and local life-safety requirements.":"تقدير تخطيطي · راجع مواصفات الموديل واشتراطات السلامة المحلية.",x,H-68)}
   pages.push(canvas.toDataURL("image/jpeg",.9));
  }
+ const guide=document.createElement("canvas");guide.width=W;guide.height=H;
+ const g=guide.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,W,H);
+ const rtl=lang==="ar",gx=rtl?W-margin:margin;g.direction=rtl?"rtl":"ltr";g.textAlign=rtl?"right":"left";
+ g.fillStyle="#285f63";g.font="bold 27px Arial";g.fillText(lang==="en"?"Door wiring guide":"دليل توصيل مكونات الباب",gx,75);
+ g.fillStyle="#172a3d";g.font="bold 20px Arial";g.fillText(data.project,gx,118);
+ let gy=170;
+ data.wiring.forEach((line,i)=>{
+  g.fillStyle=i%2?"#f5f8f8":"#eaf2f2";g.fillRect(margin,gy-28,W-2*margin,135);
+  g.fillStyle="#285f63";g.font="bold 17px Arial";g.fillText(String(i+1)+".",rtl?W-margin-14:margin+14,gy);
+  g.fillStyle="#172a3d";g.font="16px Arial";const words=String(line).split(/\\s+/);let row="",yy=gy;
+  for(const word of words){const test=row?row+" "+word:word;if(g.measureText(test).width>W-2*margin-72){g.fillText(row,rtl?W-margin-48:margin+48,yy);row=word;yy+=23}else row=test}
+  if(row)g.fillText(row,rtl?W-margin-48:margin+48,yy);gy+=150
+ });
+ g.fillStyle="#617786";g.font="14px Arial";g.fillText(lang==="en"?"Generic guidance only. Exact terminals and life-safety wiring must follow approved design and model manuals.":"إرشاد عام. أرقام الأطراف وتوصيلات السلامة حسب التصميم المعتمد وأدلة الموديلات.",gx,H-64);
+ pages.push(guide.toDataURL("image/jpeg",.9));
  return pages;
 }
 function pdfBlob(){
