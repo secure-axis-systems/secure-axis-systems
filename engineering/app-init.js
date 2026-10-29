@@ -39,6 +39,7 @@ function mountCameraModeSwitch(){
  }
  return true;
 }
-const cameraModeObserver=new MutationObserver(()=>mountCameraModeSwitch());
+function mountHeroMark(){const hero=document.querySelector(".hero-panel");if(!hero||hero.querySelector(".sca-hero-mark"))return;const mark=document.createElement("div");mark.className="sca-hero-mark";mark.setAttribute("aria-hidden","true");["S","C","A"].forEach((letter,index)=>{const span=document.createElement("span");span.textContent=letter;span.style.setProperty("--letter-index",index);mark.append(span)});hero.append(mark)}
+const cameraModeObserver=new MutationObserver(()=>{mountCameraModeSwitch();mountHeroMark();mountHeroMark()});
 cameraModeObserver.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["lang"]});
 mountCameraModeSwitch();
