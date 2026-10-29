@@ -216,7 +216,7 @@ function makeReport(){
  return {project,engineer,date,metrics,tableRows,checks,bom:rowsData(d),wiring,d};
 }
 function buildReportHtml(data){
- const table='<table class="report-table"><thead><tr>'+["Door ID","Reader","Lock","Contact","REX","Controller"].map((x,i)=>'<th>'+(["رقم الباب","القارئ","القفل","الحساس","الخروج","الكنترولر"][i]||x)+'</th>').join("")+'</tr></thead><tbody>'+data.tableRows.map(r=>"<tr>"+r.map(x=>"<td>"+escapeHtml(x)+"</td>").join("")+"</tr>").join("")+"</tbody></table>';
+ const table='<table class="report-table"><thead><tr>'+["Door ID","Reader","Lock","Contact","REX","Controller"].map((x,i)=>'<th>'+(["رقم الباب","القارئ","القفل","الحساس","الخروج","الكنترولر"][i]||x)+'</th>').join("")+'</tr></thead><tbody>'+data.tableRows.map(r=>"<tr>"+r.map(x=>"<td>"+escapeHtml(x)+"</td>").join("")+"</tr>").join("")+"</tbody></table>";
  const cells=data.metrics.map(([a,b])=>'<div class="report-cell"><small>'+escapeHtml(a)+'</small><strong>'+escapeHtml(String(b))+'</strong></div>').join("");
  const bom='<h3>'+escapeHtml(t("item"))+'</h3><table class="report-table"><tbody>'+data.bom.map(([a,b])=>"<tr><td>"+escapeHtml(String(a))+"</td><td>"+escapeHtml(String(b))+"</td></tr>").join("")+"</tbody></table>";
  const checks='<h3>'+escapeHtml(lang==="en"?"Commissioning checks":"اختبارات التشغيل")+'</h3><table class="report-table"><tbody>'+data.checks.map(r=>"<tr><td>"+escapeHtml(r[0])+"</td><td>"+escapeHtml(r[1])+"</td></tr>").join("")+"</tbody></table>";
