@@ -298,7 +298,7 @@ function drawReportPages(data){
  data.wiring.forEach((line,i)=>{
   g.fillStyle=i%2?"#f5f8f8":"#eaf2f2";g.fillRect(margin,gy-28,W-2*margin,135);
   g.fillStyle="#285f63";g.font="bold 17px Arial";g.fillText(String(i+1)+".",rtl?W-margin-14:margin+14,gy);
-  g.fillStyle="#172a3d";g.font="16px Arial";const words=String(line).split(/\\s+/);let row="",yy=gy;
+  g.fillStyle="#172a3d";g.font="16px Arial";const words=String(line).split(/\s+/);let row="",yy=gy;
   for(const word of words){const test=row?row+" "+word:word;if(g.measureText(test).width>W-2*margin-72){g.fillText(row,rtl?W-margin-48:margin+48,yy);row=word;yy+=23}else row=test}
   if(row)g.fillText(row,rtl?W-margin-48:margin+48,yy);gy+=150
  });
