@@ -47,7 +47,8 @@
 <section class="card">
 <h2 data-en="1. Project and equipment" data-ar="١. المشروع والمعدات">1. Project and equipment</h2><p class="sub" data-en="Fields marked optional can be completed later." data-ar="الخانات الاختيارية يمكن استكمالها لاحقًا.">Fields marked optional can be completed later.</p>
 <div class="fields">
-<label class="field"><span data-en="Project / site name" data-ar="اسم المشروع / الموقع">Project / site name</span><input id="projectName" autocomplete="organization" placeholder="e.g. Main office"></label>
+<label class="field"><span data-en="Number of doors" data-ar="عدد الأبواب">Number of doors</span><input id="doors" type="number" min="1" max="512" value="4" inputmode="numeric"></label>
+<label class="field"><span data-en="Project / site name" data-ar="اسم المشروع / الموقع">Project / site name</span><input id="projectName" autocomplete="organization" placeholder="Optional"></label>
 <label class="field"><span data-en="Engineer / technician" data-ar="اسم المهندس / الفني">Engineer / technician</span><input id="engineerName" autocomplete="name" placeholder="Optional"></label>
 <label class="field"><span data-en="Controller brand" data-ar="ماركة الكنترولر">Controller brand</span><select id="controllerBrand"><option value="Bosch">Bosch</option><option value="Mercury">Mercury</option><option value="Other">Other</option></select></label>
 <label class="field"><span data-en="Exact controller model (optional)" data-ar="موديل الكنترولر (اختياري)">Exact controller model (optional)</span><input id="controllerModel" placeholder="Enter model from label"></label>
@@ -135,7 +136,7 @@ function getData(){
 }
 function rowsData(d){
  return [
- [t("controller"),d.controllers+" × "+$("controllerModel").value.trim()||$("controllerBrand").value],
+ [t("controller"),d.controllers+" × "+($("controllerModel").value.trim()||$("controllerBrand").value)],
  [t("readerDevice"),d.readers+" × "+$("readerBrand").value+( $("readerModel").value.trim()?" · "+$("readerModel").value.trim():"")],
  [t("lockDevice"),d.doors+" × "+$("lockType").value],
  [t("doorContact"),d.doors],
@@ -211,7 +212,7 @@ function drawReportPages(data){
   ctx.fillStyle="#e5eeee";ctx.fillRect(start,y,tableW,32);ctx.fillStyle="#284d50";ctx.font="bold 14px Arial";ctx.textAlign="left";let xx=start+8;cols.forEach((c,i)=>{ctx.fillText(c,xx,y+21);xx+=widths[i]});
   y+=32;ctx.font="14px Arial";
   allRows.slice(p*perPage,(p+1)*perPage).forEach((row,j)=>{if(j%2===1){ctx.fillStyle="#f7f9f9";ctx.fillRect(start,y,tableW,32)}ctx.fillStyle="#172a3d";let ordered=rtl?[row[5],row[4],row[3],row[2],row[1],row[0]]:row;xx=start+8;ordered.forEach((c,i)=>{ctx.fillText(String(c).slice(0,26),xx,y+21);xx+=widths[i]});ctx.strokeStyle="#d8e1e1";ctx.beginPath();ctx.moveTo(start,y+32);ctx.lineTo(start+tableW,y+32);ctx.stroke();y+=32});
-  ctx.fillStyle="#637786";ctx.font="14px Arial";ctx.textAlign=rtl?"right":"left";ctx.fillText(t("calcNote"),x,H-70,{maxWidth:W-2*margin});
+  ctx.fillStyle="#637786";ctx.font="14px Arial";ctx.textAlign=rtl?"right":"left";ctx.fillText(t("calcNote"),x,H-70,W-2*margin);
   pages.push(canvas.toDataURL("image/jpeg",.9));
  }
  return pages;
