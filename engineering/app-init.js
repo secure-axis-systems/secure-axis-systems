@@ -49,15 +49,29 @@ function mountCameraModeSwitch(){
 }
 function mountHeroMark(){const hero=document.querySelector(".hero-panel");if(!hero||hero.querySelector(".sca-hero-mark"))return;const mark=document.createElement("div");mark.className="sca-hero-mark";mark.setAttribute("aria-hidden","true");const letters=document.createElement("div");letters.className="sca-hero-letters";["S","C","A"].forEach((letter,index)=>{const span=document.createElement("span");span.textContent=letter;span.style.setProperty("--letter-index",index);letters.append(span)});const subtitle=document.createElement("div");subtitle.className="sca-hero-subtitle";subtitle.textContent="Security Calculator app";mark.append(letters,subtitle);hero.append(mark)}
 let ipPlannerRouteScrolled=false;
-function scrollToIpPlanner(){
- if(location.hash!=="#ipCameraPlanner"||ipPlannerRouteScrolled)return false;
+function syncIpPlannerRoute(){
+ const active=location.hash==="#ipCameraPlanner";
+ document.body.classList.toggle("ip-camera-route",active);
+ let heading=document.getElementById("ipPlannerRouteHeading");
+ if(!active){ipPlannerRouteScrolled=false;heading?.remove();return false}
  const target=document.getElementById("ipCameraPlanner");
  if(!target)return false;
- ipPlannerRouteScrolled=true;target.style.scrollMarginTop="115px";
- requestAnimationFrame(()=>requestAnimationFrame(()=>target.scrollIntoView({block:"start",behavior:"smooth"})));
+ target.style.scrollMarginTop="115px";
+ if(!heading){
+  heading=document.createElement("header");heading.id="ipPlannerRouteHeading";heading.className="ip-planner-route-heading";
+  heading.innerHTML='<p></p><h1></h1><span></span>';target.before(heading);
+ }
+ const ar=document.documentElement.lang==="ar";
+ heading.querySelector("p").textContent=ar?"SCA · تخطيط أنظمة الكاميرات":"SCA · CAMERA SYSTEM PLANNING";
+ heading.querySelector("h1").textContent=ar?"مخطط كاميرات IP":"IP Camera Planner";
+ heading.querySelector("span").textContent=ar?"جهّز عناوين الشبكة وجدول الكاميرات وراجع حسابات المشروع في مساحة واحدة.":"Plan network addressing, camera schedules, and project calculations in one focused workspace.";
+ if(!ipPlannerRouteScrolled){
+  ipPlannerRouteScrolled=true;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>heading.scrollIntoView({block:"start",behavior:"smooth"})));
+ }
  return true;
 }
-window.addEventListener("hashchange",()=>{ipPlannerRouteScrolled=false;scrollToIpPlanner()});
-const cameraModeObserver=new MutationObserver(()=>{mountCameraModeSwitch();mountHeroMark();scrollToIpPlanner()});
+window.addEventListener("hashchange",()=>{ipPlannerRouteScrolled=false;syncIpPlannerRoute()});
+const cameraModeObserver=new MutationObserver(()=>{mountCameraModeSwitch();mountHeroMark();syncIpPlannerRoute()});
 cameraModeObserver.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["lang"]});
-mountCameraModeSwitch();mountHeroMark();mountInstall();scrollToIpPlanner();
+mountCameraModeSwitch();mountHeroMark();mountInstall();syncIpPlannerRoute();
