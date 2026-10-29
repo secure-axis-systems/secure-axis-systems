@@ -125,3 +125,6 @@
 /* Softer camera system selector colors for both themes. */
 .camera-mode-switch a[data-mode="analog"]{background:var(--blue-soft);color:var(--blue-dark)}
 .camera-mode-switch a[data-mode="analog"]:hover{background:var(--blue-soft);color:var(--blue-dark)}
+
+/* Three-way navigation for camera and access-control planners. */
+@media(max-width:760px){.camera-mode-switch{grid-template-columns:repeat(3,minmax(0,1fr))}.camera-mode-switch a{min-width:0;padding-inline:6px;font-size:.74rem}}
