@@ -124,7 +124,7 @@ function getData(){
  const doors=Math.max(1,Math.min(512,Math.floor(val("doors")||1)));
  const capacity=Math.max(1,Math.min(64,Math.floor(val("doorsPerController")||2)));
  const rpd=Math.max(1,Math.min(2,Math.floor(val("readersPerDoor")||1)));
- const readers=doors*rpd, controllers=Math.ceil(doors/capacity);
+ const readers=doors*rpd, protocol=$("readerProtocol").value, controllers=protocol==="Standalone"?0:Math.ceil(doors/capacity);
  const v=val("controlVoltage")||12, lv=val("lockVoltage")||12;
  const ci=Math.max(0,val("controllerCurrent")||0.6), ri=Math.max(0,val("readerCurrent")||0.25), li=Math.max(0,val("lockCurrent")||0.5);
  const controlA=controllers*ci+readers*ri, lockA=doors*li;
@@ -134,11 +134,11 @@ function getData(){
  const lockPsuA=lockA*1.25;
  const controlBatteryAh=(controlA+(sameRail?lockA:0))*val("backupHours")/0.8;
  const lockBatteryAh=sameRail?0:lockA*val("backupHours")/0.8;
- return {doors,capacity,rpd,readers,controllers,v,lv,ci,ri,li,controlA,lockA,controlW,lockW,sameRail,controlPsuA,lockPsuA,controlBatteryAh,lockBatteryAh};
+ return {doors,capacity,rpd,readers,controllers,protocol,v,lv,ci,ri,li,controlA,lockA,controlW,lockW,sameRail,controlPsuA,lockPsuA,controlBatteryAh,lockBatteryAh};
 }
 function rowsData(d){
  return [
- [t("controller"),d.controllers+" × "+($("controllerModel").value.trim()||$("controllerBrand").value)],
+ [t("controller"),d.controllers?d.controllers+" × "+($("controllerModel").value.trim()||$("controllerBrand").value):(lang==="en"?"No panel · local reader relays":"بدون لوحة · ريلاي القارئ المحلي")],
  [t("readerDevice"),d.readers+" × "+$("readerBrand").value+( $("readerModel").value.trim()?" · "+$("readerModel").value.trim():"")],
  [t("lockDevice"),d.doors+" × "+$("lockType").value+" · "+$("lockBrand").value+($("lockModel").value.trim()?" · "+$("lockModel").value.trim():"")],
  [t("doorContact"),d.doors],
@@ -152,21 +152,23 @@ function rowsData(d){
 }
 function render(){
  const d=getData();
- $("controllerQty").textContent=d.controllers;
+ $("controllerQty").textContent=d.protocol==="Standalone"?(lang==="en"?"Standalone":"مستقل"):d.controllers;
  $("doorReaderQty").textContent=d.doors+" / "+d.readers;
  $("controlPsu").textContent=nextPsu(d.controlPsuA)+" A · "+d.v+" "+t("volt");
  $("lockPsu").textContent=d.sameRail?t("source"):nextPsu(d.lockPsuA)+" A · "+d.lv+" "+t("volt");
  $("controlBattery").textContent=nextBattery(d.controlBatteryAh)+" Ah";
  $("lockBattery").textContent=d.sameRail?(lang==="en"?"Shared with control":"مشتركة مع الكنترول"):nextBattery(d.lockBatteryAh)+" Ah";
  const known=$("controllerModel").value.trim();
- $("compatibilityNote").textContent=(known?t("model")+": "+known+" · ":"")+t("warning")+" — "+t("supported");
+ $("compatibilityNote").textContent=d.protocol==="Standalone"?(lang==="en"?"Standalone mode: verify each reader has a correctly rated local relay and supports the required inputs.":"الوضع المستقل: تحقق من وجود ريلاي مناسب داخل كل قارئ ودعم المداخل المطلوبة."):(known?t("model")+": "+known+" · ":"")+t("warning")+" — "+t("supported")+" ("+d.capacity+" "+(lang==="en"?"openings/controller":"باب/كنترولر").replace("باب/كنترولر","باب لكل كنترولر")+")";
+ $("doorsPerController").disabled=d.protocol==="Standalone";
  const bom=$("bom");bom.replaceChildren();
  rowsData(d).forEach(([name,quantity])=>{const row=document.createElement("div");row.className="bom-item";const a=document.createElement("span"),b=document.createElement("strong");a.textContent=name;b.textContent=quantity;row.append(a,b);bom.append(row)});
  const diagram=$("diagram");diagram.replaceChildren();
+ if(d.protocol==="Standalone"){const box=document.createElement("div");box.className="controller-box";box.innerHTML="<strong></strong><span></span><span></span>";box.children[0].textContent=lang==="en"?"Standalone reader relays":"ريلاي محلي داخل القارئ";box.children[1].textContent=d.doors+" "+(lang==="en"?"doors ·":"أبواب ·")+" "+d.readers+" "+t("readers");box.children[2].textContent=t("supported");diagram.append(box)}
  for(let i=0;i<d.controllers;i++){const box=document.createElement("div");box.className="controller-box";const first=i*d.capacity+1,last=Math.min((i+1)*d.capacity,d.doors);box.innerHTML="<strong></strong><span></span><span></span>";box.children[0].textContent=t("controller")+" "+(i+1);box.children[1].textContent=t("doorLabel")+" "+first+"–"+last+" · "+t("readers")+" "+((last-first+1)*d.rpd);box.children[2].textContent=$("controllerBrand").value+(known?" · "+known:"");diagram.append(box)}
  const schedule=$("doorRows");schedule.replaceChildren();
  const protocol=$("readerProtocol").value==="OSDP"?t("osdp"):($("readerProtocol").value==="Wiegand"?t("wie"):t("local"));
- for(let i=1;i<=d.doors;i++){const tr=document.createElement("tr"),items=["D-"+String(i).padStart(2,"0"),"R-"+String(i).padStart(2,"0")+" · "+protocol,"L-"+String(i).padStart(2,"0"),"IN-DC-"+String(i).padStart(2,"0"),"IN-REX-"+String(i).padStart(2,"0"),"CTRL-"+(Math.ceil(i/d.capacity)),t("wiring")];items.forEach(x=>{const td=document.createElement("td");td.textContent=x;tr.append(td)});schedule.append(tr)}
+ for(let i=1;i<=d.doors;i++){const tr=document.createElement("tr"),items=["D-"+String(i).padStart(2,"0"),"R-"+String(i).padStart(2,"0")+" · "+protocol,"L-"+String(i).padStart(2,"0"),"IN-DC-"+String(i).padStart(2,"0"),"IN-REX-"+String(i).padStart(2,"0"),(d.protocol==="Standalone"?"LOCAL":"CTRL-"+(Math.ceil(i/d.capacity))),t("wiring")];items.forEach(x=>{const td=document.createElement("td");td.textContent=x;tr.append(td)});schedule.append(tr)}
  const checks=$("checks");if(!checks.children.length)labels.en.checks.forEach((_,i)=>{const label=document.createElement("label");label.className="check";const input=document.createElement("input");input.type="checkbox";input.dataset.check=String(i);const content=document.createElement("span");content.textContent=t("checks")[i];label.append(input,content);checks.append(label)});
  [...checks.children].forEach((el,i)=>{el.querySelector("span").textContent=t("checks")[i]});
  const notes=$("handoverNotes");notes.replaceChildren();const ul=document.createElement("ul");ul.style.margin="0";ul.style.paddingInlineStart="20px";t("handover").forEach(item=>{const li=document.createElement("li");li.textContent=item;li.style.marginBottom="9px";ul.append(li)});notes.append(ul);
@@ -180,8 +182,8 @@ $("langBtn").onclick=()=>setLanguage(lang==="en"?"ar":"en");
 function makeReport(){
  const d=getData(),date=new Date().toLocaleDateString(lang==="ar"?"ar-EG":"en-GB");
  const project=$("projectName").value.trim()||t("noProject"),engineer=$("engineerName").value.trim()||"—";
- const metrics=[[t("project"),project],[t("engineer"),engineer],[t("brand"),$("controllerBrand").value],[t("controllerModel"),$("controllerModel").value.trim()||"—"],[t("doors"),d.doors],[t("controllers"),d.controllers],[t("readers"),d.readers],[t("lock"),$("lockType").value+" · "+$("lockBrand").value+($("lockModel").value.trim()?" · "+$("lockModel").value.trim():"")+" · "+$("lockVoltage").value+" V DC · "+$("lockCurrent").value+" A"],[t("protocol"),$("readerProtocol").value],[t("behavior"),$("lockBehavior").value],[t("controlLoad"),fmt(d.controlW*1.25,1)+" W"],[t("lockLoad"),fmt(d.lockW*1.25,1)+" W"],[t("controlBattery"),nextBattery(d.controlBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("lockBattery"),nextBattery(d.lockBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("date"),date]];
- const tableRows=[];for(let i=1;i<=d.doors;i++)tableRows.push(["D-"+String(i).padStart(2,"0"),"R-"+String(i).padStart(2,"0")+" · "+$("readerProtocol").value,"L-"+String(i).padStart(2,"0"),"IN-DC-"+String(i).padStart(2,"0"),"IN-REX-"+String(i).padStart(2,"0"),"CTRL-"+Math.ceil(i/d.capacity)]);
+ const metrics=[[t("project"),project],[t("engineer"),engineer],[t("brand"),$("controllerBrand").value],[t("controllerModel"),$("controllerModel").value.trim()||"—"],[t("doors"),d.doors],[t("controllers"),d.protocol==="Standalone"?(lang==="en"?"Standalone readers":"قراء مستقلون"):d.controllers],[t("readers"),d.readers],[t("lock"),$("lockType").value+" · "+$("lockBrand").value+($("lockModel").value.trim()?" · "+$("lockModel").value.trim():"")+" · "+$("lockVoltage").value+" V DC · "+$("lockCurrent").value+" A"],[t("protocol"),$("readerProtocol").value],[t("behavior"),$("lockBehavior").value],[t("controlLoad"),fmt(d.controlW*1.25,1)+" W"],[t("lockLoad"),fmt(d.lockW*1.25,1)+" W"],[t("controlBattery"),nextBattery(d.controlBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("lockBattery"),d.sameRail?(lang==="en"?"Shared control supply":"مشتركة مع مزود التحكم"):nextBattery(d.lockBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("date"),date]];
+ const tableRows=[];for(let i=1;i<=d.doors;i++)tableRows.push(["D-"+String(i).padStart(2,"0),"R-"+String(i).padStart(2,"0")+" · "+protocol,"L-"+String(i).padStart(2,"0"),"IN-DC-"+String(i).padStart(2,"0"),"IN-REX-"+String(i).padStart(2,"0),d.protocol==="Standalone"?"LOCAL":"CTRL-"+Math.ceil(i/d.capacity)]);
  const checks=[...document.querySelectorAll("#checks input")].map((el,i)=>[t("checks")[i],el.checked?t("checkStatus"):t("notChecked")]);
  return {project,engineer,date,metrics,tableRows,checks,bom:rowsData(d),d};
 }
