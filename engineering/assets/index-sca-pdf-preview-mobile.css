@@ -196,3 +196,13 @@ html.sca-intro-complete .ip-planner-app-title{animation:ipPlannerCopyIn .5s ease
 @keyframes ipPlannerCopyIn{from{opacity:0;transform:translateY(8px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}
 @media(max-width:640px){.ip-planner-route-heading{padding:18px 14px}.ip-planner-brand-animation{gap:4px;margin-bottom:10px}.ip-planner-letters{font-size:clamp(2.6rem,15vw,3.8rem)}.ip-planner-route-heading h1{font-size:clamp(1.55rem,7vw,2.15rem);overflow-wrap:anywhere}.ip-planner-route-heading>span{overflow-wrap:anywhere}}
 @media(prefers-reduced-motion:reduce){.ip-planner-route-heading{opacity:1;transform:none;filter:none}html.sca-intro-complete .ip-planner-route-heading,html.sca-intro-complete .ip-planner-route-heading p,html.sca-intro-complete .ip-planner-route-heading h1,html.sca-intro-complete .ip-planner-route-heading>span,html.sca-intro-complete .ip-planner-app-title{animation:none;opacity:1;transform:none;filter:none}.ip-planner-letters span{animation:none;opacity:.8;transform:none;text-shadow:none}}
+
+/* Final IP planner brand lockup: fixed vertical rhythm, no inherited span collisions. */
+.ip-planner-route-heading .ip-planner-brand-animation{display:grid;grid-template-columns:minmax(0,1fr);justify-items:start;align-items:start;gap:4px;width:max-content;max-width:100%;margin:0 0 14px;line-height:normal}
+.ip-planner-route-heading .ip-planner-letters{display:flex!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start;width:max-content;max-width:100%;gap:.045em;margin:0;padding:0;color:var(--sca-motion);font-size:clamp(3.15rem,7vw,4.8rem);font-weight:850;letter-spacing:-.09em;line-height:.9;white-space:nowrap}
+.ip-planner-route-heading .ip-planner-letters span{display:inline-block!important;flex:0 0 auto;max-width:none!important;margin:0!important;padding:0;color:var(--sca-motion)!important;font-size:inherit!important;line-height:inherit!important;vertical-align:baseline}
+.ip-planner-route-heading .ip-planner-app-title{display:block;position:static;max-width:100%;margin:0;color:var(--muted);font-size:clamp(.86rem,1.4vw,1rem);font-weight:700;letter-spacing:.025em;line-height:1.4}
+.ip-planner-route-heading>p{margin:0 0 8px;line-height:1.45}
+.ip-planner-route-heading>h1{margin:0;line-height:1.12}
+.ip-planner-route-heading>span{display:block;max-width:720px;margin-top:10px;line-height:1.55;overflow-wrap:anywhere}
+@media(max-width:640px){.ip-planner-route-heading .ip-planner-brand-animation{margin-bottom:12px}.ip-planner-route-heading .ip-planner-letters{font-size:clamp(2.7rem,15vw,3.7rem)}.ip-planner-route-heading .ip-planner-app-title{font-size:.88rem}.ip-planner-route-heading>h1{font-size:clamp(1.6rem,7vw,2.15rem)}.ip-planner-route-heading>span{font-size:.94rem}}
