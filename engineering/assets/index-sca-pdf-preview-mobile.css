@@ -165,3 +165,6 @@ body.ip-camera-route #root #reports .camera-plan-heading{scroll-margin-top:110px
 @keyframes ip-planner-arrive{from{opacity:0;transform:translateY(18px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
 @media(prefers-reduced-motion:reduce){.ip-planner-route-heading{animation:none}}
 @media(max-width:760px){.ip-planner-route-heading{margin:4px 0 12px;padding:20px 16px}}
+
+/* Theme-aware camera mode transition */
+.camera-mode-transition{background:var(--page)!important;color:var(--ink)!important}.camera-mode-transition-card p{color:var(--muted)!important}.camera-mode-transition-card strong,.camera-mode-transition .camera-transition-icon{color:var(--blue)!important;stroke:var(--blue)!important}.camera-mode-transition-card i{background:linear-gradient(90deg,transparent,var(--blue),transparent)!important}
