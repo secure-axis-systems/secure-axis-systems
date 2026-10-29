@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#10283d"/><path d="M128 179h256a24 24 0 0 1 24 24v134a24 24 0 0 1-24 24H128a24 24 0 0 1-24-24V203a24 24 0 0 1 24-24Z" fill="#fff"/><circle cx="256" cy="270" r="78" fill="#1768ad"/><circle cx="256" cy="270" r="47" fill="#10283d"/><path d="M164 145h76v34h-76zM344 145h50v34h-50zM190 383h132v24H190z" fill="#62aef0"/><path d="M213 93h86v29h-86zM235 72h42v21h-42z" fill="#62aef0"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#0b1118"/>
+  <rect x="18" y="18" width="476" height="476" rx="100" fill="none" stroke="#B0D7D8" stroke-opacity=".42" stroke-width="8"/>
+  <rect x="56" y="56" width="400" height="400" rx="84" fill="#21383a" fill-opacity=".72"/>
+  <text x="256" y="310" text-anchor="middle" fill="#B0D7D8" font-family="Arial,Helvetica,sans-serif" font-size="154" font-weight="800" letter-spacing="-8">SCA</text>
+</svg>
