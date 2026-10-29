@@ -194,7 +194,7 @@ function wiringSteps(d){
 }
 function rowsData(d){
  return [
- [t("controller"),d.controllers?d.controllers+" × "+($("controllerModel").value.trim()||$("controllerBrand").value):(lang==="en"?"No panel · local reader relays":"بدون لوحة · ريلاي القارئ المحلي")],
+ [t("controller"),boardPlan(d).count],
  [t("readerDevice"),d.readers+" × "+$("readerBrand").value+( $("readerModel").value.trim()?" · "+$("readerModel").value.trim():"")],
  [t("lockDevice"),d.doors+" × "+selectedLabel("lockType")+" · "+$("lockBrand").value+($("lockModel").value.trim()?" · "+$("lockModel").value.trim():"")],
  [t("doorContact"),d.doors],
@@ -293,13 +293,13 @@ $("calculateBtn").onclick=()=>{render();$("boardDrawingSection").scrollIntoView(
 $("resetBtn").onclick=()=>{for(const id of inputs){const el=$(id);if(el.tagName==="SELECT")el.selectedIndex=0;else if(el.type==="number")el.value=({doors:4,doorsPerController:2,readersPerDoor:1,lockCurrent:0.5,readerCurrent:0.25,controllerCurrent:0.6,lockVoltage:12,controlVoltage:12,backupHours:4}[id]??"");else el.value=""}$("controllerBrand").value="Bosch";$("readerBrand").value="IXM / Invixium";render()};
 $("previewBtn").onclick=preparePreview;$("closePreview").onclick=()=>$("previewModal").classList.remove("open");$("previewModal").addEventListener("click",e=>{if(e.target===$("previewModal"))$("previewModal").classList.remove("open")});$("previewDownload").onclick=downloadPdf;$("downloadBtn").onclick=downloadPdf;
 function makeReport(){
- const d=getData(),wiring=wiringSteps(d),date=new Date().toLocaleDateString(lang==="ar"?"ar-EG":"en-GB");
+ const d=getData(),wiring=wiringSteps(d),board=boardPlan(d),boardSvg=$("boardDrawing").innerHTML,date=new Date().toLocaleDateString(lang==="ar"?"ar-EG":"en-GB");
  const project=$("projectName").value.trim()||t("noProject"),engineer=$("engineerName").value.trim()||"—";
- const metrics=[[t("project"),project],[t("engineer"),engineer],[t("brand"),$("controllerBrand").value],[t("controllerModel"),$("controllerModel").value.trim()||"—"],[t("doors"),d.doors],[t("controllers"),d.protocol==="Standalone"?(lang==="en"?"Standalone readers":"قراء مستقلون"):d.controllers],[t("readers"),d.readers],[t("lock"),selectedLabel("lockType")+" · "+$("lockBrand").value+($("lockModel").value.trim()?" · "+$("lockModel").value.trim():"")+" · "+$("lockVoltage").value+" V DC · "+$("lockCurrent").value+" A"],[t("protocol"),selectedLabel("readerProtocol")],[t("behavior"),selectedLabel("lockBehavior")],[t("controlLoad"),fmt(d.controlW*1.25,1)+" W"],[t("lockLoad"),fmt(d.lockW*1.25,1)+" W"],[t("controlBattery"),nextBattery(d.controlBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("lockBattery"),d.sameRail?(lang==="en"?"Shared control supply":"مشتركة مع مزود التحكم"):nextBattery(d.lockBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("date"),date]];
+ const metrics=[[t("project"),project],[t("engineer"),engineer],[t("brand"),$("controllerBrand").value],[t("controllerModel"),$("controllerModel").value.trim()||"—"],[t("doors"),d.doors],[t("controllers"),board.count],[lang==="en"?"Board profile":"نوع البوردة",board.label],[t("readers"),d.readers],[t("lock"),selectedLabel("lockType")+" · "+$("lockBrand").value+($("lockModel").value.trim()?" · "+$("lockModel").value.trim():"")+" · "+$("lockVoltage").value+" V DC · "+$("lockCurrent").value+" A"],[t("protocol"),selectedLabel("readerProtocol")],[t("behavior"),selectedLabel("lockBehavior")],[t("controlLoad"),fmt(d.controlW*1.25,1)+" W"],[t("lockLoad"),fmt(d.lockW*1.25,1)+" W"],[t("controlBattery"),nextBattery(d.controlBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("lockBattery"),d.sameRail?(lang==="en"?"Shared control supply":"مشتركة مع مزود التحكم"):nextBattery(d.lockBatteryAh)+" Ah · "+val("backupHours")+" h"],[t("date"),date]];
  const protocol=d.protocol;
- const tableRows=[];for(let i=1;i<=d.doors;i++)tableRows.push(["D-"+String(i).padStart(2,"0"),"R-"+String(i).padStart(2,"0")+" · "+selectedLabel("readerProtocol"),"L-"+String(i).padStart(2,"0"),"IN-DC-"+String(i).padStart(2,"0"),"IN-REX-"+String(i).padStart(2,"0"),d.protocol==="Standalone"?"LOCAL":"CTRL-"+Math.ceil(i/d.capacity)]);
+ const tableRows=[];for(let i=1;i<=d.doors;i++)tableRows.push(["D-"+String(i).padStart(2,"0"),"R-"+String(i).padStart(2,"0")+" · "+selectedLabel("readerProtocol"),"L-"+String(i).padStart(2,"0"),"IN-DC-"+String(i).padStart(2,"0"),"IN-REX-"+String(i).padStart(2,"0"),d.protocol==="Standalone"?"LOCAL":doorBoardLabel(d,i)]);
  const checks=[...document.querySelectorAll("#checks input")].map((el,i)=>[t("checks")[i],el.checked?t("checkStatus"):t("notChecked")]);
- return {project,engineer,date,metrics,tableRows,checks,bom:rowsData(d),wiring,d};
+ return {project,engineer,date,metrics,tableRows,checks,bom:rowsData(d),wiring,board,boardSvg,d};
 }
 function buildReportHtml(data){
  const table='<table class="report-table"><thead><tr>'+["Door ID","Reader","Lock","Contact","REX","Controller"].map((x,i)=>'<th>'+(["رقم الباب","القارئ","القفل","الحساس","الخروج","الكنترولر"][i]||x)+'</th>').join("")+'</tr></thead><tbody>'+data.tableRows.map(r=>"<tr>"+r.map(x=>"<td>"+escapeHtml(x)+"</td>").join("")+"</tr>").join("")+"</tbody></table>";
@@ -307,7 +307,7 @@ function buildReportHtml(data){
  const bom='<h3>'+escapeHtml(t("item"))+'</h3><table class="report-table"><tbody>'+data.bom.map(([a,b])=>"<tr><td>"+escapeHtml(String(a))+"</td><td>"+escapeHtml(String(b))+"</td></tr>").join("")+"</tbody></table>";
  const checks='<h3>'+escapeHtml(lang==="en"?"Commissioning checks":"اختبارات التشغيل")+'</h3><table class="report-table"><tbody>'+data.checks.map(r=>"<tr><td>"+escapeHtml(r[0])+"</td><td>"+escapeHtml(r[1])+"</td></tr>").join("")+"</tbody></table>";
  const wiring='<h3>'+escapeHtml(lang==="en"?"Door wiring guide":"دليل توصيل الباب")+'</h3><ol>'+data.wiring.map(x=>'<li>'+escapeHtml(x)+'</li>').join("")+'</ol>';
- return '<div class="report-head"><h2>SCA · '+escapeHtml(t("pdf"))+'</h2><p>'+escapeHtml(data.project)+' · '+escapeHtml(data.date)+'</p></div><div class="report-grid">'+cells+'</div>'+bom+'<h3>'+escapeHtml(lang==="en"?"Door schedule":"جدول الأبواب")+'</h3>'+table+checks+wiring+'<p class="note">'+escapeHtml(t("calcNote"))+'</p>';
+ return '<div class="report-head"><h2>SCA · '+escapeHtml(t("pdf"))+'</h2><p>'+escapeHtml(data.project)+' · '+escapeHtml(data.date)+'</p></div><div class="report-grid">'+cells+'</div>'+bom+'<h3>'+escapeHtml(lang==="en"?"Door schedule":"جدول الأبواب")+'</h3>'+table+checks+'<h3>'+escapeHtml(lang==="en"?"Calculated board drawing":"رسم البوردة المحسوب")+'</h3><div>'+data.boardSvg+'</div><p>'+escapeHtml(data.board.count+" · "+data.board.detail)+'</p>'+wiring+'<p class="note">'+escapeHtml(t("calcNote"))+'</p>';
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function drawReportPages(data){
