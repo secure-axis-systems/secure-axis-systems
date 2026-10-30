@@ -92,10 +92,8 @@ function syncCameraNameStatus(){const status=document.querySelector(".camera-nam
 window.scaSuggestCameraNames=function(){
  const first=document.querySelector('#reports .camera-table tbody input[data-sca-camera-index="0"]');
  if(!first){setCameraNameStatus("Generate the camera list first.","أنشئ جدول الكاميرات أولاً.");return}
- const sample=first.value.trim();
- if(!sample){setCameraNameStatus("Enter the first camera name in the table first.","اكتب اسم أول كاميرا في الجدول أولاً.");first.focus();return}
- window.scaCompleteCameraNames?.(sample);
- setCameraNameStatus("Other camera names are suggested from the first name and stay editable.","يتم اقتراح بقية الأسماء من الاسم الأول وتظل قابلة للتعديل.");
+ if(!first.value.trim()){setCameraNameStatus("Enter the first camera name in the table first.","اكتب اسم أول كاميرا في الجدول أولاً.");first.focus();return}
+ setCameraNameStatus("Camera names are completed automatically as you type; you can still edit each row.","تُستكمل أسماء الكاميرات تلقائيًا أثناء الكتابة، ويمكنك تعديل أي صف.");
 };
 document.addEventListener("input",event=>{if(event.target?.matches?.('#reports .camera-table input[data-sca-camera-index="0"]'))setCameraNameStatus("Other camera names are suggested as you type and stay editable.","يتم اقتراح بقية الأسماء أثناء الكتابة وتظل قابلة للتعديل.");});
 window.scaPrintCameraSchedule=function(ar){
