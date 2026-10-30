@@ -84,35 +84,47 @@ function syncIpPlannerRoute(){
  return true;
 }
 window.addEventListener("hashchange",()=>{ipPlannerRouteScrolled=false;syncIpPlannerRoute()});
-const cameraModeObserver=new MutationObserver(()=>{mountCameraModeSwitch();mountHeroMark();syncIpPlannerRoute()});
+const cameraModeObserver=new MutationObserver(()=>{mountCameraModeSwitch();mountHeroMark();syncIpPlannerRoute();syncCameraNameStatus()});
 cameraModeObserver.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["lang"]});
 
-window.scaSuggestCameraNames=function(ar){
- const inputs=[...document.querySelectorAll("#reports .camera-table tbody tr td:first-child input")];
- const status=document.querySelector(".camera-name-status");
- if(!inputs.length){if(status)status.textContent=ar?"أنشئ جدول الكاميرات أولاً.":"Generate the camera list first.";return}
- const sample=inputs[0].value.trim();
- if(!sample){if(status)status.textContent=ar?"اكتب اسم الكاميرا الأولى في الجدول أولاً.":"Enter the first camera name in the table first.";inputs[0].focus();return}
- const match=sample.match(/^(.*?)(\d+)\s*$/);
- const base=match?match[1]:sample.trimEnd()+" ";
- const width=match?match[2].length:2;
- const firstNumber=match?Number(match[2]):1;
- const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value")?.set;
- inputs.forEach((input,index)=>{if(index===0)return;const next=base+String(firstNumber+index).padStart(width,"0");if(input.value===next)return;if(setter)setter.call(input,next);else input.value=next;input.dispatchEvent(new Event("input",{bubbles:true}));input.dispatchEvent(new Event("change",{bubbles:true}))});
- if(status)status.textContent=ar?("تم إكمال "+Math.max(0,inputs.length-1)+" اسمًا من الاسم الأول، ويمكنك تعديلها."):("Completed "+Math.max(0,inputs.length-1)+" names from the first; all remain editable.");
+function setCameraNameStatus(en,ar){const status=document.querySelector(".camera-name-status");if(!status)return;status.dataset.enText=en;status.dataset.arText=ar;status.textContent=document.documentElement.lang==="ar"?ar:en}
+function syncCameraNameStatus(){const status=document.querySelector(".camera-name-status");if(status?.dataset.enText)status.textContent=document.documentElement.lang==="ar"?status.dataset.arText:status.dataset.enText}
+window.scaSuggestCameraNames=function(){
+ const first=document.querySelector('#reports .camera-table tbody input[data-sca-camera-index="0"]');
+ if(!first){setCameraNameStatus("Generate the camera list first.","أنشئ جدول الكاميرات أولاً.");return}
+ const sample=first.value.trim();
+ if(!sample){setCameraNameStatus("Enter the first camera name in the table first.","اكتب اسم أول كاميرا في الجدول أولاً.");first.focus();return}
+ window.scaCompleteCameraNames?.(sample);
+ setCameraNameStatus("Other camera names are suggested from the first name and stay editable.","يتم اقتراح بقية الأسماء من الاسم الأول وتظل قابلة للتعديل.");
 };
+document.addEventListener("input",event=>{if(event.target?.matches?.('#reports .camera-table input[data-sca-camera-index="0"]'))setCameraNameStatus("Other camera names are suggested as you type and stay editable.","يتم اقتراح بقية الأسماء أثناء الكتابة وتظل قابلة للتعديل.");});
 window.scaPrintCameraSchedule=function(ar){
- const source=document.querySelector("#reports .camera-table");if(!source)return;window.scaSaveReportDraft?.();
+ const source=document.querySelector("#reports .camera-table");
+ if(!source)return;
+ window.scaSaveReportDraft?.();
+ let cameras=[];
+ try{const draft=JSON.parse(sessionStorage.getItem("sca-report-draft-v1")||"null");if(Array.isArray(draft?.cameras))cameras=draft.cameras}catch(_){}
+ if(!cameras.length)cameras=[...source.querySelectorAll("tbody tr")].map(row=>{const cells=row.querySelectorAll("td input");return{name:cells[0]?.value||"",ipAddress:cells[1]?.value||""}});
+ if(!cameras.length)return;
  document.getElementById("scaCameraSchedulePrint")?.remove();
  const print=document.createElement("main");print.id="scaCameraSchedulePrint";print.dir=ar?"rtl":"ltr";
- const brand=document.createElement("div");brand.className="print-brand";brand.textContent="SCA";brand.style.color=document.documentElement.dataset.theme==="dark"?"#B0D7D8":"#427F82";print.append(brand);const title=document.createElement("h1");title.textContent=ar?"جدول كاميرات المشروع":"Project camera schedule";print.append(title);
- const project=document.getElementById("scaScheduleProjectName")?.value.trim();
- if(project){const p=document.createElement("p");p.className="print-project-name";p.textContent=(ar?"المشروع: ":"Project: ")+project;print.append(p)}
- const count=document.createElement("p");count.className="print-camera-count";count.textContent=(ar?"عدد الكاميرات: ":"Camera count: ")+source.querySelectorAll("tbody tr").length;print.append(count);
- const table=source.cloneNode(true);table.querySelectorAll("input").forEach(input=>{const cell=document.createElement("span");cell.textContent=input.value;input.replaceWith(cell)});print.append(table);
+ const project=document.getElementById("scaScheduleProjectName")?.value.trim()||"";
+ const headers=[...source.querySelectorAll("thead th")].map(th=>th.textContent.trim());
+ for(let offset=0;offset<cameras.length;offset+=30){
+  const page=document.createElement("section");page.className="print-camera-page";page.dir=ar?"rtl":"ltr";
+  const brand=document.createElement("div");brand.className="print-brand";brand.textContent="SCA";brand.style.color=document.documentElement.dataset.theme==="dark"?"#B0D7D8":"#427F82";page.append(brand);
+  const title=document.createElement("h1");title.textContent=offset===0?(ar?"جدول كاميرات المشروع":"Project camera schedule"):(ar?"جدول كاميرات المشروع — تابع":"Project camera schedule — continued");page.append(title);
+  if(project){const name=document.createElement("p");name.className="print-project-name";name.textContent=(ar?"المشروع: ":"Project: ")+project;page.append(name)}
+  const range=document.createElement("p");range.className="print-camera-count";range.textContent=ar?("الكاميرات "+(offset+1)+"–"+Math.min(offset+30,cameras.length)+" من "+cameras.length):("Cameras "+(offset+1)+"–"+Math.min(offset+30,cameras.length)+" of "+cameras.length);page.append(range);
+  const table=document.createElement("table");table.className="camera-table print-camera-table";
+  const thead=document.createElement("thead"),headRow=document.createElement("tr");
+  headers.forEach(label=>{const th=document.createElement("th");th.textContent=label;headRow.append(th)});thead.append(headRow);table.append(thead);
+  const tbody=document.createElement("tbody");
+  cameras.slice(offset,offset+30).forEach(camera=>{const tr=document.createElement("tr");[camera.name,camera.ipAddress].forEach(value=>{const td=document.createElement("td");td.textContent=value||"";tr.append(td)});tbody.append(tr)});
+  table.append(tbody);page.append(table);print.append(page)
+ }
  document.body.append(print);document.body.classList.add("sca-print-schedule-only");
  const cleanup=()=>{document.body.classList.remove("sca-print-schedule-only");print.remove();window.removeEventListener("afterprint",cleanup)};
- window.addEventListener("afterprint",cleanup,{once:true});
- window.print();
+ window.addEventListener("afterprint",cleanup,{once:true});window.print()
 };
 mountCameraModeSwitch();mountHeroMark();mountInstall();mountLanguageToggle();syncIpPlannerRoute();
