@@ -279,11 +279,11 @@ html.sca-intro-complete .ip-planner-app-title{animation-name:ipPlannerTextIn}
  @page{size:A4 landscape;margin:7mm}
  body.sca-print-schedule-only>*:not(#scaCameraSchedulePrint){display:none!important}
  body.sca-print-schedule-only #scaCameraSchedulePrint{display:block!important;position:static!important;inset:auto!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important;background:#fff!important;color:#111!important;font:8pt/1.2 Arial,sans-serif!important;direction:inherit}
- #scaCameraSchedulePrint .print-brand{margin:0 0 2px!important;color:#427F82!important;font-size:19pt!important;font-weight:800!important;letter-spacing:.12em!important}\n #scaCameraSchedulePrint h1{margin:0 0 5px!important;font-size:14pt!important;color:#172a3d!important}
+ #scaCameraSchedulePrint .print-brand{margin:0 0 2px!important;color:#427F82;font-size:19pt!important;font-weight:800!important;letter-spacing:.12em!important}\n #scaCameraSchedulePrint h1{margin:0 0 5px!important;font-size:14pt!important;color:#172a3d!important}
  #scaCameraSchedulePrint .print-project-name,#scaCameraSchedulePrint .print-camera-count{margin:2px 0;font-size:8pt!important;color:#222!important}
  #scaCameraSchedulePrint table{width:100%!important;border-collapse:collapse!important;table-layout:fixed}
  #scaCameraSchedulePrint thead{display:table-header-group}
  #scaCameraSchedulePrint tr{break-inside:avoid;page-break-inside:avoid}
  #scaCameraSchedulePrint th{padding:3px 5px!important;border:1px solid #427F82!important;color:#172a3d!important;background:#e3f0f0!important;text-align:start!important;font-size:8pt!important;line-height:1.15!important}\n #scaCameraSchedulePrint td{padding:2px 5px!important;border:1px solid #cbd8da!important;color:#172a3d!important;background:#fff!important;text-align:start!important;font-size:8pt!important;line-height:1.15!important}
- #scaCameraSchedulePrint input{display:none!important}
+ #scaCameraSchedulePrint input{display:none!important}\n html[data-theme="dark"] #scaCameraSchedulePrint .print-brand{color:#B0D7D8!important}\n html[data-theme="dark"] #scaCameraSchedulePrint th{background:#20383a!important;color:#e6edf3!important;border-color:#B0D7D8!important}\n html[data-theme="dark"] #scaCameraSchedulePrint td{color:#172a3d!important;background:#fff!important;border-color:#B0D7D8!important}
 }
