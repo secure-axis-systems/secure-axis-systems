@@ -69,7 +69,7 @@ function syncIpPlannerRoute(){
  target.style.scrollMarginTop="115px";
  if(!heading){
   heading=document.createElement("header");heading.id="ipPlannerRouteHeading";heading.className="ip-planner-route-heading";
-  heading.innerHTML='<div class="ip-planner-brand-animation" aria-label="SCA Security Calculator app"><div class="ip-planner-letters" aria-hidden="true"><span style="--letter-index:0">S</span><span style="--letter-index:1">C</span><span style="--letter-index:2">A</span></div><strong class="ip-planner-app-title"></strong></div><p></p><h1></h1><div class="ip-planner-description"></div>';const nav=document.getElementById("cameraModeSwitch");if(nav)nav.after(heading);else target.before(heading);
+  heading.innerHTML='<div class="ip-planner-brand-animation page-brand-animation" aria-label="SCA Security Calculator app"><div class="ip-planner-letters page-brand-letters" aria-hidden="true"><span style="--letter-index:0">S</span><span style="--letter-index:1">C</span><span style="--letter-index:2">A</span></div><strong class="ip-planner-app-title page-brand-subtitle"></strong></div><p></p><h1></h1><div class="ip-planner-description"></div>';const nav=document.getElementById("cameraModeSwitch");if(nav)nav.after(heading);else target.before(heading);
  }
  const ar=document.documentElement.lang==="ar";
  const text=(selector,value)=>{const node=heading.querySelector(selector);if(node&&node.textContent!==value)node.textContent=value};
@@ -86,4 +86,34 @@ function syncIpPlannerRoute(){
 window.addEventListener("hashchange",()=>{ipPlannerRouteScrolled=false;syncIpPlannerRoute()});
 const cameraModeObserver=new MutationObserver(()=>{mountCameraModeSwitch();mountHeroMark();syncIpPlannerRoute()});
 cameraModeObserver.observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["lang"]});
+
+window.scaSuggestCameraNames=function(ar){
+ const inputs=[...document.querySelectorAll("#reports .camera-table tbody tr td:first-child input")];
+ const status=document.querySelector(".camera-name-status");
+ if(!inputs.length){if(status)status.textContent=ar?"أنشئ جدول الكاميرات أولاً.":"Generate the camera list first.";return}
+ const prefixField=document.getElementById("scaScheduleNamePrefix");
+ const sample=inputs.map(input=>input.value.trim()).find(Boolean)||"";
+ const match=sample.match(/^(.*?)(\d+)\s*$/);
+ let base="",width=2;
+ if(prefixField&&prefixField.value.trim()){base=prefixField.value.trimEnd()+"-";width=match?match[2].length:2}
+ else if(match){base=match[1];width=match[2].length}
+ else{base=(sample|| (ar?"كاميرا":"Camera")).trimEnd()+" ";width=2}
+ const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value")?.set;
+ inputs.forEach((input,index)=>{const next=base+String(index+1).padStart(width,"0");if(input.value===next)return;if(setter)setter.call(input,next);else input.value=next;input.dispatchEvent(new Event("input",{bubbles:true}));input.dispatchEvent(new Event("change",{bubbles:true}))});
+ if(status)status.textContent=ar?("تم اقتراح "+inputs.length+" اسماً، ويمكنك تعديل كل اسم في الجدول."):(inputs.length+" names suggested. You can edit every name in the table.");
+};
+window.scaPrintCameraSchedule=function(ar){
+ const source=document.querySelector("#reports .camera-table");if(!source)return;
+ document.getElementById("scaCameraSchedulePrint")?.remove();
+ const print=document.createElement("main");print.id="scaCameraSchedulePrint";print.dir=ar?"rtl":"ltr";
+ const title=document.createElement("h1");title.textContent=ar?"جدول كاميرات المشروع":"Project camera schedule";print.append(title);
+ const project=document.getElementById("scaScheduleProjectName")?.value.trim();
+ if(project){const p=document.createElement("p");p.className="print-project-name";p.textContent=(ar?"المشروع: ":"Project: ")+project;print.append(p)}
+ const count=document.createElement("p");count.className="print-camera-count";count.textContent=(ar?"عدد الكاميرات: ":"Camera count: ")+source.querySelectorAll("tbody tr").length;print.append(count);
+ const table=source.cloneNode(true);table.querySelectorAll("input").forEach(input=>{const cell=document.createElement("span");cell.textContent=input.value;input.replaceWith(cell)});print.append(table);
+ document.body.append(print);document.body.classList.add("sca-print-schedule-only");
+ const cleanup=()=>{document.body.classList.remove("sca-print-schedule-only");print.remove();window.removeEventListener("afterprint",cleanup)};
+ window.addEventListener("afterprint",cleanup,{once:true});
+ window.print();
+};
 mountCameraModeSwitch();mountHeroMark();mountInstall();mountLanguageToggle();syncIpPlannerRoute();
