@@ -91,22 +91,21 @@ window.scaSuggestCameraNames=function(ar){
  const inputs=[...document.querySelectorAll("#reports .camera-table tbody tr td:first-child input")];
  const status=document.querySelector(".camera-name-status");
  if(!inputs.length){if(status)status.textContent=ar?"أنشئ جدول الكاميرات أولاً.":"Generate the camera list first.";return}
- const prefixField=document.getElementById("scaScheduleNamePrefix");
- const sample=inputs.map(input=>input.value.trim()).find(Boolean)||"";
+ const sample=inputs[0].value.trim();
+ if(!sample){if(status)status.textContent=ar?"اكتب اسم الكاميرا الأولى في الجدول أولاً.":"Enter the first camera name in the table first.";inputs[0].focus();return}
  const match=sample.match(/^(.*?)(\d+)\s*$/);
- let base="",width=2;
- if(prefixField&&prefixField.value.trim()){base=prefixField.value.trimEnd()+"-";width=match?match[2].length:2}
- else if(match){base=match[1];width=match[2].length}
- else{base=(sample|| (ar?"كاميرا":"Camera")).trimEnd()+" ";width=2}
+ const base=match?match[1]:sample.trimEnd()+" ";
+ const width=match?match[2].length:2;
+ const firstNumber=match?Number(match[2]):1;
  const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value")?.set;
- inputs.forEach((input,index)=>{const next=base+String(index+1).padStart(width,"0");if(input.value===next)return;if(setter)setter.call(input,next);else input.value=next;input.dispatchEvent(new Event("input",{bubbles:true}));input.dispatchEvent(new Event("change",{bubbles:true}))});
- if(status)status.textContent=ar?("تم اقتراح "+inputs.length+" اسماً، ويمكنك تعديل كل اسم في الجدول."):(inputs.length+" names suggested. You can edit every name in the table.");
+ inputs.forEach((input,index)=>{if(index===0)return;const next=base+String(firstNumber+index).padStart(width,"0");if(input.value===next)return;if(setter)setter.call(input,next);else input.value=next;input.dispatchEvent(new Event("input",{bubbles:true}));input.dispatchEvent(new Event("change",{bubbles:true}))});
+ if(status)status.textContent=ar?("تم إكمال "+Math.max(0,inputs.length-1)+" اسمًا من الاسم الأول، ويمكنك تعديلها."):("Completed "+Math.max(0,inputs.length-1)+" names from the first; all remain editable.");
 };
 window.scaPrintCameraSchedule=function(ar){
  const source=document.querySelector("#reports .camera-table");if(!source)return;window.scaSaveReportDraft?.();
  document.getElementById("scaCameraSchedulePrint")?.remove();
  const print=document.createElement("main");print.id="scaCameraSchedulePrint";print.dir=ar?"rtl":"ltr";
- const title=document.createElement("h1");title.textContent=ar?"جدول كاميرات المشروع":"Project camera schedule";print.append(title);
+ const brand=document.createElement("div");brand.className="print-brand";brand.textContent="SCA";brand.style.color=document.documentElement.dataset.theme==="dark"?"#B0D7D8":"#427F82";print.append(brand);const title=document.createElement("h1");title.textContent=ar?"جدول كاميرات المشروع":"Project camera schedule";print.append(title);
  const project=document.getElementById("scaScheduleProjectName")?.value.trim();
  if(project){const p=document.createElement("p");p.className="print-project-name";p.textContent=(ar?"المشروع: ":"Project: ")+project;print.append(p)}
  const count=document.createElement("p");count.className="print-camera-count";count.textContent=(ar?"عدد الكاميرات: ":"Camera count: ")+source.querySelectorAll("tbody tr").length;print.append(count);
