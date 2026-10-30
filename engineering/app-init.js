@@ -103,7 +103,7 @@ window.scaSuggestCameraNames=function(ar){
  if(status)status.textContent=ar?("تم اقتراح "+inputs.length+" اسماً، ويمكنك تعديل كل اسم في الجدول."):(inputs.length+" names suggested. You can edit every name in the table.");
 };
 window.scaPrintCameraSchedule=function(ar){
- const source=document.querySelector("#reports .camera-table");if(!source)return;
+ const source=document.querySelector("#reports .camera-table");if(!source)return;window.scaSaveReportDraft?.();
  document.getElementById("scaCameraSchedulePrint")?.remove();
  const print=document.createElement("main");print.id="scaCameraSchedulePrint";print.dir=ar?"rtl":"ltr";
  const title=document.createElement("h1");title.textContent=ar?"جدول كاميرات المشروع":"Project camera schedule";print.append(title);
