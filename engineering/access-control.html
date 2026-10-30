@@ -399,107 +399,107 @@ function buildReportHtml(data){
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function drawReportPages(data){
- const W=1190,H=1684,margin=70,pages=[];
+ const W=1190,H=1684,margin=70,pages=[],dark=document.documentElement.dataset.theme===`dark`,palette={paper:dark?`#0b1118`:`#ffffff`,accent:dark?`#B0D7D8`:`#427F82`,ink:dark?`#e6edf3`:`#172a3d`,muted:dark?`#a3b4bf`:`#617786`,panel:dark?`#121d28`:`#eaf2f2`,panelAlt:dark?`#17232e`:`#f6f9f9`,soft:dark?`#20383a`:`#e3f0f0`,border:dark?`#314553`:`#d6e2e5`,accentInk:dark?`#0b1927`:`#284d50`};
  const rows=data.tableRows,perPage=35,pageCount=1+Math.max(1,Math.ceil(rows.length/perPage));
  for(let p=0;p<pageCount;p++){
   const canvas=document.createElement("canvas");canvas.width=W;canvas.height=H;
-  const ctx=canvas.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,W,H);
+  const ctx=canvas.getContext("2d");ctx.fillStyle=palette.paper;ctx.fillRect(0,0,W,H);
   const rtl=lang==="ar",x=rtl?W-margin:margin,align=rtl?"right":"left";
   ctx.direction=rtl?"rtl":"ltr";ctx.textAlign=align;
-  ctx.fillStyle="#285f63";ctx.font="bold 25px Arial";
+  ctx.fillStyle=palette.accent;ctx.font="bold 25px Arial";
   ctx.fillText("SCA · "+t("pdf"),x,68);
-  ctx.fillStyle="#172a3d";ctx.font="bold 32px Arial";ctx.fillText(data.project,x,111);
-  ctx.fillStyle="#617786";ctx.font="18px Arial";
+  ctx.fillStyle=palette.ink;ctx.font="bold 32px Arial";ctx.fillText(data.project,x,111);
+  ctx.fillStyle=palette.muted;ctx.font="18px Arial";
   ctx.fillText(t("engineer")+": "+data.engineer+"     "+t("date")+": "+data.date,x,145);
   if(p===0){
    let y=185;const colW=(W-2*margin)/2,cellH=51;
-   ctx.fillStyle="#285f63";ctx.font="bold 21px Arial";ctx.fillText(lang==="en"?"Project summary":"ملخص المشروع",x,y);y+=20;
+   ctx.fillStyle=palette.accent;ctx.font="bold 21px Arial";ctx.fillText(lang==="en"?"Project summary":"ملخص المشروع",x,y);y+=20;
    data.metrics.slice(2,14).forEach((pair,i)=>{
     const col=i%2,row=Math.floor(i/2),px=rtl?W-margin-(col+1)*colW:margin+col*colW,py=y+row*cellH;
-    ctx.fillStyle="#f1f6f6";ctx.fillRect(px+4,py+3,colW-8,cellH-6);
-    ctx.fillStyle="#617786";ctx.font="14px Arial";ctx.textAlign=rtl?"right":"left";
+    ctx.fillStyle=palette.panelAlt;ctx.fillRect(px+4,py+3,colW-8,cellH-6);
+    ctx.fillStyle=palette.muted;ctx.font="14px Arial";ctx.textAlign=rtl?"right":"left";
     ctx.fillText(String(pair[0]),rtl?px+colW-13:px+13,py+21);
-    ctx.fillStyle="#172a3d";ctx.font="bold 17px Arial";
+    ctx.fillStyle=palette.ink;ctx.font="bold 17px Arial";
     ctx.fillText(String(pair[1]).slice(0,54),rtl?px+colW-13:px+13,py+42);
    });
    y+=6*cellH+18;ctx.textAlign=align;
-   ctx.fillStyle="#285f63";ctx.font="bold 20px Arial";ctx.fillText(t("item"),x,y);y+=10;
+   ctx.fillStyle=palette.accent;ctx.font="bold 20px Arial";ctx.fillText(t("item"),x,y);y+=10;
    const bw=(W-2*margin)/2,bh=35;
    data.bom.forEach((item,i)=>{
     const col=i%2,row=Math.floor(i/2),px=rtl?W-margin-(col+1)*bw:margin+col*bw,py=y+row*bh;
-    ctx.fillStyle=row%2?"#f6f9f9":"#fff";ctx.fillRect(px+3,py,bw-6,bh);
-    ctx.fillStyle="#172a3d";ctx.font="14px Arial";ctx.textAlign=rtl?"right":"left";
+    ctx.fillStyle=row%2?palette.panelAlt:palette.paper;ctx.fillRect(px+3,py,bw-6,bh);
+    ctx.fillStyle=palette.ink;ctx.font="14px Arial";ctx.textAlign=rtl?"right":"left";
     ctx.fillText(String(item[0]).slice(0,34),rtl?px+bw-12:px+12,py+22);
     ctx.textAlign=rtl?"left":"right";ctx.font="bold 14px Arial";
     ctx.fillText(String(item[1]).slice(0,28),rtl?px+12:px+bw-12,py+22);
    });
    y+=Math.ceil(data.bom.length/2)*bh+18;ctx.textAlign=align;
-   ctx.fillStyle="#285f63";ctx.font="bold 20px Arial";ctx.fillText(lang==="en"?"Commissioning checks":"اختبارات التشغيل والتسليم",x,y);y+=8;
+   ctx.fillStyle=palette.accent;ctx.font="bold 20px Arial";ctx.fillText(lang==="en"?"Commissioning checks":"اختبارات التشغيل والتسليم",x,y);y+=8;
    data.checks.forEach((item,i)=>{
-    const py=y+i*27;ctx.fillStyle=i%2?"#f6f9f9":"#fff";ctx.fillRect(margin,py,W-2*margin,26);
-    ctx.fillStyle="#172a3d";ctx.font="13px Arial";ctx.textAlign=rtl?"right":"left";
+    const py=y+i*27;ctx.fillStyle=i%2?palette.panelAlt:palette.paper;ctx.fillRect(margin,py,W-2*margin,26);
+    ctx.fillStyle=palette.ink;ctx.font="13px Arial";ctx.textAlign=rtl?"right":"left";
     ctx.fillText(String(item[0]).slice(0,92),rtl?W-margin-105:margin+8,py+18);
     ctx.fillStyle=item[1]===t("checkStatus")?"#18794e":"#8a5b00";ctx.font="bold 12px Arial";ctx.textAlign=rtl?"left":"right";
     ctx.fillText(String(item[1]),rtl?margin+8:W-margin-8,py+18);
    });
   }else{
    const from=(p-1)*perPage,to=Math.min(rows.length,from+perPage);
-   ctx.fillStyle="#285f63";ctx.font="bold 22px Arial";ctx.textAlign=align;
+   ctx.fillStyle=palette.accent;ctx.font="bold 22px Arial";ctx.textAlign=align;
    ctx.fillText((lang==="en"?"Door wiring and label schedule":"جدول توصيلات وملصقات الأبواب")+" · "+p+"/"+(pageCount-1),x,194);
    const headings=rtl?["الكنترولر","طلب الخروج","حساس الباب","القفل","القارئ","الباب"]:["Door","Reader","Lock","Contact","REX","Controller"];
    const widths=[130,190,155,175,155,145],tableW=widths.reduce((a,b)=>a+b,0),left=rtl?W-margin-tableW:margin;
-   let y=213;ctx.fillStyle="#e5eeee";ctx.fillRect(left,y,tableW,32);ctx.fillStyle="#284d50";ctx.font="bold 13px Arial";ctx.textAlign="left";
+   let y=213;ctx.fillStyle=palette.soft;ctx.fillRect(left,y,tableW,32);ctx.fillStyle=palette.accentInk;ctx.font="bold 13px Arial";ctx.textAlign="left";
    let xx=left+7;headings.forEach((h,i)=>{ctx.fillText(h,xx,y+21);xx+=widths[i]});
    y+=32;ctx.font="13px Arial";
    rows.slice(from,to).forEach((row,j)=>{
-    if(j%2===1){ctx.fillStyle="#f7f9f9";ctx.fillRect(left,y,tableW,31)}
-    ctx.fillStyle="#172a3d";let ordered=rtl?[row[5],row[4],row[3],row[2],row[1],row[0]]:row;xx=left+7;
+    if(j%2===1){ctx.fillStyle=palette.panelAlt;ctx.fillRect(left,y,tableW,31)}
+    ctx.fillStyle=palette.ink;let ordered=rtl?[row[5],row[4],row[3],row[2],row[1],row[0]]:row;xx=left+7;
     ordered.forEach((value,i)=>{ctx.fillText(String(value).slice(0,28),xx,y+20);xx+=widths[i]});
-    ctx.strokeStyle="#d8e1e1";ctx.beginPath();ctx.moveTo(left,y+31);ctx.lineTo(left+tableW,y+31);ctx.stroke();y+=31;
+    ctx.strokeStyle=palette.border;ctx.beginPath();ctx.moveTo(left,y+31);ctx.lineTo(left+tableW,y+31);ctx.stroke();y+=31;
    });
-   ctx.fillStyle="#617786";ctx.font="12px Arial";ctx.textAlign=align;
+   ctx.fillStyle=palette.muted;ctx.font="12px Arial";ctx.textAlign=align;
    ctx.fillText(lang==="en"?"Terminal numbers must follow the exact selected model manual.":"أرقام الأطراف تُراجع من دليل الموديل المحدد.",x,H-68);
   }
-  if(p===0){ctx.fillStyle="#617786";ctx.font="12px Arial";ctx.textAlign=align;ctx.fillText(lang==="en"?"Planning estimate · confirm exact model ratings and local life-safety requirements.":"تقدير تخطيطي · راجع مواصفات الموديل واشتراطات السلامة المحلية.",x,H-68)}
+  if(p===0){ctx.fillStyle=palette.muted;ctx.font="12px Arial";ctx.textAlign=align;ctx.fillText(lang==="en"?"Planning estimate · confirm exact model ratings and local life-safety requirements.":"تقدير تخطيطي · راجع مواصفات الموديل واشتراطات السلامة المحلية.",x,H-68)}
   pages.push(canvas.toDataURL("image/jpeg",.9));
  }
  const guide=document.createElement("canvas");guide.width=W;guide.height=H;
- const g=guide.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,W,H);
+ const g=guide.getContext("2d");g.fillStyle=palette.paper;g.fillRect(0,0,W,H);
  const rtl=lang==="ar",gx=rtl?W-margin:margin;g.direction=rtl?"rtl":"ltr";g.textAlign=rtl?"right":"left";
- g.fillStyle="#285f63";g.font="bold 27px Arial";g.fillText(lang==="en"?"Door wiring guide":"دليل توصيل مكونات الباب",gx,75);
- g.fillStyle="#172a3d";g.font="bold 20px Arial";g.fillText(data.project,gx,118);
+ g.fillStyle=palette.accent;g.font="bold 27px Arial";g.fillText(lang==="en"?"Door wiring guide":"دليل توصيل مكونات الباب",gx,75);
+ g.fillStyle=palette.ink;g.font="bold 20px Arial";g.fillText(data.project,gx,118);
  let gy=170;
  data.wiring.forEach((line,i)=>{
-  g.fillStyle=i%2?"#f5f8f8":"#eaf2f2";g.fillRect(margin,gy-28,W-2*margin,135);
-  g.fillStyle="#285f63";g.font="bold 17px Arial";g.fillText(String(i+1)+".",rtl?W-margin-14:margin+14,gy);
-  g.fillStyle="#172a3d";g.font="16px Arial";const words=String(line).split(/\s+/);let row="",yy=gy;
+  g.fillStyle=i%2?palette.panelAlt:palette.panel;g.fillRect(margin,gy-28,W-2*margin,135);
+  g.fillStyle=palette.accent;g.font="bold 17px Arial";g.fillText(String(i+1)+".",rtl?W-margin-14:margin+14,gy);
+  g.fillStyle=palette.ink;g.font="16px Arial";const words=String(line).split(/\s+/);let row="",yy=gy;
   for(const word of words){const test=row?row+" "+word:word;if(g.measureText(test).width>W-2*margin-72){g.fillText(row,rtl?W-margin-48:margin+48,yy);row=word;yy+=23}else row=test}
   if(row)g.fillText(row,rtl?W-margin-48:margin+48,yy);gy+=150
  });
- g.fillStyle="#617786";g.font="14px Arial";g.fillText(lang==="en"?"Generic guidance only. Exact terminals and life-safety wiring must follow approved design and model manuals.":"إرشاد عام. أرقام الأطراف وتوصيلات السلامة حسب التصميم المعتمد وأدلة الموديلات.",gx,H-64);
+ g.fillStyle=palette.muted;g.font="14px Arial";g.fillText(lang==="en"?"Generic guidance only. Exact terminals and life-safety wiring must follow approved design and model manuals.":"إرشاد عام. أرقام الأطراف وتوصيلات السلامة حسب التصميم المعتمد وأدلة الموديلات.",gx,H-64);
  pages.push(guide.toDataURL("image/jpeg",.9));
  const mapPages=1;
  for(let p=0;p<mapPages;p++){
-  const c=document.createElement("canvas");c.width=W;c.height=H;const q=c.getContext("2d");q.fillStyle="#fff";q.fillRect(0,0,W,H);
+  const c=document.createElement("canvas");c.width=W;c.height=H;const q=c.getContext("2d");q.fillStyle=palette.paper;q.fillRect(0,0,W,H);
   const rtl=lang==="ar",x=rtl?W-margin:margin,align=rtl?"right":"left";q.direction=rtl?"rtl":"ltr";q.textAlign=align;
-  q.fillStyle="#285f63";q.font="bold 25px Arial";q.fillText(lang==="en"?"Calculated panel and door wiring":"رسم اللوحة وتوصيلات الأبواب",x,70);
-  q.fillStyle="#172a3d";q.font="bold 20px Arial";q.fillText(data.project+" · "+data.board.label,x,110);
-  q.fillStyle="#617786";q.font="16px Arial";q.fillText(data.board.count+" · "+(p+1)+"/"+mapPages,x,143);
-  q.fillStyle="#e3f0f0";q.strokeStyle="#427F82";q.lineWidth=2;const mapPanelH=Math.max(170,241+Math.ceil(boardTerminalGroups(data.d).length/2)*38+10-165);q.fillRect(margin,165,W-2*margin,mapPanelH);q.strokeRect(margin,165,W-2*margin,mapPanelH);
-  q.fillStyle="#172a3d";q.font="bold 19px Arial";q.fillText(data.board.label,x,195);
+  q.fillStyle=palette.accent;q.font="bold 25px Arial";q.fillText(lang==="en"?"Calculated panel and door wiring":"رسم اللوحة وتوصيلات الأبواب",x,70);
+  q.fillStyle=palette.ink;q.font="bold 20px Arial";q.fillText(data.project+" · "+data.board.label,x,110);
+  q.fillStyle=palette.muted;q.font="16px Arial";q.fillText(data.board.count+" · "+(p+1)+"/"+mapPages,x,143);
+  q.fillStyle=palette.soft;q.strokeStyle=palette.accent;q.lineWidth=2;const mapPanelH=Math.max(170,241+Math.ceil(boardTerminalGroups(data.d).length/2)*38+10-165);q.fillRect(margin,165,W-2*margin,mapPanelH);q.strokeRect(margin,165,W-2*margin,mapPanelH);
+  q.fillStyle=palette.ink;q.font="bold 19px Arial";q.fillText(data.board.label,x,195);
   q.font="14px Arial";q.fillText((lang==="en"?"Panel terminal layout · ":"توزيع أطراف اللوحة · ")+String(data.board.detail).slice(0,118),x,224);
   const banks=boardTerminalGroups(data.d),bankW=(W-2*margin-28)/2,bankH=38;
-  banks.forEach((bank,i)=>{const col=i%2,row=Math.floor(i/2),bx=margin+12+col*(bankW+4),by=241+row*bankH;q.fillStyle="#fff";q.strokeStyle="#d6e2e5";q.fillRect(bx,by,bankW-8,bankH-4);q.strokeRect(bx,by,bankW-8,bankH-4);q.fillStyle="#285f63";q.font="bold 11px Arial";q.textAlign="left";q.fillText(bank[0]+" · "+bank[1],bx+7,by+13);q.fillStyle="#172a3d";q.font="10px Arial";q.fillText(String(bank[2]).slice(0,78),bx+7,by+28)});
+  banks.forEach((bank,i)=>{const col=i%2,row=Math.floor(i/2),bx=margin+12+col*(bankW+4),by=241+row*bankH;q.fillStyle=palette.paper;q.strokeStyle=palette.border;q.fillRect(bx,by,bankW-8,bankH-4);q.strokeRect(bx,by,bankW-8,bankH-4);q.fillStyle=palette.accent;q.font="bold 11px Arial";q.textAlign="left";q.fillText(bank[0]+" · "+bank[1],bx+7,by+13);q.fillStyle=palette.ink;q.font="10px Arial";q.fillText(String(bank[2]).slice(0,78),bx+7,by+28)});
   const from=0,to=Math.min(data.d.doors,12),startY=Math.max(370,241+Math.ceil(banks.length/2)*38+12),rowH=90;
   for(let i=from;i<to;i++){
    const y=startY+i*rowH,door=data.tableRows[i],map=doorTerminalMap(data.d,i+1);
-   q.fillStyle=i%2?"#f6f9f9":"#fff";q.strokeStyle="#d6e2e5";q.fillRect(margin,y,W-2*margin,79);q.strokeRect(margin,y,W-2*margin,79);
-   q.fillStyle="#285f63";q.font="bold 14px Arial";q.textAlign=align;q.fillText(door[0]+" · "+door[5],x,y+18);
+   q.fillStyle=i%2?palette.panelAlt:palette.paper;q.strokeStyle=palette.border;q.fillRect(margin,y,W-2*margin,79);q.strokeRect(margin,y,W-2*margin,79);
+   q.fillStyle=palette.accent;q.font="bold 14px Arial";q.textAlign=align;q.fillText(door[0]+" · "+door[5],x,y+18);
    const items=lang==="en"?["Reader · "+map.reader,"Contact · "+map.contact,"REX · "+map.rex,"Break glass · approved egress","Lock · "+map.relay]:["القارئ · "+map.reader,"حساس الباب · "+map.contact,"طلب الخروج · "+map.rex,"كاسر الزجاج · تحرير معتمد","القفل · "+map.relay];
    const colW=(W-2*margin)/5;
-   items.forEach((label,j)=>{const bx=margin+j*colW+5,by=y+27;q.fillStyle=j===4?"#e3f0f0":"#f2f6f7";q.fillRect(bx,by,colW-10,42);q.fillStyle="#172a3d";q.font="10px Arial";q.direction=rtl?"rtl":"ltr";q.textAlign=rtl?"right":"left";const textX=rtl?bx+colW-17:bx+7;const words=String(label).split(/\\s+/);let line="",yy=by+17;for(const word of words){const next=line?line+" "+word:word;if(q.measureText(next).width>colW-27&&line){q.fillText(line,textX,yy);line=word;yy+=12}else line=next}if(line)q.fillText(line,textX,yy)});
+   items.forEach((label,j)=>{const bx=margin+j*colW+5,by=y+27;q.fillStyle=j===4?palette.soft:"#f2f6f7";q.fillRect(bx,by,colW-10,42);q.fillStyle=palette.ink;q.font="10px Arial";q.direction=rtl?"rtl":"ltr";q.textAlign=rtl?"right":"left";const textX=rtl?bx+colW-17:bx+7;const words=String(label).split(/\\s+/);let line="",yy=by+17;for(const word of words){const next=line?line+" "+word:word;if(q.measureText(next).width>colW-27&&line){q.fillText(line,textX,yy);line=word;yy+=12}else line=next}if(line)q.fillText(line,textX,yy)});
   }
-  q.fillStyle="#617786";q.font="13px Arial";q.textAlign=align;
+  q.fillStyle=palette.muted;q.font="13px Arial";q.textAlign=align;
   q.fillText(lang==="en"?"Model-layout planning diagram derived from the selected manufacturer manual. Confirm exact hardware revision before wiring."+(data.d.doors>12?" Remaining doors are in the complete schedule.":""):"رسم تخطيطي بتوزيع أطراف الموديل حسب دليل الشركة. طابق مراجعة الجهاز قبل التوصيل."+(data.d.doors>12?" باقي الأبواب موضحة في جدول التوصيلات.":""),x,H-55);
   pages.push(c.toDataURL("image/jpeg",.9));
  }
